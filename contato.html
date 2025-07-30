@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contato - Família Grizzo . Grice . Gris . Grissi</title>
+
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css' rel='stylesheet' type='text/css'>
+
+    <!-- Google Analytics -->
+    <script>
+        window.ga = window.ga || function() {
+            (ga.q = ga.q || []).push(arguments)
+        };
+        ga.l = +new Date;
+        ga('create', 'UA-80216670-1', 'auto');
+        ga('require', 'linkid');
+        ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+</head>
+
+<body>
+    <!-- mobile code -->
+    <div class="mobile">
+        <div id="mobile-titulo"><span>Família Grizzo . Grice . Gris . Grissi</span></div>
+        <div id="mobile-subtitulo"><span>Uma família originalmente italiana</span></div>
+        <div id="mobile-centralizarmenu">
+            <div id="navcontainer">
+                <ul id="navlist">
+                    <li>|<a href="/"> Página Principal</a> |</li>
+                    <li><a href="/arvore-genealogica.html"> Árvore Genealógica</a> |</li>
+                    <li><a href="/historia.html"> História</a> |</li>
+                    <li><a href="/lembrancas.html"> Lembranças</a> |</li>
+                    <li><a href="/fotos.html"> Fotos</a> |</li>
+                    <li><a href="/contato.html" id="current"> Contato</a> |</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="intro">
+            <!-- Google Ad -->
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7255428607101928" data-ad-slot="8531444426" data-ad-format="auto"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            <!-- Google Ad Finish -->
+
+            <div class="box">
+                <div id="email_esquerda">
+                    <form id="contactForm" onsubmit="handleSubmit(event)">
+                        <label for="nome">Nome: </label><br>
+                        <input type="text" name="nome" placeholder="Nome" id="nome-form" required autocomplete="name">
+                        <br><br>
+                        <label for="email">Email: </label><br />
+                        <input type="email" name="email" placeholder="Email" id="email-form" required autocomplete="email">
+                        <br><br>
+                        <label for="mensagem">Mensagem: </label><br>
+                        <textarea name="mensagem" rows="5" cols="40" placeholder="Deixe aqui sua mensagem =)" id="mensagem-form" required></textarea>
+                        <br><br>
+                        <input type="submit" name="submit" value="Enviar">
+                    </form>
+
+                    <div id="formMessage"></div>
+                </div>
+                <div id="email_direita">
+                    <img src="images/contato/arroba.png" alt="email" height="150px" width="150px" />
+                </div>
+            </div>
+        </div>
+        <div id="rodape" class="legenda">
+            <p align="center">&copy; <a href="mailto:criscmaia@gmail.com?Subject=Família Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi">Cristiano Maia</a> - 2004-<script>document.write(new Date().getFullYear())</script></p>
+        </div>
+    </div>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const messageDiv = document.getElementById('formMessage');
+            
+            // Basic validation
+            const nome = formData.get('nome');
+            const email = formData.get('email');
+            const mensagem = formData.get('mensagem');
+            
+            if (!nome || !email || !mensagem) {
+                messageDiv.innerHTML = '<h2>Favor preencher todos os campos.</h2><p>Mensagem não enviada.</p>';
+                return;
+            }
+            
+            if (!email.includes('@') || !email.includes('.')) {
+                messageDiv.innerHTML = '<h2>Email inválido.</h2><p>Mensagem não enviada.</p>';
+                return;
+            }
+            
+            if (mensagem.includes('http:')) {
+                messageDiv.innerHTML = '<h2>Não é permitido o envio de links.</h2><p>Mensagem não enviada.</p>';
+                return;
+            }
+            
+            // For GitHub Pages, we'll use a simple mailto link as fallback
+            // In production, you might want to use a service like Formspree, EmailJS, or Netlify Forms
+            const subject = 'Site Grissi - Contato';
+            const body = `Data: ${new Date().toLocaleString('pt-BR')}\nDe: ${nome} (${email})\nMensagem: ${mensagem}`;
+            const mailtoLink = `mailto:criscmaia@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            // Open default email client
+            window.open(mailtoLink);
+            
+            messageDiv.innerHTML = '<h2>Mensagem enviada!</h2><p>Obrigado pela participação.</p>';
+            form.reset();
+        }
+    </script>
+</body>
+</html> 

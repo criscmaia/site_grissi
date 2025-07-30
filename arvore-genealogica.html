@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Árvore Genealógica - Família Grizzo . Grice . Gris . Grissi</title>
+
+    <link rel="stylesheet" type="text/css" href="index.css" />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css' rel='stylesheet' type='text/css'>
+
+    <!-- Google Analytics -->
+    <script>
+        window.ga = window.ga || function() {
+            (ga.q = ga.q || []).push(arguments)
+        };
+        ga.l = +new Date;
+        ga('create', 'UA-80216670-1', 'auto');
+        ga('require', 'linkid');
+        ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+</head>
+
+<body>
+    <!-- mobile code -->
+    <div class="mobile">
+        <div id="mobile-titulo"><span>Família Grizzo . Grice . Gris . Grissi</span></div>
+        <div id="mobile-subtitulo"><span>Uma família originalmente italiana</span></div>
+        <div id="mobile-centralizarmenu">
+            <div id="navcontainer">
+                <ul id="navlist">
+                    <li>|<a href="/"> Página Principal</a> |</li>
+                    <li><a href="/arvore-genealogica.html" id="current"> Árvore Genealógica</a> |</li>
+                    <li><a href="/historia.html"> História</a> |</li>
+                    <li><a href="/lembrancas.html"> Lembranças</a> |</li>
+                    <li><a href="/fotos.html"> Fotos</a> |</li>
+                    <li><a href="/contato.html"> Contato</a> |</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="intro">
+            <!-- Google Ad -->
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7255428607101928" data-ad-slot="8531444426" data-ad-format="auto"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            <!-- Google Ad Finish -->
+
+            <!-- botão de pesquisar! -->
+            <script type="text/javascript" id="cool_find_script" src="/js/find6.js"></script>
+
+            <div id="arvore-content">
+                <!-- The genealogy tree content will be loaded here -->
+            </div>
+        </div>
+        <div id="rodape" class="legenda">
+            <p align="center">&copy; <a href="mailto:criscmaia@gmail.com?Subject=Família Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi">Cristiano Maia</a> - 2004-<script>document.write(new Date().getFullYear())</script></p>
+        </div>
+    </div>
+
+    <script>
+        // Function to load and process the genealogy tree
+        async function loadGenealogyTree() {
+            try {
+                const response = await fetch('./arvore.html');
+                let data = await response.text();
+                
+                // Get list of available images
+                const imageNames = [
+                    'ADELIA GRISSI BORGO',
+                    'ADRIANA GRISSI MABILLOT',
+                    'ALEXANDRE GRISSI MABILLOT',
+                    'AMANDA CARVALHO MABILLOT',
+                    'ANA PAULA RIBEIRO DA SILVA',
+                    'ANDREA BERGAMINI REIS',
+                    'Anesia Grissi',
+                    'ANGELO DE CASTRO BRAGA',
+                    'BERNARDO GRISSI CARDOSO ALVARENGA',
+                    'BERNARDO GRISSI CARDOSO MAIA',
+                    'CAMILA GRISSI PIMENTA',
+                    'CARINA GRISSI CARDOSO',
+                    'CAROLINA GRISSI CARDOSO',
+                    'CRISTIANO CARDOSO MAIA',
+                    'DALVA GRISSI',
+                    'DAURA GRISSI CANDIAN',
+                    'DIEGO GRISSI LAGARES',
+                    'ESTEFANO JULIANO CECILIO TIMÓTEO',
+                    'FLÁVIA GRISSI MABILLOT',
+                    'GABRIELA GRISSI CARDOSO BRAGA',
+                    'GABRIELLA NÓBREGA GRISSI CARDOSO',
+                    'GERALDO CANTON',
+                    'GLEISSON MIRANDA MAIA',
+                    'HENRIQUE GRISSI CARDOSO SOEIRO DE CARVALHO',
+                    'ISABELLA CARVALHO MABILLOT',
+                    'JOSÉ FERNANDES GRISSI',
+                    'JOSÉ LUIZ FERREIRA CARDOSO',
+                    'JULIANA GRISSI CARDOSO',
+                    'LAURITA CANTON',
+                    'LAURITA GRISSI BERTOLIN',
+                    'MAÍZA MENDES DA NÓBREGA',
+                    'MANUELA GRISSI CARDOSO CECILIO TIMÓTEO',
+                    'Mara Gris Petinelli',
+                    'Maria Adesia Cantonde Castro',
+                    'MARIA DAS GRACAS GRIS DRUMOND',
+                    'MARIA DAS GRAÇAS GRIS DRUMOND',
+                    'MARIA DE FÁTIMA MOREIRA GRISSI',
+                    'MARIA HELENA MOREIRA GRISSI',
+                    'MARIA LUIZA GRISSI BERGAMINI',
+                    'MARIA MADALENA GRISSI',
+                    'Mauro Gris',
+                    'NORMA CANTON',
+                    'RENATA GRISSI CARDOSO',
+                    'RITA DE CÁSSIA BORGO',
+                    'RODOLPHO CANTON',
+                    'RODRIGO GRISSI CARDOSO',
+                    'SANTIAGO RIBEIRO GRISSI CARDOSO',
+                    'TEREZINHA GRISSI CARDOSO',
+                    'TEREZINHA MOREIRA GRISSI',
+                    'Thereza Canton',
+                    'THIAGO GRISSI CARDOSO SOEIRO DE CARVALHO',
+                    'VERUSCA RAFAELLA DA SILVA',
+                    'VINICIUS GRISSI PIMENTA'
+                ];
+
+                // Replace each name with the image link
+                imageNames.forEach(name => {
+                    const upperName = name.toUpperCase();
+                    const replace = `
+                        <img src="./images/arvore/camera.png" alt="camera" class="icone">
+                        <a href="#foto" class="tooltip">${name}<span class="foto"><img src="./images/arvore/${encodeURIComponent(name)}.jpg" alt="${name}" onerror="this.style.display='none'"/></span></a>`;
+                    
+                    // Use regex to replace the name in the content
+                    const regex = new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+                    data = data.replace(regex, replace);
+                });
+
+                document.getElementById('arvore-content').innerHTML = data;
+            } catch (error) {
+                console.error('Error loading genealogy tree:', error);
+                document.getElementById('arvore-content').innerHTML = '<p>Erro ao carregar a árvore genealógica.</p>';
+            }
+        }
+
+        // Load the genealogy tree when the page loads
+        document.addEventListener('DOMContentLoaded', loadGenealogyTree);
+    </script>
+</body>
+</html> 

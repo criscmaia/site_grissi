@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+    <url>
+        <loc>http://www.familiagrissi.com.br/</loc>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>http://www.familiagrissi.com.br/arvore-genealogica.php</loc>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>http://www.familiagrissi.com.br/historia.php</loc>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>http://www.familiagrissi.com.br/lembrancas.php</loc>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>http://www.familiagrissi.com.br/negocios.php</loc>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>http://www.familiagrissi.com.br/noticias.php</loc>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>http://www.familiagrissi.com.br/fotos.php</loc>
+        <changefreq>yearly</changefreq>
+    </url>
+    <url>
+        <loc>http://www.familiagrissi.com.br/contato.php</loc>
+        <changefreq>yearly</changefreq>
+    </url>
+</urlset>
