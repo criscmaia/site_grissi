@@ -28,12 +28,13 @@
     }
     
     /* Generation-based indentation */
-    .person[data-generation="F"] { margin-left: 0; }
-    .person[data-generation="N"] { margin-left: 20px; }
-    .person[data-generation="BN"] { margin-left: 40px; }
-    .person[data-generation="TN"] { margin-left: 60px; }
-    .person[data-generation="QN"] { margin-left: 80px; }
-    .person[data-generation="PN"] { margin-left: 100px; }
+    .person[data-generation="ROOT"] { margin-left: 0; }
+    .person[data-generation="F"] { margin-left: 20px; }
+    .person[data-generation="N"] { margin-left: 40px; }
+    .person[data-generation="BN"] { margin-left: 60px; }
+    .person[data-generation="TN"] { margin-left: 80px; }
+    .person[data-generation="QN"] { margin-left: 100px; }
+    .person[data-generation="PN"] { margin-left: 120px; }
     
     /* Person Header - Name and ID */
     .person-header {
@@ -49,6 +50,11 @@
     }
     
     /* Generation-specific border colors */
+    .person[data-generation="ROOT"] .person-header { 
+        border-left: 5px solid #d32f2f; 
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
     .person[data-generation="F"] .person-header { border-left: 5px solid #1976d2; }
     .person[data-generation="N"] .person-header { border-left: 5px solid #388e3c; }
     .person[data-generation="BN"] .person-header { border-left: 5px solid #7b1fa2; }
@@ -373,16 +379,16 @@
     }
 </style>
 
-<p><strong><span class="c1">1.1.</span> <span class="c12">LUIGI DI ANGELO GRIZZO</span></strong></p>
-
-
-
-
-
-
-
-
-
+<div class="person" data-generation="ROOT">
+    <div class="person-header">
+        <span class="person-id">1.1.</span>
+        <span class="person-name">LUIGI DI ANGELO GRIZZO</span>
+    </div>
+    <div class="person-info">
+        <p>Nascido em 15/11/1832 em Pordenone na Província de Udine, Itália. Filho de <strong>SEBASTIANO GRIZZO e MARIA DE LORENZI.</strong> Casou-se em primeiras núpcias com <strong>ELISABETTA PUPPI,</strong> nascida em PORCIA/ITALIA. Falecido em 09/02/1901 com 68 anos na cidade de Barbacena, MG .Ela faleceu em 08/11/1884 na Itália, com 55 anos.</p>
+        <p>Tiveram dois filhos:</p>
+    </div>
+</div>
 <div class="person" data-generation="F">
     <div class="person-header">
         <span class="generation-marker">F -</span>
@@ -3014,16 +3020,9 @@
     </div>
     <div class="person-info">
         <p>Nascida em 20/maio/2011 em Belo Horizonte, MG</p>
+        <p>Casou-se em segundas núpcias em 05/12/2004 com <strong>LILIAN SANCHES</strong>, nascida em 07/04/1969, em João Monlevade, MG. <strong>Filha de JOSÉ SEGUNDO SANCHES</strong> e <strong>DJANIRA MARIA TELES SANCHES.</strong></p>
     </div>
 </div>
-<p><strong>***</strong> Casou-se em segundas núpcias em 05/12/2004 com <strong>LILIAN SANCHES</strong>, nascida em 07/04/1969, em João Monlevade, MG. <strong>Filha de JOSÉ SEGUNDO SANCHES</strong> e <strong>DJANIRA MARIA TELES SANCHES.</strong></p>
-
-
-
-
-
-
-
 <div class="person" data-generation="BN">
     <div class="person-header">
         <span class="generation-marker">BN -</span>
