@@ -194,6 +194,19 @@
             // Add performance timing
             const startTime = performance.now();
             
+            // Performance monitoring
+            const performanceObserver = new PerformanceObserver((list) => {
+                list.getEntries().forEach((entry) => {
+                    if (entry.entryType === 'navigation') {
+                        console.log(`📊 Page Load Performance: ${Math.round(entry.loadEventEnd - entry.loadEventStart)}ms`);
+                    }
+                });
+            });
+            
+            if ('PerformanceObserver' in window) {
+                performanceObserver.observe({ entryTypes: ['navigation', 'resource'] });
+            }
+            
             // Safety timeout to remove loading state after 10 seconds max
             const safetyTimeout = setTimeout(() => {
                 const contentElement = document.getElementById('arvore-content');
@@ -208,6 +221,16 @@
                 
                 const endTime = performance.now();
                 console.log(`⚡ Application initialized in ${Math.round(endTime - startTime)}ms`);
+                
+                // Report performance metrics
+                if ('performance' in window) {
+                    const perfData = performance.getEntriesByType('navigation')[0];
+                    console.log(`📊 Performance Metrics:`, {
+                        domContentLoaded: Math.round(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart),
+                        loadComplete: Math.round(perfData.loadEventEnd - perfData.loadEventStart),
+                        totalTime: Math.round(endTime - startTime)
+                    });
+                }
                 
             } catch (error) {
                 console.error('❌ Application initialization failed:', error);
@@ -225,5 +248,21 @@
     
     <!-- Fallback: Original Search Script for compatibility -->
     <script src="js/modern-search.js"></script>
+    
+    <!-- Service Worker Registration - TEMPORARILY DISABLED FOR TESTING -->
+    <script>
+        // Service Worker temporarily disabled for testing
+        console.log('🔧 Service Worker disabled for testing');
+        
+        // Unregister any existing service workers
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                for (let registration of registrations) {
+                    registration.unregister();
+                    console.log('🗑️ Unregistered service worker');
+                }
+            });
+        }
+    </script>
 </body>
 </html> 

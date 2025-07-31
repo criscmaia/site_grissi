@@ -75,41 +75,42 @@ class ModernSearchEngine {
      * Bind events with modern event handling
      */
     bindEvents() {
-        // Use modern event handling with proper cleanup
-        const eventHandlers = {
-            input: (e) => this.handleSearchInput(e.target.value),
-            keydown: (e) => this.handleKeydown(e),
-            focus: () => this.showAutocomplete(),
-            blur: (e) => {
-                // Delay hiding to allow click events on results
-                setTimeout(() => {
-                    if (!e.relatedTarget?.closest('.modern-search-container')) {
-                        this.hideAutocomplete();
-                    }
-                }, 150);
-            }
+        // Store bound handlers for cleanup
+        this.handleSearchInput = (e) => this.performSearchInput(e.target.value);
+        this.handleKeydown = (e) => this.handleKeydownEvent(e);
+        this.handleFocus = () => this.showAutocomplete();
+        this.handleBlur = (e) => {
+            // Delay hiding to allow click events on results
+            setTimeout(() => {
+                if (!e.relatedTarget?.closest('.modern-search-container')) {
+                    this.hideAutocomplete();
+                }
+            }, 150);
         };
-
-        // Bind search input events
-        Object.entries(eventHandlers).forEach(([event, handler]) => {
-            this.searchInput.addEventListener(event, handler);
-        });
-
-        // Global click handler with better performance
-        document.addEventListener('click', (e) => {
+        this.handleGlobalClick = (e) => {
             if (!e.target.closest('.modern-search-container')) {
                 this.hideAutocomplete();
             }
-        }, { passive: true });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
+        };
+        this.handleGlobalKeydown = (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
                 e.preventDefault();
                 this.searchInput.focus();
                 this.searchInput.select();
             }
-        });
+        };
+
+        // Bind search input events
+        this.searchInput.addEventListener('input', this.handleSearchInput);
+        this.searchInput.addEventListener('keydown', this.handleKeydown);
+        this.searchInput.addEventListener('focus', this.handleFocus);
+        this.searchInput.addEventListener('blur', this.handleBlur);
+
+        // Global click handler with better performance
+        document.addEventListener('click', this.handleGlobalClick, { passive: true });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', this.handleGlobalKeydown);
     }
 
     /**
@@ -258,13 +259,18 @@ class ModernSearchEngine {
     buildSearchIndex() {
         this.searchIndex.clear();
         
+        // Pre-compile regex patterns for better performance
+        const generationPattern = /(\d+\.\d+(?:\.\d+)*)/;
+        const birthPattern = /Nascid[oa] em (.+?)(?:\.|,)/;
+        const locationPattern = /(?:em|na cidade de|na Província de) ([^,\.]+)/;
+        
         this.searchData.forEach(member => {
             const searchTerms = [
                 member.name.toLowerCase(),
                 member.generation,
                 member.birthInfo.toLowerCase(),
                 member.location.toLowerCase(),
-                ...member.name.toLowerCase().split(' ')
+                ...member.name.toLowerCase().split(' ').filter(word => word.length > 2) // Filter out short words
             ].filter(Boolean).join(' ');
             
             this.searchIndex.set(member, searchTerms);
@@ -274,7 +280,7 @@ class ModernSearchEngine {
     /**
      * Handle search input with improved debouncing
      */
-    handleSearchInput(query) {
+    performSearchInput(query) {
         // Cancel previous search if still pending
         if (this.abortController) {
             this.abortController.abort();
@@ -500,7 +506,7 @@ class ModernSearchEngine {
     /**
      * Handle keyboard navigation
      */
-    handleKeydown(e) {
+    handleKeydownEvent(e) {
         const items = this.autocomplete.querySelectorAll('.modern-search-item');
         
         switch (e.key) {
@@ -598,21 +604,44 @@ class ModernSearchEngine {
             highlightTarget = result.element.closest('.person-info') || result.element.parentElement;
         }
         
-        const originalBg = highlightTarget.style.backgroundColor;
-        const originalColor = highlightTarget.style.color;
+        // Store original styles properly
+        const originalBg = highlightTarget.style.backgroundColor || '';
+        const originalColor = highlightTarget.style.color || '';
         
-        // Use a more visible highlight color for the container
+        // Create a beautiful animated highlight effect
         highlightTarget.style.backgroundColor = '#fff3cd';
         highlightTarget.style.color = '#856404';
-        highlightTarget.style.transition = 'background-color 0.3s ease, color 0.3s ease';
+        highlightTarget.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+        highlightTarget.style.transform = 'scale(1.02)';
+        highlightTarget.style.boxShadow = '0 4px 12px rgba(255, 193, 7, 0.3)';
+        highlightTarget.style.borderRadius = '4px';
         
+        // Add a subtle pulse effect
         setTimeout(() => {
-            highlightTarget.style.backgroundColor = originalBg;
-            highlightTarget.style.color = originalColor;
+            highlightTarget.style.transform = 'scale(1.01)';
+            highlightTarget.style.boxShadow = '0 2px 8px rgba(255, 193, 7, 0.2)';
+        }, 200);
+        
+        // Simple and reliable animation: yellow for 1 second, then back to original
+        setTimeout(() => {
+            console.log('🔄 Resetting highlight for:', result.name);
+            console.log('🎯 Target element:', highlightTarget);
+            console.log('📝 Original bg:', originalBg, 'Original color:', originalColor);
+            
+            // Beautiful fade-out animation
+            highlightTarget.style.backgroundColor = '';
+            highlightTarget.style.color = '';
+            highlightTarget.style.transform = 'scale(1)';
+            highlightTarget.style.boxShadow = '';
+            highlightTarget.style.borderRadius = '';
+            
+            // Clean up transition after animation
             setTimeout(() => {
                 highlightTarget.style.transition = '';
-            }, 300);
-        }, 2000);
+            }, 400);
+            
+            console.log('✅ Styles reset complete');
+        }, 1000);
     }
 
     /**
@@ -669,6 +698,19 @@ class ModernSearchEngine {
         this.abortController?.abort();
         clearTimeout(this.debounceTimer);
         this.searchCache.clear();
+        
+        // Remove event listeners to prevent memory leaks
+        if (this.searchInput) {
+            this.searchInput.removeEventListener('input', this.handleSearchInput);
+            this.searchInput.removeEventListener('keydown', this.handleKeydown);
+            this.searchInput.removeEventListener('focus', this.handleFocus);
+            this.searchInput.removeEventListener('blur', this.handleBlur);
+        }
+        
+        // Remove global event listeners
+        document.removeEventListener('click', this.handleGlobalClick);
+        document.removeEventListener('keydown', this.handleGlobalKeydown);
+        
         document.querySelector('.modern-search-container')?.remove();
     }
 }

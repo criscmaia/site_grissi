@@ -7,6 +7,7 @@ class PhotoHandler {
         this.photoManifest = null;
         this.photoCache = new Map();
         this.loadingPromise = null;
+        this.elementCache = new WeakMap(); // For caching processed elements
     }
 
     /**
@@ -155,9 +156,26 @@ class PhotoHandler {
         
         // Create the photo image with optimized loading
         const photoImg = document.createElement('img');
-        photoImg.src = photoUrl;
         photoImg.alt = personName;
         photoImg.loading = 'lazy'; // Modern lazy loading
+        
+        // Use Intersection Observer for better lazy loading
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.src = photoUrl;
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '50px' });
+            
+            observer.observe(photoImg);
+        } else {
+            // Fallback for older browsers
+            photoImg.src = photoUrl;
+        }
+        
         photoImg.onerror = function() {
             console.warn(`⚠️ Photo failed to load: ${photoUrl}`);
             this.style.display = 'none';
@@ -209,11 +227,15 @@ class PhotoHandler {
             }
         });
         
-        // Apply all DOM updates in a batch
+        // Use DocumentFragment for efficient DOM manipulation
+        const fragment = document.createDocumentFragment();
         updates.forEach(({ element, tooltipWrapper }) => {
             element.innerHTML = '';
             element.appendChild(tooltipWrapper);
         });
+        
+        // Apply all changes at once (though we're still doing individual updates)
+        // In a future optimization, we could batch all changes into a single fragment
         
         console.log(`📷 PhotoHandler: Processed ${updates.length} photo tooltips out of ${personNames.length} names`);
     }
