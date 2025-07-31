@@ -9,6 +9,13 @@
     <link rel="stylesheet" type="text/css" href="index.css" />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="js/modern-search.css" />
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 
     <!-- Google Analytics -->
     <script>
@@ -125,14 +132,11 @@
          */
         function initializeSearchEngine() {
             try {
-                // Use new ModernSearchEngine if available, fallback to original
-                const SearchClass = window.ModernSearchEngine || window.ModernSearch;
-                
-                if (SearchClass) {
-                    new SearchClass();
+                if (window.ModernSearchEngine) {
+                    new window.ModernSearchEngine();
                     console.log('🔍 Enhanced search engine initialized');
                 } else {
-                    console.warn('⚠️ No search engine available');
+                    console.warn('⚠️ ModernSearchEngine not available');
                 }
             } catch (error) {
                 console.error('❌ Search engine initialization failed:', error);
@@ -152,8 +156,8 @@
                 document.getElementById('arvore-content').innerHTML = data;
                 
                 // Initialize basic search
-                if (window.ModernSearch) {
-                    new window.ModernSearch();
+                if (window.ModernSearchEngine) {
+                    new window.ModernSearchEngine();
                 }
                 
                 console.log('✅ Fallback initialization completed');
@@ -246,8 +250,7 @@
     <script src="js/genealogy-manager.js"></script>
     <script src="js/modern-search-engine.js"></script>
     
-    <!-- Fallback: Original Search Script for compatibility -->
-    <script src="js/modern-search.js"></script>
+
     
     <!-- Service Worker Registration - TEMPORARILY DISABLED FOR TESTING -->
     <script>
