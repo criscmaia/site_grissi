@@ -53,157 +53,177 @@
     </div>
 
     <script>
-        // Function to check if an image exists
-        async function imageExists(url) {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.onload = () => resolve(true);
-                img.onerror = () => resolve(false);
-                img.src = url;
-            });
-        }
-
-        // Function to add camera icon to a text element
-        async function addCameraToText(textElement, personName) {
-            const photoUrl = `./images/arvore/${encodeURIComponent(personName)}.jpg`;
-            const hasPhoto = await imageExists(photoUrl);
-            
-            if (hasPhoto) {
-                // Create camera icon
-                const cameraIcon = document.createElement('img');
-                cameraIcon.src = './images/arvore/camera.png';
-                cameraIcon.alt = 'camera';
-                cameraIcon.className = 'icone';
-                cameraIcon.style.marginRight = '4px';
-                cameraIcon.style.verticalAlign = 'middle';
-                
-                // Create tooltip wrapper
-                const tooltipWrapper = document.createElement('span');
-                tooltipWrapper.className = 'tooltip';
-                tooltipWrapper.style.display = 'inline-block';
-                
-                // Create photo span
-                const photoSpan = document.createElement('span');
-                photoSpan.className = 'foto';
-                
-                // Create the photo image
-                const photoImg = document.createElement('img');
-                photoImg.src = photoUrl;
-                photoImg.alt = personName;
-                photoImg.onerror = function() {
-                    this.style.display = 'none';
-                };
-                
-                // Assemble the structure - both camera and name inside tooltip wrapper
-                photoSpan.appendChild(photoImg);
-                tooltipWrapper.appendChild(cameraIcon);
-                tooltipWrapper.appendChild(document.createTextNode(personName));
-                tooltipWrapper.appendChild(photoSpan);
-                
-                // Clear the strong element and add the tooltip wrapper
-                textElement.innerHTML = '';
-                textElement.appendChild(tooltipWrapper);
-            }
-        }
-
-        // Function to load and process the genealogy tree
-        async function loadGenealogyTree() {
+        /**
+         * Modern Genealogy Tree Application - Phase 1 & 2 Optimizations
+         * Features:
+         * - Photo manifest system (eliminates 120+ HTTP requests)
+         * - Modular ES6 architecture
+         * - Enhanced error handling
+         * - Modern JavaScript features
+         * - Optimized DOM operations
+         */
+        
+        // Global application state
+        let genealogyManager = null;
+        
+        /**
+         * Initialize the application with modern features
+         */
+        async function initializeApplication() {
             try {
-                const response = await fetch('./arvore.html');
-                let data = await response.text();
+                console.log('🚀 Initializing Modern Genealogy Application');
                 
-                // First, load the content into the DOM
-                document.getElementById('arvore-content').innerHTML = data;
-                
-                // Process person names in headers
-                const personNames = document.querySelectorAll('.person-name');
-                
-                for (const personNameElement of personNames) {
-                    const personName = personNameElement.textContent.trim();
-                    
-                    // Check if this person has a photo by testing if the image exists
-                    const photoUrl = `./images/arvore/${encodeURIComponent(personName)}.jpg`;
-                    const hasPhoto = await imageExists(photoUrl);
-                    
-                    if (hasPhoto) {
-                        // Create camera icon
-                        const cameraIcon = document.createElement('img');
-                        cameraIcon.src = './images/arvore/camera.png';
-                        cameraIcon.alt = 'camera';
-                        cameraIcon.className = 'icone';
-                        cameraIcon.style.marginRight = '4px';
-                        cameraIcon.style.verticalAlign = 'middle';
-                        
-                        // Create tooltip wrapper
-                        const tooltipWrapper = document.createElement('span');
-                        tooltipWrapper.className = 'tooltip';
-                        tooltipWrapper.style.display = 'inline-block';
-                        
-                        // Create photo span
-                        const photoSpan = document.createElement('span');
-                        photoSpan.className = 'foto';
-                        
-                        // Create the photo image
-                        const photoImg = document.createElement('img');
-                        photoImg.src = photoUrl;
-                        photoImg.alt = personName;
-                        photoImg.onerror = function() {
-                            this.style.display = 'none';
-                        };
-                        
-                        // Assemble the structure - both camera and name inside tooltip wrapper
-                        photoSpan.appendChild(photoImg);
-                        tooltipWrapper.appendChild(cameraIcon);
-                        tooltipWrapper.appendChild(document.createTextNode(personName));
-                        tooltipWrapper.appendChild(photoSpan);
-                        
-                        // Clear the person name element and add the tooltip wrapper
-                        personNameElement.innerHTML = '';
-                        personNameElement.appendChild(tooltipWrapper);
-                    }
+                // Show loading state
+                const contentElement = document.getElementById('arvore-content');
+                if (contentElement) {
+                    contentElement.classList.add('genealogy-loading');
+                    console.log('🔄 Loading state added');
                 }
                 
-                // Process names mentioned in biographical information
-                const personInfoSections = document.querySelectorAll('.person-info');
-                
-                for (const infoSection of personInfoSections) {
-                    const paragraphs = infoSection.querySelectorAll('p');
-                    
-                    for (const paragraph of paragraphs) {
-                        // Get all strong elements (names) in the paragraph
-                        const strongElements = paragraph.querySelectorAll('strong');
-                        
-                        for (const strongElement of strongElements) {
-                            const personName = strongElement.textContent.trim();
-                            
-                            // Skip if it's just a single word or very short
-                            if (personName.length < 3 || personName.split(' ').length < 2) {
-                                continue;
-                            }
-                            
-                            // Add camera icon to this name
-                            await addCameraToText(strongElement, personName);
-                        }
-                    }
+                // Initialize the genealogy manager
+                if (window.GenealogyManager) {
+                    console.log('✅ Using new GenealogyManager');
+                    genealogyManager = new window.GenealogyManager();
+                } else {
+                    console.warn('⚠️ GenealogyManager not found, will fallback');
+                    throw new Error('GenealogyManager not available');
                 }
+                
+                // Load and process the genealogy tree
+                await genealogyManager.loadGenealogyTree();
+                
+                // Initialize search engine (enhanced version)
+                initializeSearchEngine();
+                
+                // Remove loading state
+                if (contentElement) {
+                    contentElement.classList.remove('genealogy-loading');
+                    console.log('✅ Loading state removed');
+                }
+                
+                // Log statistics
+                const stats = genealogyManager.getStatistics();
+                console.log('📊 Application loaded successfully:', stats);
                 
             } catch (error) {
-                console.error('Error loading genealogy tree:', error);
-                document.getElementById('arvore-content').innerHTML = '<p>Erro ao carregar a árvore genealógica.</p>';
+                console.error('❌ Failed to initialize application:', error);
+                
+                // Ensure loading state is removed even on error
+                const contentElement = document.getElementById('arvore-content');
+                if (contentElement) {
+                    contentElement.classList.remove('genealogy-loading');
+                    console.log('🔄 Loading state removed (error fallback)');
+                }
+                
+                // Fallback to basic functionality
+                await fallbackInitialization();
             }
         }
-
-        // Load the genealogy tree when the page loads
+        
+        /**
+         * Initialize the enhanced search engine
+         */
+        function initializeSearchEngine() {
+            try {
+                // Use new ModernSearchEngine if available, fallback to original
+                const SearchClass = window.ModernSearchEngine || window.ModernSearch;
+                
+                if (SearchClass) {
+                    new SearchClass();
+                    console.log('🔍 Enhanced search engine initialized');
+                } else {
+                    console.warn('⚠️ No search engine available');
+                }
+            } catch (error) {
+                console.error('❌ Search engine initialization failed:', error);
+            }
+        }
+        
+        /**
+         * Fallback initialization for backward compatibility
+         */
+        async function fallbackInitialization() {
+            console.log('🔄 Using fallback initialization');
+            
+            try {
+                // Load content the old way
+                const response = await fetch('./arvore.html');
+                const data = await response.text();
+                document.getElementById('arvore-content').innerHTML = data;
+                
+                // Initialize basic search
+                if (window.ModernSearch) {
+                    new window.ModernSearch();
+                }
+                
+                console.log('✅ Fallback initialization completed');
+                
+            } catch (error) {
+                console.error('❌ Fallback initialization failed:', error);
+                document.getElementById('arvore-content').innerHTML = 
+                    '<p>Erro ao carregar a árvore genealógica. Tente recarregar a página.</p>';
+            }
+        }
+        
+        /**
+         * Handle application errors gracefully
+         */
+        window.addEventListener('error', (event) => {
+            console.error('🚨 Global error:', event.error);
+            
+            // Don't break the application for minor errors
+            if (!event.error?.message?.includes('genealogy')) {
+                event.preventDefault();
+            }
+        });
+        
+        /**
+         * Handle unhandled promise rejections
+         */
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('🚨 Unhandled promise rejection:', event.reason);
+            
+            // Prevent the default handling (which logs to console)
+            event.preventDefault();
+        });
+        
+        /**
+         * Main application entry point
+         */
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadGenealogyTree();
-            // Initialize search after genealogy tree is loaded
-            if (window.ModernSearch) {
-                new window.ModernSearch();
+            // Add performance timing
+            const startTime = performance.now();
+            
+            // Safety timeout to remove loading state after 10 seconds max
+            const safetyTimeout = setTimeout(() => {
+                const contentElement = document.getElementById('arvore-content');
+                if (contentElement && contentElement.classList.contains('genealogy-loading')) {
+                    contentElement.classList.remove('genealogy-loading');
+                    console.warn('⚠️ Loading state removed by safety timeout');
+                }
+            }, 10000);
+            
+            try {
+                await initializeApplication();
+                
+                const endTime = performance.now();
+                console.log(`⚡ Application initialized in ${Math.round(endTime - startTime)}ms`);
+                
+            } catch (error) {
+                console.error('❌ Application initialization failed:', error);
+            } finally {
+                // Clear the safety timeout
+                clearTimeout(safetyTimeout);
             }
         });
     </script>
     
-    <!-- Modern Search Script -->
+    <!-- Modern Modular Scripts -->
+    <script src="js/photo-handler.js"></script>
+    <script src="js/genealogy-manager.js"></script>
+    <script src="js/modern-search-engine.js"></script>
+    
+    <!-- Fallback: Original Search Script for compatibility -->
     <script src="js/modern-search.js"></script>
 </body>
 </html> 

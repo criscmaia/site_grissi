@@ -564,6 +564,40 @@ acronym {
     margin: 0 auto;
 }
 
+/* Performance optimized camera icon styles */
+.camera-icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 4px;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/* Add loading states for better UX */
+.genealogy-loading {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+    min-height: 200px;
+}
+
+.genealogy-loading::after {
+    content: "Carregando fotos...";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    white-space: nowrap;
+}
+
 .tooltip .foto:before {
     content: "";
     position: absolute;
