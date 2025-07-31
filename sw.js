@@ -32,8 +32,7 @@ const STATIC_RESOURCES = [
     '/contato.html',
     '/arvore.html',
     '/arvore.css',
-    '/audio/funiculi_funicula.mp3',
-    'https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css'
+    '/audio/funiculi_funicula.mp3'
 ];
 
 /**
