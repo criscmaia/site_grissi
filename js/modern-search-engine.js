@@ -62,9 +62,11 @@ class ModernSearchEngine {
                        aria-describedby="search-instructions">
                 <span class="modern-search-icon" aria-hidden="true">🔍</span>
                 <div class="modern-search-autocomplete" role="listbox" aria-label="Resultados da busca"></div>
+                <!--
                 <div id="search-instructions" class="sr-only">
                     Digite para buscar membros da família. Use as setas para navegar e Enter para selecionar.
                 </div>
+                -->
             </div>
         `;
     }
@@ -181,7 +183,7 @@ class ModernSearchEngine {
                     generation: '',
                     birthInfo: this.extractBirthInfo(strong.parentElement),
                     location: this.extractLocation(strong.parentElement),
-                    element: strong.parentElement,
+                    element: strong, // Store the strong element itself for better highlighting
                     index: sectionIndex + 1000, // Offset to avoid conflicts
                     type: 'biographical'
                 };
@@ -578,20 +580,37 @@ class ModernSearchEngine {
     scrollToResult(result) {
         if (!result?.element) return;
         
-        result.element.scrollIntoView({
+        // For biographical results, scroll to the parent paragraph for better visibility
+        const scrollTarget = result.type === 'biographical' ? result.element.parentElement : result.element;
+        
+        scrollTarget.scrollIntoView({
             behavior: 'smooth',
             block: 'center'
         });
         
-        // Improved highlight animation
-        const originalBg = result.element.style.backgroundColor;
-        result.element.style.backgroundColor = '#fff3cd';
-        result.element.style.transition = 'background-color 0.3s ease';
+        // Highlight the parent container for better visibility
+        let highlightTarget;
+        if (result.type === 'header') {
+            // For header names, highlight the person-header container
+            highlightTarget = result.element.closest('.person-header') || result.element.parentElement;
+        } else {
+            // For biographical names, highlight the person-info container
+            highlightTarget = result.element.closest('.person-info') || result.element.parentElement;
+        }
+        
+        const originalBg = highlightTarget.style.backgroundColor;
+        const originalColor = highlightTarget.style.color;
+        
+        // Use a more visible highlight color for the container
+        highlightTarget.style.backgroundColor = '#fff3cd';
+        highlightTarget.style.color = '#856404';
+        highlightTarget.style.transition = 'background-color 0.3s ease, color 0.3s ease';
         
         setTimeout(() => {
-            result.element.style.backgroundColor = originalBg;
+            highlightTarget.style.backgroundColor = originalBg;
+            highlightTarget.style.color = originalColor;
             setTimeout(() => {
-                result.element.style.transition = '';
+                highlightTarget.style.transition = '';
             }, 300);
         }, 2000);
     }
