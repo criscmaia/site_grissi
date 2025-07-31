@@ -117,15 +117,23 @@ class GenealogyManager {
      * Initialize search functionality after content is loaded
      */
     initializeSearch() {
-        if (window.ModernSearch) {
+        if (window.ModernSearchEngine) {
             try {
-                this.searchEngine = new window.ModernSearch();
+                this.searchEngine = new window.ModernSearchEngine();
                 console.log('🔎 Search engine initialized');
+                
+                // Re-extract search data after content is loaded
+                setTimeout(() => {
+                    if (this.searchEngine && this.searchEngine.reExtractSearchData) {
+                        this.searchEngine.reExtractSearchData();
+                    }
+                }, 500);
+                
             } catch (error) {
                 console.error('❌ Failed to initialize search:', error);
             }
         } else {
-            console.warn('⚠️ ModernSearch not available');
+            console.warn('⚠️ ModernSearchEngine not available');
         }
     }
 

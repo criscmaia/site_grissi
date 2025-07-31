@@ -1,13 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Site oficial da Família Grizzo, Grice, Gris e Grissi - Uma família originalmente italiana com história rica e tradições preservadas.">
+    <meta name="keywords" content="família, genealogia, italiano, Grizzo, Grice, Gris, Grissi, história familiar">
+    <meta name="author" content="Cristiano Maia">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sitegrissi.com/">
+    <meta property="og:title" content="Família Grizzo . Grice . Gris . Grissi">
+    <meta property="og:description" content="Site oficial da Família Grizzo, Grice, Gris e Grissi - Uma família originalmente italiana.">
+    <meta property="og:image" content="https://sitegrissi.com/images/home/grice2.JPG">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://sitegrissi.com/">
+    <meta property="twitter:title" content="Família Grizzo . Grice . Gris . Grissi">
+    <meta property="twitter:description" content="Site oficial da Família Grizzo, Grice, Gris e Grissi - Uma família originalmente italiana.">
+    <meta property="twitter:image" content="https://sitegrissi.com/images/home/grice2.JPG">
+    
     <title>Página Principal - Família Grizzo . Grice . Gris . Grissi</title>
 
-    <link rel="stylesheet" type="text/css" href="index.css" />
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css' rel='stylesheet' type='text/css'>
+    <!-- Preload critical resources -->
+    <link rel="preload" href="index.css" as="style">
+    <link rel="preload" href="images/home/grice2.JPG" as="image">
+    <link rel="preload" href="js/performance-monitor.js" as="script">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet" type="text/css">
     
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -16,50 +41,140 @@
     <link rel="manifest" href="/site.webmanifest">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-    <!-- Google Analytics -->
-    <script>
-        window.ga = window.ga || function() {
-            (ga.q = ga.q || []).push(arguments)
-        };
-        ga.l = +new Date;
-        ga('create', 'UA-80216670-1', 'auto');
-        ga('require', 'linkid');
-        ga('send', 'pageview');
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Família Grizzo . Grice . Gris . Grissi",
+        "description": "Site oficial da Família Grizzo, Grice, Gris e Grissi - Uma família originalmente italiana",
+        "url": "https://sitegrissi.com/",
+        "author": {
+            "@type": "Person",
+            "name": "Cristiano Maia",
+            "email": "criscmaia@gmail.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Família Grizzo . Grice . Gris . Grissi"
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://sitegrissi.com/arvore-genealogica.html?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
     </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-    <!-- End Google Analytics -->
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3HMF6MF627"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3HMF6MF627', {
+            page_title: 'Página Principal',
+            page_location: window.location.href
+        });
+    </script>
+    
+    <!-- Performance Monitor -->
+    <script src="js/performance-monitor.js"></script>
 </head>
 
 <body>
-    <!-- mobile code -->
-    <div class="mobile">
-        <div id="mobile-titulo"><span>Família Grizzo . Grice . Gris . Grissi</span></div>
-        <div id="mobile-subtitulo"><span>Uma família originalmente italiana</span></div>
-        <div id="mobile-centralizarmenu">
-            <div id="navcontainer">
-                <ul id="navlist">
-                    <li>|<a href="./" id="current"> Página Principal</a> |</li>
-                    <li><a href="./arvore-genealogica.html"> Árvore Genealógica</a> |</li>
-                    <li><a href="./historia.html"> História</a> |</li>
-                    <li><a href="./lembrancas.html"> Lembranças</a> |</li>
-                    <li><a href="./fotos.html"> Fotos</a> |</li>
-                    <li><a href="./contato.html"> Contato</a> |</li>
-                </ul>
+    <header>
+        <nav aria-label="Navegação principal">
+            <div class="mobile">
+                <h1 id="mobile-titulo"><span>Família Grizzo . Grice . Gris . Grissi</span></h1>
+                <p id="mobile-subtitulo"><span>Uma família originalmente italiana</span></p>
+                <div id="mobile-centralizarmenu">
+                    <div id="navcontainer">
+                        <ul id="navlist" role="menubar">
+                            <li role="none"><a href="./" id="current" role="menuitem" aria-current="page"> Página Principal</a> |</li>
+                            <li role="none"><a href="./arvore-genealogica.html" role="menuitem"> Árvore Genealógica</a> |</li>
+                            <li role="none"><a href="./historia.html" role="menuitem"> História</a> |</li>
+                            <li role="none"><a href="./lembrancas.html" role="menuitem"> Lembranças</a> |</li>
+                            <li role="none"><a href="./fotos.html" role="menuitem"> Fotos</a> |</li>
+                            <li role="none"><a href="./contato.html" role="menuitem"> Contato</a> |</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
+        </nav>
+    </header>
 
-        <div id="intro">
-            <div class="home">
-                <img src="images/home/grice2.JPG" alt="Foto" class="frame" width="680" height="478" />
-            </div>
+    <main id="intro">
+        <section class="home" aria-labelledby="home-image">
+            <img src="images/home/grice2.JPG" 
+                 alt="Foto da família Grizzo, Grice, Gris e Grissi" 
+                 class="frame" 
+                 width="680" 
+                 height="478"
+                 loading="eager"
+                 decoding="async" />
+        </section>
 
-            <div class="homeaudio">
-                <audio controls="true"><source src="./audio/funiculi_funicula.mp3" type="audio/mpeg" autoplay="autoplay" preload="auto"/></audio>
-            </div>
-        </div>
-        <div id="rodape" class="legenda">
-            <p align="center">© <a href="mailto:criscmaia@gmail.com?Subject=Família Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi">Cristiano Maia</a> - 2004-<script>document.write(new Date().getFullYear())</script></p>
-        </div>
-    </div>
+        <section class="homeaudio" aria-label="Áudio de fundo">
+            <audio controls="true" preload="metadata">
+                <source src="./audio/funiculi_funicula.mp3" type="audio/mpeg">
+                <p>Seu navegador não suporta o elemento de áudio.</p>
+            </audio>
+        </section>
+    </main>
+
+    <footer id="rodape" class="legenda">
+        <p>&copy; <a href="mailto:criscmaia@gmail.com?Subject=Família%20Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi" aria-label="Enviar email para Cristiano Maia">Cristiano Maia</a> - 2004-<script>document.write(new Date().getFullYear())</script></p>
+    </footer>
+
+    <!-- Performance monitoring -->
+    <script>
+        // Performance monitoring
+        window.addEventListener('load', function() {
+            if ('performance' in window) {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                const loadTime = perfData.loadEventEnd - perfData.loadEventStart;
+                console.log('Page load time:', loadTime + 'ms');
+                
+                // Send to analytics if available
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'timing_complete', {
+                        name: 'load',
+                        value: Math.round(loadTime)
+                    });
+                }
+            }
+        });
+        
+        // Initialize Performance Monitor
+        let performanceMonitor = null;
+        if (window.PerformanceMonitor) {
+            performanceMonitor = new PerformanceMonitor();
+        }
+        
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('✅ Service Worker registered successfully:', registration.scope);
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('🔄 New service worker available');
+                                    // You could show a notification to the user here
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(error) {
+                        console.error('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html> 

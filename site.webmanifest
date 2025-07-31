@@ -1,1 +1,98 @@
-{"name":"","short_name":"","icons":[{"src":"/android-chrome-192x192.png","sizes":"192x192","type":"image/png"},{"src":"/android-chrome-512x512.png","sizes":"512x512","type":"image/png"}],"theme_color":"#ffffff","background_color":"#ffffff","display":"standalone"}
+{
+    "name": "Família Grizzo . Grice . Gris . Grissi",
+    "short_name": "Família Grissi",
+    "description": "Site oficial da Família Grizzo, Grice, Gris e Grissi - Uma família originalmente italiana",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "theme_color": "#DD0000",
+    "background_color": "#E6E6E6",
+    "lang": "pt-BR",
+    "dir": "ltr",
+    "categories": ["family", "genealogy", "history"],
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicon-16x16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/images/home/grice2.JPG",
+            "sizes": "1280x720",
+            "type": "image/jpeg",
+            "form_factor": "wide",
+            "label": "Página principal da Família Grissi"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Árvore Genealógica",
+            "short_name": "Genealogia",
+            "description": "Explore a árvore genealógica da família",
+            "url": "/arvore-genealogica.html",
+            "icons": [
+                {
+                    "src": "/favicon-32x32.png",
+                    "sizes": "32x32"
+                }
+            ]
+        },
+        {
+            "name": "História",
+            "short_name": "História",
+            "description": "Conheça a história da família",
+            "url": "/historia.html",
+            "icons": [
+                {
+                    "src": "/favicon-32x32.png",
+                    "sizes": "32x32"
+                }
+            ]
+        },
+        {
+            "name": "Fotos",
+            "short_name": "Fotos",
+            "description": "Galeria de fotos da família",
+            "url": "/fotos.html",
+            "icons": [
+                {
+                    "src": "/favicon-32x32.png",
+                    "sizes": "32x32"
+                }
+            ]
+        }
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "launch_handler": {
+        "client_mode": "navigate-existing"
+    }
+}

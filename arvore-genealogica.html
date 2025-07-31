@@ -1,14 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Árvore genealógica da Família Grizzo, Grice, Gris e Grissi - Explore a história e conexões familiares através de gerações.">
+    <meta name="keywords" content="árvore genealógica, genealogia, família, Grizzo, Grice, Gris, Grissi, história familiar, ancestrais">
+    <meta name="author" content="Cristiano Maia">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sitegrissi.com/arvore-genealogica.html">
+    <meta property="og:title" content="Árvore Genealógica - Família Grizzo . Grice . Gris . Grissi">
+    <meta property="og:description" content="Explore a árvore genealógica da Família Grizzo, Grice, Gris e Grissi.">
+    <meta property="og:image" content="https://sitegrissi.com/images/home/grice2.JPG">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://sitegrissi.com/arvore-genealogica.html">
+    <meta property="twitter:title" content="Árvore Genealógica - Família Grizzo . Grice . Gris . Grissi">
+    <meta property="twitter:description" content="Explore a árvore genealógica da Família Grizzo, Grice, Gris e Grissi.">
+    <meta property="twitter:image" content="https://sitegrissi.com/images/home/grice2.JPG">
+    
     <title>Árvore Genealógica - Família Grizzo . Grice . Gris . Grissi</title>
 
-    <link rel="stylesheet" type="text/css" href="index.css" />
-    <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="js/modern-search.css" />
+    <!-- Preload critical resources -->
+    <link rel="preload" href="index.css" as="style">
+    <link rel="preload" href="js/modern-search.css" as="style">
+    <link rel="preload" href="js/genealogy-manager.js" as="script">
+    <link rel="preload" href="js/photo-handler.js" as="script">
+    <link rel="preload" href="js/modern-search-engine.js" as="script">
+    <link rel="preload" href="js/performance-monitor.js" as="script">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="js/modern-search.css">
     
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -17,47 +45,91 @@
     <link rel="manifest" href="/site.webmanifest">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-    <!-- Google Analytics -->
-    <script>
-        window.ga = window.ga || function() {
-            (ga.q = ga.q || []).push(arguments)
-        };
-        ga.l = +new Date;
-        ga('create', 'UA-80216670-1', 'auto');
-        ga('require', 'linkid');
-        ga('send', 'pageview');
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Árvore Genealógica - Família Grizzo . Grice . Gris . Grissi",
+        "description": "Árvore genealógica da Família Grizzo, Grice, Gris e Grissi",
+        "url": "https://sitegrissi.com/arvore-genealogica.html",
+        "author": {
+            "@type": "Person",
+            "name": "Cristiano Maia",
+            "email": "criscmaia@gmail.com"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Página Principal",
+                    "item": "https://sitegrissi.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Árvore Genealógica",
+                    "item": "https://sitegrissi.com/arvore-genealogica.html"
+                }
+            ]
+        }
+    }
     </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-    <!-- End Google Analytics -->
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3HMF6MF627"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-3HMF6MF627', {
+            page_title: 'Árvore Genealógica',
+            page_location: window.location.href
+        });
+    </script>
+    
+    <!-- Performance Monitor -->
+    <script src="js/performance-monitor.js"></script>
 </head>
 
 <body>
-    <!-- mobile code -->
-    <div class="mobile">
-        <div id="mobile-titulo"><span>Família Grizzo . Grice . Gris . Grissi</span></div>
-        <div id="mobile-subtitulo"><span>Uma família originalmente italiana</span></div>
-        <div id="mobile-centralizarmenu">
-            <div id="navcontainer">
-                <ul id="navlist">
-                    <li>|<a href="./"> Página Principal</a> |</li>
-                    <li><a href="./arvore-genealogica.html" id="current"> Árvore Genealógica</a> |</li>
-                    <li><a href="./historia.html"> História</a> |</li>
-                    <li><a href="./lembrancas.html"> Lembranças</a> |</li>
-                    <li><a href="./fotos.html"> Fotos</a> |</li>
-                    <li><a href="./contato.html"> Contato</a> |</li>
-                </ul>
+    <header>
+        <nav aria-label="Navegação principal">
+            <div class="mobile">
+                <h1 id="mobile-titulo"><span>Família Grizzo . Grice . Gris . Grissi</span></h1>
+                <p id="mobile-subtitulo"><span>Uma família originalmente italiana</span></p>
+                <div id="mobile-centralizarmenu">
+                    <div id="navcontainer">
+                        <ul id="navlist" role="menubar">
+                            <li role="none"><a href="./" role="menuitem"> Página Principal</a> |</li>
+                            <li role="none"><a href="./arvore-genealogica.html" id="current" role="menuitem" aria-current="page"> Árvore Genealógica</a> |</li>
+                            <li role="none"><a href="./historia.html" role="menuitem"> História</a> |</li>
+                            <li role="none"><a href="./lembrancas.html" role="menuitem"> Lembranças</a> |</li>
+                            <li role="none"><a href="./fotos.html" role="menuitem"> Fotos</a> |</li>
+                            <li role="none"><a href="./contato.html" role="menuitem"> Contato</a> |</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
+        </nav>
+    </header>
 
-        <div id="intro">
-            <div id="arvore-content">
-                <!-- The genealogy tree content will be loaded here -->
-            </div>
-        </div>
-        <div id="rodape" class="legenda">
-            <p align="center">© <a href="mailto:criscmaia@gmail.com?Subject=Família Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi">Cristiano Maia</a> - 2004-<script>document.write(new Date().getFullYear())</script></p>
-        </div>
-    </div>
+    <main id="intro">
+        <section id="arvore-content" aria-label="Conteúdo da árvore genealógica">
+            <!-- The genealogy tree content will be loaded here -->
+        </section>
+    </main>
+
+    <footer id="rodape" class="legenda">
+        <p>&copy; <a href="mailto:criscmaia@gmail.com?Subject=Família%20Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi" aria-label="Enviar email para Cristiano Maia">Cristiano Maia</a> - 2004-<script>document.write(new Date().getFullYear())</script></p>
+    </footer>
+
+    <!-- Load JavaScript modules -->
+    <script src="js/photo-handler.js"></script>
+    <script src="js/modern-search-engine.js"></script>
+    <script src="js/genealogy-manager.js"></script>
 
     <script>
         /**
@@ -72,6 +144,7 @@
         
         // Global application state
         let genealogyManager = null;
+        let searchEngine = null;
         
         /**
          * Initialize the application with modern features
@@ -99,8 +172,8 @@
                 // Load and process the genealogy tree
                 await genealogyManager.loadGenealogyTree();
                 
-                // Initialize search engine (enhanced version)
-                initializeSearchEngine();
+                // Initialize search functionality
+                genealogyManager.initializeSearch();
                 
                 // Remove loading state
                 if (contentElement) {
@@ -110,160 +183,91 @@
                 
                 // Log statistics
                 const stats = genealogyManager.getStatistics();
-                console.log('📊 Application loaded successfully:', stats);
+                if (stats) {
+                    console.log('📊 Genealogy Statistics:', stats);
+                }
+                
+                console.log('🎉 Application initialized successfully');
                 
             } catch (error) {
                 console.error('❌ Failed to initialize application:', error);
                 
-                // Ensure loading state is removed even on error
+                // Show user-friendly error message
                 const contentElement = document.getElementById('arvore-content');
                 if (contentElement) {
                     contentElement.classList.remove('genealogy-loading');
-                    console.log('🔄 Loading state removed (error fallback)');
+                    contentElement.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; margin: 20px;">
+                            <h2>Erro ao carregar a árvore genealógica</h2>
+                            <p>Desculpe, ocorreu um erro ao carregar o conteúdo. Por favor, tente recarregar a página.</p>
+                            <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                Recarregar Página
+                            </button>
+                        </div>
+                    `;
                 }
-                
-                // Fallback to basic functionality
-                await fallbackInitialization();
             }
         }
         
         /**
-         * Initialize the enhanced search engine
+         * Performance monitoring
          */
-        function initializeSearchEngine() {
-            try {
-                if (window.ModernSearchEngine) {
-                    new window.ModernSearchEngine();
-                    console.log('🔍 Enhanced search engine initialized');
-                } else {
-                    console.warn('⚠️ ModernSearchEngine not available');
-                }
-            } catch (error) {
-                console.error('❌ Search engine initialization failed:', error);
-            }
-        }
-        
-        /**
-         * Fallback initialization for backward compatibility
-         */
-        async function fallbackInitialization() {
-            console.log('🔄 Using fallback initialization');
-            
-            try {
-                // Load content the old way
-                const response = await fetch('./arvore.html');
-                const data = await response.text();
-                document.getElementById('arvore-content').innerHTML = data;
-                
-                // Initialize basic search
-                if (window.ModernSearchEngine) {
-                    new window.ModernSearchEngine();
-                }
-                
-                console.log('✅ Fallback initialization completed');
-                
-            } catch (error) {
-                console.error('❌ Fallback initialization failed:', error);
-                document.getElementById('arvore-content').innerHTML = 
-                    '<p>Erro ao carregar a árvore genealógica. Tente recarregar a página.</p>';
-            }
-        }
-        
-        /**
-         * Handle application errors gracefully
-         */
-        window.addEventListener('error', (event) => {
-            console.error('🚨 Global error:', event.error);
-            
-            // Don't break the application for minor errors
-            if (!event.error?.message?.includes('genealogy')) {
-                event.preventDefault();
-            }
-        });
-        
-        /**
-         * Handle unhandled promise rejections
-         */
-        window.addEventListener('unhandledrejection', (event) => {
-            console.error('🚨 Unhandled promise rejection:', event.reason);
-            
-            // Prevent the default handling (which logs to console)
-            event.preventDefault();
-        });
-        
-        /**
-         * Main application entry point
-         */
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Add performance timing
-            const startTime = performance.now();
-            
-            // Performance monitoring
-            const performanceObserver = new PerformanceObserver((list) => {
-                list.getEntries().forEach((entry) => {
-                    if (entry.entryType === 'navigation') {
-                        console.log(`📊 Page Load Performance: ${Math.round(entry.loadEventEnd - entry.loadEventStart)}ms`);
-                    }
-                });
-            });
-            
-            if ('PerformanceObserver' in window) {
-                performanceObserver.observe({ entryTypes: ['navigation', 'resource'] });
-            }
-            
-            // Safety timeout to remove loading state after 10 seconds max
-            const safetyTimeout = setTimeout(() => {
-                const contentElement = document.getElementById('arvore-content');
-                if (contentElement && contentElement.classList.contains('genealogy-loading')) {
-                    contentElement.classList.remove('genealogy-loading');
-                    console.warn('⚠️ Loading state removed by safety timeout');
-                }
-            }, 10000);
-            
-            try {
-                await initializeApplication();
-                
-                const endTime = performance.now();
-                console.log(`⚡ Application initialized in ${Math.round(endTime - startTime)}ms`);
-                
-                // Report performance metrics
+        function initializePerformanceMonitoring() {
+            window.addEventListener('load', function() {
                 if ('performance' in window) {
                     const perfData = performance.getEntriesByType('navigation')[0];
-                    console.log(`📊 Performance Metrics:`, {
-                        domContentLoaded: Math.round(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart),
-                        loadComplete: Math.round(perfData.loadEventEnd - perfData.loadEventStart),
-                        totalTime: Math.round(endTime - startTime)
-                    });
+                    const loadTime = perfData.loadEventEnd - perfData.loadEventStart;
+                    console.log('Page load time:', loadTime + 'ms');
+                    
+                    // Send to analytics if available
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'timing_complete', {
+                            name: 'load',
+                            value: Math.round(loadTime)
+                        });
+                    }
                 }
-                
-            } catch (error) {
-                console.error('❌ Application initialization failed:', error);
-            } finally {
-                // Clear the safety timeout
-                clearTimeout(safetyTimeout);
-            }
-        });
-    </script>
-    
-    <!-- Modern Modular Scripts -->
-    <script src="js/photo-handler.js"></script>
-    <script src="js/genealogy-manager.js"></script>
-    <script src="js/modern-search-engine.js"></script>
-    
-
-    
-    <!-- Service Worker Registration - TEMPORARILY DISABLED FOR TESTING -->
-    <script>
-        // Service Worker temporarily disabled for testing
-        console.log('🔧 Service Worker disabled for testing');
+            });
+        }
         
-        // Unregister any existing service workers
+        // Initialize Performance Monitor
+        let performanceMonitor = null;
+        if (window.PerformanceMonitor) {
+            performanceMonitor = new PerformanceMonitor();
+        }
+        
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                initializePerformanceMonitoring();
+                initializeApplication();
+            });
+        } else {
+            initializePerformanceMonitoring();
+            initializeApplication();
+        }
+        
+        // Service Worker Registration
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(registrations => {
-                for (let registration of registrations) {
-                    registration.unregister();
-                    console.log('🗑️ Unregistered service worker');
-                }
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('✅ Service Worker registered successfully:', registration.scope);
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('🔄 New service worker available');
+                                    // You could show a notification to the user here
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(error) {
+                        console.error('❌ Service Worker registration failed:', error);
+                    });
             });
         }
     </script>

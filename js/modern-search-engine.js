@@ -24,6 +24,18 @@ class ModernSearchEngine {
     init() {
         this.createSearchInterface();
         this.bindEvents();
+        
+        // Wait a bit for content to be loaded, then extract search data
+        setTimeout(() => {
+            this.extractSearchData();
+        }, 1000);
+    }
+
+    /**
+     * Re-extract search data when content is loaded
+     */
+    reExtractSearchData() {
+        console.log('🔍 Re-extracting search data...');
         this.extractSearchData();
     }
 
