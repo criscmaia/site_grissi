@@ -82,27 +82,51 @@ class ModernSearch {
         const content = document.getElementById('arvore-content');
         if (!content) return;
 
-        const paragraphs = content.querySelectorAll('p');
         const familyMembers = [];
 
-        paragraphs.forEach((p, index) => {
-            const text = p.textContent.trim();
+        // Search in person names (headers) - these are the primary person entries
+        const personNames = content.querySelectorAll('.person-name');
+        personNames.forEach((personNameElement, index) => {
+            let text = personNameElement.textContent.trim();
             if (!text) return;
 
-            // Look for family member patterns
-            const nameMatch = text.match(/([A-Z][A-Z\s]+(?:GRIZZO|GRIS|GRISSI|GRICE|CANTON|BERTOLIN|CARDOSO|MAIA|MABILLOT|BORGO|CANDIAN|PIMENTA|LAGARES|TIMÓTEO|BRAGA|ALVARENGA|SOEIRO|CARVALHO|PRESOTTI|MORAS|PUPPI|TOFFOLO|SFREDO|PICININ|MINARO|CASA GRANDE|FABRI|ROMAN|ROSSETI|BERTOLIN|ALMEIDA|PINTO|ESTEVES|GONÇALVES|MORAIS|GAVA|LUCAS|VIDAL|SILVA|NÓBREGA|MENDES|DRUMOND|MOREIRA|BERGAMINI|PETINELLI|CASTRO|CECILIO|RIBEIRO|ZONZIN|ESTEVES))/);
+            // If the element has been modified by camera icon JavaScript, extract text from tooltip
+            const tooltipElement = personNameElement.querySelector('.tooltip');
+            if (tooltipElement) {
+                // Get text content but exclude the photo part
+                const photoElement = tooltipElement.querySelector('.foto');
+                if (photoElement) {
+                    // Clone the tooltip, remove the photo element, then get text
+                    const clonedTooltip = tooltipElement.cloneNode(true);
+                    const clonedPhoto = clonedTooltip.querySelector('.foto');
+                    if (clonedPhoto) {
+                        clonedPhoto.remove();
+                    }
+                    text = clonedTooltip.textContent.trim();
+                }
+            }
+
+            // Extract name (remove generation numbers and other prefixes)
+            const cleanText = text.replace(/^\d+\.\d+(?:\.\d+)*\.\s*/, '').trim(); // Remove generation numbers
+            const name = cleanText.replace(/^[A-Z]{1,3}\s*-\s*/, '').trim(); // Remove prefixes like "QN -", "TN -", etc.
             
-            if (nameMatch) {
-                const name = nameMatch[1].trim();
+            if (name && name.length > 2) {
+                // Look for generation info in the same element or nearby
                 const generationMatch = text.match(/(\d+\.\d+(?:\.\d+)*)/);
                 const generation = generationMatch ? generationMatch[1] : '';
-                
-                // Extract additional info
-                const infoMatch = text.match(/Nascido em (.+?)(?:\.|,)/);
-                const birthInfo = infoMatch ? infoMatch[1] : '';
-                
-                const locationMatch = text.match(/(?:em|na cidade de|na Província de) ([^,\.]+)/);
-                const location = locationMatch ? locationMatch[1] : '';
+
+                // Look for additional info in the next element (person-info)
+                let birthInfo = '';
+                let location = '';
+                const nextElement = personNameElement.parentNode?.nextElementSibling;
+                if (nextElement && nextElement.classList.contains('person-info')) {
+                    const infoText = nextElement.textContent;
+                    const infoMatch = infoText.match(/Nascid[oa] em (.+?)(?:\.|,)/);
+                    birthInfo = infoMatch ? infoMatch[1] : '';
+                    
+                    const locationMatch = infoText.match(/(?:em|na cidade de|na Província de) ([^,\.]+)/);
+                    location = locationMatch ? locationMatch[1] : '';
+                }
 
                 familyMembers.push({
                     name: name,
@@ -110,13 +134,71 @@ class ModernSearch {
                     birthInfo: birthInfo,
                     location: location,
                     fullText: text,
-                    element: p,
-                    index: index
+                    element: personNameElement,
+                    index: index,
+                    type: 'header'
                 });
             }
         });
 
-        this.searchData = familyMembers;
+        // Search in biographical text for additional names mentioned
+        const personInfoSections = content.querySelectorAll('.person-info');
+        personInfoSections.forEach((infoSection, index) => {
+            const paragraphs = infoSection.querySelectorAll('p');
+            
+            paragraphs.forEach((p) => {
+                const text = p.textContent.trim();
+                if (!text) return;
+
+                // Find all strong elements (which typically contain names)
+                const strongElements = p.querySelectorAll('strong');
+                strongElements.forEach((strong) => {
+                    const strongText = strong.textContent.trim();
+                    
+                    // Only consider text that looks like a person name (multiple words, mostly uppercase)
+                    if (strongText && 
+                        strongText.length > 3 && 
+                        strongText.split(' ').length >= 2 && 
+                        /^[A-ZÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÇ\s]+$/.test(strongText)) {
+                        
+                        // Extract additional context from the paragraph
+                        let birthInfo = '';
+                        let location = '';
+                        
+                        const infoMatch = text.match(/Nascid[oa] em (.+?)(?:\.|,)/);
+                        birthInfo = infoMatch ? infoMatch[1] : '';
+                        
+                        const locationMatch = text.match(/(?:em|na cidade de|na Província de) ([^,\.]+)/);
+                        location = locationMatch ? locationMatch[1] : '';
+
+                        familyMembers.push({
+                            name: strongText,
+                            generation: '',
+                            birthInfo: birthInfo,
+                            location: location,
+                            fullText: text,
+                            element: p,
+                            index: index + personNames.length,
+                            type: 'biographical'
+                        });
+                    }
+                });
+            });
+        });
+
+        // Remove duplicates (same name might appear in both header and biographical text)
+        const uniqueMembers = [];
+        const seenNames = new Set();
+        
+        familyMembers.forEach(member => {
+            const normalizedName = member.name.toLowerCase().trim();
+            if (!seenNames.has(normalizedName)) {
+                seenNames.add(normalizedName);
+                uniqueMembers.push(member);
+            }
+        });
+
+        this.searchData = uniqueMembers;
         this.buildSearchIndex();
     }
 
@@ -403,10 +485,5 @@ class ModernSearch {
     }
 }
 
-// Initialize modern search when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait for genealogy tree to load
-    setTimeout(() => {
-        new ModernSearch();
-    }, 1000);
-}); 
+// Expose ModernSearch globally so it can be initialized from arvore-genealogica.html
+window.ModernSearch = ModernSearch; 

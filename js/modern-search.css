@@ -12,8 +12,8 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
-    max-width: 400px;
-    min-width: 300px;
+    max-width: 450px;
+    min-width: 350px;
 }
 
 .modern-search-container:hover {
@@ -24,7 +24,7 @@
 /* Search Input */
 .modern-search-input {
     width: 100%;
-    padding: 12px 16px;
+    padding: 12px 40px 12px 16px;
     border: none;
     border-radius: 12px;
     font-size: 16px;
@@ -33,6 +33,10 @@
     color: #2c3e50;
     outline: none;
     transition: all 0.2s ease;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .modern-search-input::placeholder {

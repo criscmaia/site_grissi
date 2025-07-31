@@ -65,13 +65,10 @@
 
         // Function to add camera icon to a text element
         async function addCameraToText(textElement, personName) {
-            console.log('addCameraToText called for:', personName);
             const photoUrl = `./images/arvore/${encodeURIComponent(personName)}.jpg`;
             const hasPhoto = await imageExists(photoUrl);
-            console.log('Has photo for', personName, ':', hasPhoto);
             
             if (hasPhoto) {
-                console.log('Adding camera icon to biographical name:', personName);
                 // Create camera icon
                 const cameraIcon = document.createElement('img');
                 cameraIcon.src = './images/arvore/camera.png';
@@ -112,29 +109,23 @@
         // Function to load and process the genealogy tree
         async function loadGenealogyTree() {
             try {
-                console.log('Loading genealogy tree...');
                 const response = await fetch('./arvore.html');
                 let data = await response.text();
                 
                 // First, load the content into the DOM
                 document.getElementById('arvore-content').innerHTML = data;
-                console.log('Content loaded into DOM');
                 
                 // Process person names in headers
                 const personNames = document.querySelectorAll('.person-name');
-                console.log('Found', personNames.length, 'person names in headers');
                 
                 for (const personNameElement of personNames) {
                     const personName = personNameElement.textContent.trim();
-                    console.log('Processing header name:', personName);
                     
                     // Check if this person has a photo by testing if the image exists
                     const photoUrl = `./images/arvore/${encodeURIComponent(personName)}.jpg`;
                     const hasPhoto = await imageExists(photoUrl);
-                    console.log('Has photo for', personName, ':', hasPhoto);
                     
                     if (hasPhoto) {
-                        console.log('Adding camera icon to', personName);
                         // Create camera icon
                         const cameraIcon = document.createElement('img');
                         cameraIcon.src = './images/arvore/camera.png';
@@ -174,7 +165,6 @@
                 
                 // Process names mentioned in biographical information
                 const personInfoSections = document.querySelectorAll('.person-info');
-                console.log('Found', personInfoSections.length, 'person info sections');
                 
                 for (const infoSection of personInfoSections) {
                     const paragraphs = infoSection.querySelectorAll('p');
@@ -185,7 +175,6 @@
                         
                         for (const strongElement of strongElements) {
                             const personName = strongElement.textContent.trim();
-                            console.log('Processing biographical name:', personName);
                             
                             // Skip if it's just a single word or very short
                             if (personName.length < 3 || personName.split(' ').length < 2) {
@@ -205,7 +194,13 @@
         }
 
         // Load the genealogy tree when the page loads
-        document.addEventListener('DOMContentLoaded', loadGenealogyTree);
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadGenealogyTree();
+            // Initialize search after genealogy tree is loaded
+            if (window.ModernSearch) {
+                new window.ModernSearch();
+            }
+        });
     </script>
     
     <!-- Modern Search Script -->
