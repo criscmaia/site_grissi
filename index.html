@@ -8,6 +8,8 @@
     <meta name="keywords" content="família, genealogia, italiano, Grizzo, Grice, Gris, Grissi, história familiar">
     <meta name="author" content="Cristiano Maia">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#DD0000">
+    <meta name="color-scheme" content="light">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -15,6 +17,10 @@
     <meta property="og:title" content="Família Grizzo . Grice . Gris . Grissi">
     <meta property="og:description" content="Site oficial da Família Grizzo, Grice, Gris e Grissi - Uma família originalmente italiana.">
     <meta property="og:image" content="https://sitegrissi.com/images/home/grice2.JPG">
+    <meta property="og:image:width" content="680">
+    <meta property="og:image:height" content="478">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Família Grizzo . Grice . Gris . Grissi">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
@@ -29,6 +35,10 @@
     <link rel="preload" href="index.css" as="style">
     <link rel="preload" href="images/home/grice2.JPG" as="image">
     <link rel="preload" href="js/performance-monitor.js" as="script">
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     
     <!-- Stylesheets -->
     <link rel="stylesheet" type="text/css" href="index.css">
@@ -62,6 +72,14 @@
             "@type": "SearchAction",
             "target": "https://sitegrissi.com/arvore-genealogica.html?search={search_term_string}",
             "query-input": "required name=search_term_string"
+        },
+        "mainEntity": {
+            "@type": "ImageObject",
+            "name": "Foto da família Grizzo, Grice, Gris e Grissi",
+            "description": "Foto histórica da família italiana",
+            "url": "https://sitegrissi.com/images/home/grice2.JPG",
+            "width": 680,
+            "height": 478
         }
     }
     </script>
@@ -83,20 +101,48 @@
 </head>
 
 <body>
-    <header>
-        <nav aria-label="Navegação principal">
+    <header role="banner">
+        <nav role="navigation" aria-label="Navegação principal">
             <div class="mobile">
-                <h1 id="mobile-titulo"><span>Família Grizzo . Grice . Gris . Grissi</span></h1>
-                <p id="mobile-subtitulo"><span>Uma família originalmente italiana</span></p>
+                <h1 id="mobile-titulo" aria-label="Título da família">
+                    <span>Família Grizzo . Grice . Gris . Grissi</span>
+                </h1>
+                <p id="mobile-subtitulo" aria-label="Subtítulo da família">
+                    <span>Uma família originalmente italiana</span>
+                </p>
                 <div id="mobile-centralizarmenu">
                     <div id="navcontainer">
-                        <ul id="navlist" role="menubar">
-                            <li role="none"><a href="./" id="current" role="menuitem" aria-current="page"> Página Principal</a> |</li>
-                            <li role="none"><a href="./arvore-genealogica.html" role="menuitem"> Árvore Genealógica</a> |</li>
-                            <li role="none"><a href="./historia.html" role="menuitem"> História</a> |</li>
-                            <li role="none"><a href="./lembrancas.html" role="menuitem"> Lembranças</a> |</li>
-                            <li role="none"><a href="./fotos.html" role="menuitem"> Fotos</a> |</li>
-                            <li role="none"><a href="./contato.html" role="menuitem"> Contato</a> |</li>
+                        <ul id="navlist" role="menubar" aria-label="Menu de navegação">
+                            <li role="none">
+                                <a href="./" id="current" role="menuitem" aria-current="page" aria-label="Página Principal (página atual)"> 
+                                    Página Principal
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./arvore-genealogica.html" role="menuitem" aria-label="Árvore Genealógica"> 
+                                    Árvore Genealógica
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./historia.html" role="menuitem" aria-label="História da Família"> 
+                                    História
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./lembrancas.html" role="menuitem" aria-label="Lembranças da Família"> 
+                                    Lembranças
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./fotos.html" role="menuitem" aria-label="Galeria de Fotos"> 
+                                    Fotos
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./contato.html" role="menuitem" aria-label="Página de Contato"> 
+                                    Contato
+                                </a> |
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -104,27 +150,32 @@
         </nav>
     </header>
 
-    <main id="intro">
+    <main role="main" id="intro">
         <section class="home" aria-labelledby="home-image">
             <img src="images/home/grice2.JPG" 
-                 alt="Foto da família Grizzo, Grice, Gris e Grissi" 
+                 alt="Foto histórica da família Grizzo, Grice, Gris e Grissi mostrando membros da família italiana" 
                  class="frame" 
                  width="680" 
                  height="478"
                  loading="eager"
-                 decoding="async" />
+                 decoding="async"
+                 id="home-image" />
         </section>
 
-        <section class="homeaudio" aria-label="Áudio de fundo">
-            <audio controls="true" preload="metadata">
+        <section class="homeaudio" aria-label="Áudio de fundo da família">
+            <audio controls="true" preload="metadata" aria-label="Música de fundo: Funiculi Funicula">
                 <source src="./audio/funiculi_funicula.mp3" type="audio/mpeg">
-                <p>Seu navegador não suporta o elemento de áudio.</p>
+                <p>Seu navegador não suporta o elemento de áudio. <a href="./audio/funiculi_funicula.mp3" download>Clique aqui para baixar a música</a>.</p>
             </audio>
         </section>
     </main>
 
-    <footer id="rodape" class="legenda">
-        <p>&copy; <a href="mailto:criscmaia@gmail.com?Subject=Família%20Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi" aria-label="Enviar email para Cristiano Maia">Cristiano Maia</a> - 2004-<script>document.write(new Date().getFullYear())</script></p>
+    <footer role="contentinfo" id="rodape" class="legenda">
+        <p>
+            &copy; <a href="mailto:criscmaia@gmail.com?Subject=Família%20Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi" 
+                       aria-label="Enviar email para Cristiano Maia">Cristiano Maia</a> - 
+            2004-<script>document.write(new Date().getFullYear())</script>
+        </p>
     </footer>
 
     <!-- Performance monitoring -->

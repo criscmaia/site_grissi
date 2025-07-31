@@ -1,11 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Entre em contato com a Família Grizzo, Grice, Gris e Grissi - Envie suas mensagens, sugestões e participe da história da família italiana.">
+    <meta name="keywords" content="contato família, mensagem, Grizzo, Grice, Gris, Grissi, email, formulário contato">
+    <meta name="author" content="Cristiano Maia">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#DD0000">
+    <meta name="color-scheme" content="light">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sitegrissi.com/contato.html">
+    <meta property="og:title" content="Contato - Família Grizzo . Grice . Gris . Grissi">
+    <meta property="og:description" content="Entre em contato com a Família Grizzo, Grice, Gris e Grissi - Envie suas mensagens, sugestões e participe da história da família italiana.">
+    <meta property="og:image" content="https://sitegrissi.com/images/home/grice2.JPG">
+    <meta property="og:image:width" content="680">
+    <meta property="og:image:height" content="478">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Família Grizzo . Grice . Gris . Grissi">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://sitegrissi.com/contato.html">
+    <meta property="twitter:title" content="Contato - Família Grizzo . Grice . Gris . Grissi">
+    <meta property="twitter:description" content="Entre em contato com a Família Grizzo, Grice, Gris e Grissi - Envie suas mensagens, sugestões e participe da história da família italiana.">
+    <meta property="twitter:image" content="https://sitegrissi.com/images/home/grice2.JPG">
+    
     <title>Contato - Família Grizzo . Grice . Gris . Grissi</title>
 
+    <!-- Preload critical resources -->
+    <link rel="preload" href="index.css" as="style">
+    <link rel="preload" href="images/contato/arroba.png" as="image">
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//www.google-analytics.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" type="text/css" href="index.css" />
     <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css' rel='stylesheet' type='text/css'>
     
@@ -15,6 +49,45 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Contato - Família Grizzo . Grice . Gris . Grissi",
+        "description": "Entre em contato com a Família Grizzo, Grice, Gris e Grissi",
+        "url": "https://sitegrissi.com/contato.html",
+        "author": {
+            "@type": "Person",
+            "name": "Cristiano Maia",
+            "email": "criscmaia@gmail.com"
+        },
+        "breadcrumb": {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Página Principal",
+                    "item": "https://sitegrissi.com/"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "Contato",
+                    "item": "https://sitegrissi.com/contato.html"
+                }
+            ]
+        },
+        "mainEntity": {
+            "@type": "ContactPage",
+            "name": "Página de Contato da Família Grissi",
+            "description": "Formulário de contato para membros da família e visitantes",
+            "url": "https://sitegrissi.com/contato.html"
+        }
+    }
+    </script>
 
     <!-- Google Analytics -->
     <script>
@@ -31,50 +104,130 @@
 </head>
 
 <body>
-    <!-- mobile code -->
-    <div class="mobile">
-        <div id="mobile-titulo"><span>Família Grizzo . Grice . Gris . Grissi</span></div>
-        <div id="mobile-subtitulo"><span>Uma família originalmente italiana</span></div>
-        <div id="mobile-centralizarmenu">
-            <div id="navcontainer">
-                <ul id="navlist">
-                    <li>|<a href="./"> Página Principal</a> |</li>
-                    <li><a href="./arvore-genealogica.html"> Árvore Genealógica</a> |</li>
-                    <li><a href="./historia.html"> História</a> |</li>
-                    <li><a href="./lembrancas.html"> Lembranças</a> |</li>
-                    <li><a href="./fotos.html"> Fotos</a> |</li>
-                    <li><a href="./contato.html" id="current"> Contato</a> |</li>
-                </ul>
-            </div>
-        </div>
-
-        <div id="intro">
-            <div class="box">
-                <div id="email_esquerda">
-                    <form id="contactForm" onsubmit="handleSubmit(event)">
-                        <label for="nome">Nome: </label><br>
-                        <input type="text" name="nome" placeholder="Nome" id="nome-form" required autocomplete="name">
-                        <br><br>
-                        <label for="email">Email: </label><br />
-                        <input type="email" name="email" placeholder="Email" id="email-form" required autocomplete="email">
-                        <br><br>
-                        <label for="mensagem">Mensagem: </label><br>
-                        <textarea name="mensagem" rows="5" cols="40" placeholder="Deixe aqui sua mensagem =)" id="mensagem-form" required></textarea>
-                        <br><br>
-                        <input type="submit" name="submit" value="Enviar">
-                    </form>
-
-                    <div id="formMessage"></div>
+    <header role="banner">
+        <nav role="navigation" aria-label="Navegação principal">
+            <div class="mobile">
+                <h1 id="mobile-titulo" aria-label="Título da família">
+                    <span>Família Grizzo . Grice . Gris . Grissi</span>
+                </h1>
+                <p id="mobile-subtitulo" aria-label="Subtítulo da família">
+                    <span>Uma família originalmente italiana</span>
+                </p>
+                <div id="mobile-centralizarmenu">
+                    <div id="navcontainer">
+                        <ul id="navlist" role="menubar" aria-label="Menu de navegação">
+                            <li role="none">
+                                <a href="./" role="menuitem" aria-label="Página Principal"> 
+                                    Página Principal
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./arvore-genealogica.html" role="menuitem" aria-label="Árvore Genealógica"> 
+                                    Árvore Genealógica
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./historia.html" role="menuitem" aria-label="História da Família"> 
+                                    História
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./lembrancas.html" role="menuitem" aria-label="Lembranças da Família"> 
+                                    Lembranças
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./fotos.html" role="menuitem" aria-label="Galeria de Fotos"> 
+                                    Fotos
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./contato.html" id="current" role="menuitem" aria-current="page" aria-label="Página de Contato (página atual)"> 
+                                    Contato
+                                </a> |
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                <div id="email_direita">
-                    <img src="images/contato/arroba.png" alt="email" height="150px" width="150px" />
-                </div>
             </div>
-        </div>
-        <div id="rodape" class="legenda">
-            <p align="center">© <a href="mailto:criscmaia@gmail.com?Subject=Família Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi">Cristiano Maia</a> - 2004-<script>document.write(new Date().getFullYear())</script></p>
-        </div>
-    </div>
+        </nav>
+    </header>
+
+    <main role="main" id="intro">
+        <section class="box" aria-labelledby="formulario-contato">
+            <div id="email_esquerda">
+                <form id="contactForm" onsubmit="handleSubmit(event)" aria-labelledby="formulario-contato">
+                    <h2 id="formulario-contato">Formulário de Contato</h2>
+                    
+                    <div class="form-group">
+                        <label for="nome" aria-label="Campo para inserir seu nome">Nome: </label>
+                        <input type="text" 
+                               name="nome" 
+                               placeholder="Nome" 
+                               id="nome-form" 
+                               required 
+                               autocomplete="name"
+                               aria-describedby="nome-help"
+                               aria-required="true">
+                        <div id="nome-help" class="sr-only">Digite seu nome completo</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" aria-label="Campo para inserir seu email">Email: </label>
+                        <input type="email" 
+                               name="email" 
+                               placeholder="Email" 
+                               id="email-form" 
+                               required 
+                               autocomplete="email"
+                               aria-describedby="email-help"
+                               aria-required="true">
+                        <div id="email-help" class="sr-only">Digite um endereço de email válido</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mensagem" aria-label="Campo para inserir sua mensagem">Mensagem: </label>
+                        <textarea name="mensagem" 
+                                  rows="5" 
+                                  cols="40" 
+                                  placeholder="Deixe aqui sua mensagem =)" 
+                                  id="mensagem-form" 
+                                  required
+                                  aria-describedby="mensagem-help"
+                                  aria-required="true"></textarea>
+                        <div id="mensagem-help" class="sr-only">Digite sua mensagem ou sugestão</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" 
+                                name="submit" 
+                                value="Enviar"
+                                aria-label="Enviar mensagem">
+                            Enviar
+                        </button>
+                    </div>
+                </form>
+
+                <div id="formMessage" role="status" aria-live="polite"></div>
+            </div>
+            
+            <div id="email_direita" role="complementary" aria-label="Ilustração de email">
+                <img src="images/contato/arroba.png" 
+                     alt="Ilustração de símbolo de email" 
+                     height="150" 
+                     width="150" 
+                     loading="lazy" />
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo" id="rodape" class="legenda">
+        <p>
+            &copy; <a href="mailto:criscmaia@gmail.com?Subject=Família%20Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi" 
+                       aria-label="Enviar email para Cristiano Maia">Cristiano Maia</a> - 
+            2004-<script>document.write(new Date().getFullYear())</script>
+        </p>
+    </footer>
 
     <script>
         function handleSubmit(event) {
@@ -91,16 +244,19 @@
             
             if (!nome || !email || !mensagem) {
                 messageDiv.innerHTML = '<h2>Favor preencher todos os campos.</h2><p>Mensagem não enviada.</p>';
+                messageDiv.setAttribute('aria-live', 'assertive');
                 return;
             }
             
             if (!email.includes('@') || !email.includes('.')) {
                 messageDiv.innerHTML = '<h2>Email inválido.</h2><p>Mensagem não enviada.</p>';
+                messageDiv.setAttribute('aria-live', 'assertive');
                 return;
             }
             
             if (mensagem.includes('http:')) {
                 messageDiv.innerHTML = '<h2>Não é permitido o envio de links.</h2><p>Mensagem não enviada.</p>';
+                messageDiv.setAttribute('aria-live', 'assertive');
                 return;
             }
             
@@ -114,6 +270,7 @@
             window.open(mailtoLink);
             
             messageDiv.innerHTML = '<h2>Mensagem enviada!</h2><p>Obrigado pela participação.</p>';
+            messageDiv.setAttribute('aria-live', 'polite');
             form.reset();
         }
     </script>

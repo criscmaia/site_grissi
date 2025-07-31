@@ -8,6 +8,8 @@
     <meta name="keywords" content="árvore genealógica, genealogia, família, Grizzo, Grice, Gris, Grissi, história familiar, ancestrais">
     <meta name="author" content="Cristiano Maia">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#DD0000">
+    <meta name="color-scheme" content="light">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -15,6 +17,10 @@
     <meta property="og:title" content="Árvore Genealógica - Família Grizzo . Grice . Gris . Grissi">
     <meta property="og:description" content="Explore a árvore genealógica da Família Grizzo, Grice, Gris e Grissi.">
     <meta property="og:image" content="https://sitegrissi.com/images/home/grice2.JPG">
+    <meta property="og:image:width" content="680">
+    <meta property="og:image:height" content="478">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Família Grizzo . Grice . Gris . Grissi">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
@@ -32,6 +38,10 @@
     <link rel="preload" href="js/photo-handler.js" as="script">
     <link rel="preload" href="js/modern-search-engine.js" as="script">
     <link rel="preload" href="js/performance-monitor.js" as="script">
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     
     <!-- Stylesheets -->
     <link rel="stylesheet" type="text/css" href="index.css">
@@ -74,6 +84,19 @@
                     "item": "https://sitegrissi.com/arvore-genealogica.html"
                 }
             ]
+        },
+        "mainEntity": {
+            "@type": "Dataset",
+            "name": "Árvore Genealógica da Família Grissi",
+            "description": "Dados genealógicos da família italiana Grizzo, Grice, Gris e Grissi",
+            "creator": {
+                "@type": "Person",
+                "name": "Cristiano Maia"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Família Grizzo . Grice . Gris . Grissi"
+            }
         }
     }
     </script>
@@ -95,20 +118,48 @@
 </head>
 
 <body>
-    <header>
-        <nav aria-label="Navegação principal">
+    <header role="banner">
+        <nav role="navigation" aria-label="Navegação principal">
             <div class="mobile">
-                <h1 id="mobile-titulo"><span>Família Grizzo . Grice . Gris . Grissi</span></h1>
-                <p id="mobile-subtitulo"><span>Uma família originalmente italiana</span></p>
+                <h1 id="mobile-titulo" aria-label="Título da família">
+                    <span>Família Grizzo . Grice . Gris . Grissi</span>
+                </h1>
+                <p id="mobile-subtitulo" aria-label="Subtítulo da família">
+                    <span>Uma família originalmente italiana</span>
+                </p>
                 <div id="mobile-centralizarmenu">
                     <div id="navcontainer">
-                        <ul id="navlist" role="menubar">
-                            <li role="none"><a href="./" role="menuitem"> Página Principal</a> |</li>
-                            <li role="none"><a href="./arvore-genealogica.html" id="current" role="menuitem" aria-current="page"> Árvore Genealógica</a> |</li>
-                            <li role="none"><a href="./historia.html" role="menuitem"> História</a> |</li>
-                            <li role="none"><a href="./lembrancas.html" role="menuitem"> Lembranças</a> |</li>
-                            <li role="none"><a href="./fotos.html" role="menuitem"> Fotos</a> |</li>
-                            <li role="none"><a href="./contato.html" role="menuitem"> Contato</a> |</li>
+                        <ul id="navlist" role="menubar" aria-label="Menu de navegação">
+                            <li role="none">
+                                <a href="./" role="menuitem" aria-label="Página Principal"> 
+                                    Página Principal
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./arvore-genealogica.html" id="current" role="menuitem" aria-current="page" aria-label="Árvore Genealógica (página atual)"> 
+                                    Árvore Genealógica
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./historia.html" role="menuitem" aria-label="História da Família"> 
+                                    História
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./lembrancas.html" role="menuitem" aria-label="Lembranças da Família"> 
+                                    Lembranças
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./fotos.html" role="menuitem" aria-label="Galeria de Fotos"> 
+                                    Fotos
+                                </a> |
+                            </li>
+                            <li role="none">
+                                <a href="./contato.html" role="menuitem" aria-label="Página de Contato"> 
+                                    Contato
+                                </a> |
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -116,14 +167,21 @@
         </nav>
     </header>
 
-    <main id="intro">
-        <section id="arvore-content" aria-label="Conteúdo da árvore genealógica">
+    <main role="main" id="intro">
+        <section id="arvore-content" aria-label="Conteúdo da árvore genealógica" role="region">
             <!-- The genealogy tree content will be loaded here -->
+            <div class="genealogy-loading" aria-live="polite" aria-label="Carregando árvore genealógica">
+                <p>Carregando árvore genealógica...</p>
+            </div>
         </section>
     </main>
 
-    <footer id="rodape" class="legenda">
-        <p>&copy; <a href="mailto:criscmaia@gmail.com?Subject=Família%20Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi" aria-label="Enviar email para Cristiano Maia">Cristiano Maia</a> - 2004-<script>document.write(new Date().getFullYear())</script></p>
+    <footer role="contentinfo" id="rodape" class="legenda">
+        <p>
+            &copy; <a href="mailto:criscmaia@gmail.com?Subject=Família%20Grizzo%20.%20Grice%20.%20Gris%20.%20Grissi" 
+                       aria-label="Enviar email para Cristiano Maia">Cristiano Maia</a> - 
+            2004-<script>document.write(new Date().getFullYear())</script>
+        </p>
     </footer>
 
     <!-- Load JavaScript modules -->
@@ -197,10 +255,10 @@
                 if (contentElement) {
                     contentElement.classList.remove('genealogy-loading');
                     contentElement.innerHTML = `
-                        <div style="text-align: center; padding: 40px; color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; margin: 20px;">
+                        <div style="text-align: center; padding: 40px; color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; margin: 20px;" role="alert" aria-live="assertive">
                             <h2>Erro ao carregar a árvore genealógica</h2>
                             <p>Desculpe, ocorreu um erro ao carregar o conteúdo. Por favor, tente recarregar a página.</p>
-                            <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;" aria-label="Recarregar página">
                                 Recarregar Página
                             </button>
                         </div>

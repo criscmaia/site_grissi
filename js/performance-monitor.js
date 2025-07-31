@@ -37,7 +37,6 @@ class PerformanceMonitor {
                 const entries = list.getEntries();
                 const lastEntry = entries[entries.length - 1];
                 
-                this.metrics.lcp = lastEntry.startTime;
                 console.log('🎯 LCP:', Math.round(lastEntry.startTime) + 'ms');
                 
                 // Send to analytics
@@ -57,11 +56,11 @@ class PerformanceMonitor {
             const observer = new PerformanceObserver((list) => {
                 const entries = list.getEntries();
                 entries.forEach(entry => {
-                    this.metrics.fid = entry.processingStart - entry.startTime;
-                    console.log('⚡ FID:', Math.round(this.metrics.fid) + 'ms');
+                    const fidValue = entry.processingStart - entry.startTime;
+                    console.log('⚡ FID:', Math.round(fidValue) + 'ms');
                     
                     // Send to analytics
-                    this.sendMetric('fid', Math.round(this.metrics.fid));
+                    this.sendMetric('fid', Math.round(fidValue));
                 });
             });
             
@@ -87,7 +86,6 @@ class PerformanceMonitor {
                     }
                 });
                 
-                this.metrics.cls = clsValue;
                 console.log('📐 CLS:', clsValue.toFixed(4));
                 
                 // Send to analytics
@@ -161,23 +159,27 @@ class PerformanceMonitor {
      * Send metric to analytics
      */
     sendMetric(name, value) {
-        // Send to Google Analytics if available
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'performance_metric', {
-                metric_name: name,
-                metric_value: value,
-                page_url: window.location.href
+        try {
+            // Send to Google Analytics if available
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'performance_metric', {
+                    metric_name: name,
+                    metric_value: value,
+                    page_url: window.location.href
+                });
+            }
+            
+            // Store locally for debugging
+            if (!this.metrics[name] || !Array.isArray(this.metrics[name])) {
+                this.metrics[name] = [];
+            }
+            this.metrics[name].push({
+                value: value,
+                timestamp: Date.now()
             });
+        } catch (error) {
+            console.warn('⚠️ Performance Monitor: Error sending metric:', error);
         }
-        
-        // Store locally for debugging
-        if (!this.metrics[name]) {
-            this.metrics[name] = [];
-        }
-        this.metrics[name].push({
-            value: value,
-            timestamp: Date.now()
-        });
     }
 
     /**
@@ -211,9 +213,11 @@ class PerformanceMonitor {
      */
     getScoreForMetric(metricName, thresholds) {
         const metric = this.metrics[metricName];
-        if (!metric || metric.length === 0) return 0;
+        if (!metric || !Array.isArray(metric) || metric.length === 0) return 0;
         
-        const value = metric[metric.length - 1];
+        const lastMetric = metric[metric.length - 1];
+        const value = lastMetric.value || lastMetric; // Handle both new and old format
+        
         const [good, poor] = thresholds;
         
         if (value <= good) return 1;
