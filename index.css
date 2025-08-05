@@ -324,9 +324,9 @@ a:visited {
     --font-family-serif: "Crimson Text", "Georgia", serif;
     --font-family-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     
-    /* Spacing & Layout */
+    /* Spacing & Layout - Updated to match reference site */
     --radius: 0.75rem;
-    --container-max-width: 1200px;
+    --container-max-width: 1400px; /* Updated from 1200px to match reference */
     --header-height: 4rem;
     
     /* Shadows */
@@ -392,7 +392,7 @@ p {
 .container {
     max-width: var(--container-max-width);
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 2rem; /* Increased padding for wider container */
 }
 
 .sticky {
@@ -1055,7 +1055,7 @@ header .container {
 
 @media (max-width: 480px) {
     .container {
-        padding: 0 0.75rem;
+        padding: 0 1rem; /* Adjusted for mobile with wider container */
     }
     
     .hero {
