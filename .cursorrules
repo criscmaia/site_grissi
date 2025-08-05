@@ -1,0 +1,52 @@
+# Cursor Rules
+
+## Memories
+
+### Performance Optimization Guidelines
+When discussing or implementing performance optimizations, consider the comprehensive frontend performance checklist from Crystallize (https://crystallize.com/blog/frontend-performance-checklist). Key areas to focus on include:
+
+**HTML Optimizations:**
+- Prioritize critical HTML for above-the-fold content
+- Clean up redundant code and unnecessary HTML/comments
+- Use proper semantic HTML structure
+- Implement proper cache headers for static assets
+- Leverage Service Workers for caching
+- Use priority hints (fetchpriority="high") for important resources
+- Minimize external HTTP requests and third-party scripts
+- Maintain single protocol (HTTPS only, no mixed content)
+- Prefetch likely next pages using `<link rel="prefetch">`
+
+**CSS Optimizations:**
+- Critical CSS inlining for above-the-fold content
+- Defer non-critical CSS loading
+- Use modern CSS features (Grid, Flexbox) for better performance
+- Minimize CSS bundle size through purging and optimization
+- Implement proper CSS loading strategies (media queries, preload)
+
+**JavaScript Optimizations:**
+- Code splitting and lazy loading for non-critical scripts
+- Minimize bundle sizes through tree shaking and dead code elimination
+- Use modern JavaScript features and optimize for Core Web Vitals
+- Implement proper loading strategies (async, defer, module)
+- Consider using modern frameworks (Next.js, Astro) for SSR/SSG benefits
+
+**Image Handling:**
+- Use modern image formats (WebP, AVIF) with proper fallbacks
+- Implement responsive images with srcset and sizes
+- Optimize image dimensions and compression
+- Use lazy loading for below-the-fold images
+- Set explicit width/height to prevent layout shifts (CLS)
+
+**Performance Monitoring:**
+- Use tools like Google PageSpeed Insights, Lighthouse, WebPageTest
+- Monitor Core Web Vitals (LCP, CLS, INP)
+- Implement real-user monitoring with Web Vitals JS library
+- Track field data through CrUX and Search Console
+
+**Key Metrics to Target:**
+- First Contentful Paint (FCP) - under 1.8s
+- Largest Contentful Paint (LCP) - under 2.5s
+- Cumulative Layout Shift (CLS) - under 0.1
+- Interaction to Next Paint (INP) - under 200ms (replaced FID in 2024)
+
+Remember: Performance is a journey, not a one-time task. Every millisecond improvement counts toward better user experience and business outcomes. 
