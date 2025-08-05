@@ -1026,33 +1026,51 @@ header .container {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.125rem 0.5rem;
+    display: flex;
+    align-items: center;
     border-radius: 9999px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    border: 0.8px solid rgba(0, 0, 0, 0);
+    padding: 2px 10px;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    height: 21.6px;
+    width: 88.1875px;
+    box-sizing: border-box;
+    color: rgb(86, 60, 41);
+    font-family: Inter, Helvetica, sans-serif;
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+    text-size-adjust: 100%;
+    transition-duration: 0.15s;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    unicode-bidi: isolate;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background-color: rgb(236, 231, 223);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-bottom-left-radius: 9999px;
+    border-bottom-right-radius: 9999px;
+    border-bottom-style: solid;
+    border-bottom-width: 0.8px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-left-style: solid;
+    border-left-width: 0.8px;
+    border-right-color: rgba(0, 0, 0, 0);
+    border-right-style: solid;
+    border-right-width: 0.8px;
+    border-top-color: rgba(0, 0, 0, 0);
+    border-top-left-radius: 9999px;
+    border-top-right-radius: 9999px;
+    border-top-style: solid;
+    border-top-width: 0.8px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 2px;
 }
 
-.update-tag.nascimento {
-    background: hsl(var(--heritage-green) / 0.1);
-    color: hsl(var(--heritage-green));
-}
 
-.update-tag.casamento {
-    background: hsl(var(--heritage-red) / 0.1);
-    color: hsl(var(--heritage-red));
-}
-
-.update-tag.atualizacao {
-    background: hsl(var(--heritage-gold) / 0.1);
-    color: hsl(var(--heritage-gold));
-}
-
-.update-tag.descoberta {
-    background: hsl(var(--heritage-brown) / 0.1);
-    color: hsl(var(--heritage-brown));
-}
 
 .updates-link {
     text-align: center;
