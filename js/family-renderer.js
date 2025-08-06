@@ -72,8 +72,13 @@ class FamilyRenderer {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            this.familyData = await response.json();
-            console.log(`📊 Loaded ${this.familyData.familyMembers.length} family members`);
+            
+            const rawData = await response.json();
+            console.log(`📊 Loaded ${rawData.familyMembers.length} family members from file`);
+            
+            // The data is already cleaned, so we can use it directly
+            this.familyData = rawData;
+            console.log(`📊 Using ${this.familyData.familyMembers.length} family members`);
         } catch (error) {
             console.error('❌ Failed to load family data:', error);
             throw error;
