@@ -1,312 +1,445 @@
-/* Genealogy Tree Styles */
-.genealogy-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+/* Heritage Genealogy Tree Design System */
+
+/* CSS Custom Properties - Heritage Color Palette */
+.genealogy-container {
+  /* Heritage Color Palette - Italian & Brazilian inspired */
+  --heritage-green: 140 65% 35%;        /* Italian green / Brazilian forest */
+  --heritage-red: 0 75% 45%;            /* Italian red / Brazilian passion */
+  --heritage-gold: 45 85% 55%;          /* Brazilian gold */
+  --heritage-cream: 35 25% 95%;         /* Vintage photo cream */
+  --heritage-sepia: 30 15% 85%;         /* Old photo sepia */
+  --heritage-brown: 25 35% 25%;         /* Rich family history brown */
+  
+  /* Core Design System */
+  --background: 35 25% 98%;
+  --foreground: 25 35% 15%;
+  --card: 35 25% 97%;
+  --card-foreground: 25 35% 20%;
+  --primary: 140 65% 35%;
+  --primary-foreground: 35 25% 98%;
+  --secondary: 35 25% 90%;
+  --secondary-foreground: 25 35% 25%;
+  --muted: 35 15% 92%;
+  --muted-foreground: 25 25% 45%;
+  --accent: 45 85% 55%;
+  --accent-foreground: 25 35% 20%;
+  --destructive: 0 75% 45%;
+  --destructive-foreground: 35 25% 98%;
+  --border: 35 15% 88%;
+  --input: 35 15% 90%;
+  --ring: 140 65% 35%;
+  
+  /* Heritage Gradients */
+  --gradient-heritage: linear-gradient(135deg, hsl(var(--heritage-green)), hsl(var(--heritage-gold)));
+  --gradient-vintage: linear-gradient(180deg, hsl(var(--heritage-cream)), hsl(var(--heritage-sepia)));
+  --gradient-family: linear-gradient(45deg, hsl(var(--heritage-brown)), hsl(var(--heritage-red)));
+  
+  /* Elegant Shadows */
+  --shadow-heritage: 0 10px 30px -10px hsl(var(--heritage-green) / 0.2);
+  --shadow-vintage: 0 4px 20px -8px hsl(var(--heritage-brown) / 0.3);
+  
+  /* Typography Scale */
+  --font-family-serif: "Crimson Text", "Georgia", serif;
+  --font-family-sans: "Inter", "Helvetica", sans-serif;
+  --radius: 0.75rem;
 }
 
-/* Family Branch Sections */
-.family-branch {
-    margin-bottom: 30px;
-    padding: 20px;
-    border-left: 4px solid #4a90e2;
-    background-color: #f8f9fa;
-    border-radius: 0 8px 8px 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* Base Styles */
+.genealogy-container * {
+  box-sizing: border-box;
 }
 
-.family-branch[data-generation="1"] {
-    border-left-color: #e74c3c;
-    background-color: #fff5f5;
+.genealogy-container {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-family-sans);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
 }
 
-.family-branch[data-generation="2"] {
-    border-left-color: #f39c12;
-    background-color: #fffbf0;
+.genealogy-container h1, 
+.genealogy-container h2, 
+.genealogy-container h3, 
+.genealogy-container h4, 
+.genealogy-container h5, 
+.genealogy-container h6 {
+  font-family: var(--font-family-serif);
+  font-weight: 600;
 }
 
-.family-branch[data-generation="3"] {
-    border-left-color: #27ae60;
-    background-color: #f0fff4;
+/* Genealogy Container */
+.genealogy-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-family-sans);
+  line-height: 1.6;
 }
 
-/* Family Headings */
-.family-heading {
-    margin-bottom: 15px;
+
+
+/* Search and Filter Section */
+.search-filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.member-name {
-    margin: 0;
-    color: #2c3e50;
-    font-size: 1.4em;
-    font-weight: bold;
+.search-container {
+  flex: 1;
 }
 
-.generation-code {
-    color: #7f8c8d;
-    font-size: 0.9em;
-    margin-right: 10px;
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
-.member-full-name {
-    color: #2c3e50;
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: hsl(var(--muted-foreground));
+  z-index: 1;
 }
 
-/* Member Details */
-.member-details {
-    margin-top: 15px;
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 2px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  font-size: 1rem;
+  transition: all 0.3s ease;
 }
 
-.member-info {
-    margin-bottom: 15px;
-    color: #34495e;
+.search-input:focus {
+  outline: none;
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 3px hsl(var(--ring) / 0.1);
 }
 
-.birth-info {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
-.parent-info {
-    display: block;
-    margin-bottom: 8px;
+.filter-btn {
+  padding: 0.5rem 1rem;
+  border: 2px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* Marriage Information */
-.marriage-info {
-    margin: 20px 0;
-    padding: 15px;
-    background-color: #ecf0f1;
-    border-radius: 6px;
-    border-left: 3px solid #3498db;
+.filter-btn:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  border-color: hsl(var(--accent));
 }
 
-.marriage-label {
-    font-weight: 600;
-    color: #2c3e50;
+.filter-btn.active {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
 }
 
-.spouse-name {
-    color: #e74c3c;
-    font-weight: bold;
+/* Results Counter */
+.results-counter {
+  margin-bottom: 1.5rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
 }
 
-.spouse-details {
-    color: #7f8c8d;
-    font-style: italic;
+/* Family Members Grid */
+.family-members {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
-.death-info {
-    display: block;
-    margin-top: 8px;
-    color: #95a5a6;
-    font-size: 0.9em;
+/* Person Card */
+.person-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-vintage);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Children Lists */
-.children-label {
-    font-weight: bold;
-    color: #2c3e50;
-    margin: 15px 0 10px 0;
-    font-size: 1.1em;
+.person-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-heritage);
 }
 
-.children-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.person-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-heritage);
 }
 
-.child-item {
-    padding: 8px 12px;
-    margin: 5px 0;
-    background-color: #fff;
-    border-radius: 4px;
-    border-left: 3px solid #3498db;
-    transition: all 0.3s ease;
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.child-item:hover {
-    background-color: #f8f9fa;
-    transform: translateX(5px);
+.profile-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.child-code {
-    color: #7f8c8d;
-    font-size: 0.9em;
-    margin-right: 10px;
+.profile-icon.male {
+  background: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
 }
 
-.child-name {
-    color: #2c3e50;
-    font-weight: 500;
+.profile-icon.female {
+  background: hsl(var(--destructive) / 0.1);
+  color: hsl(var(--destructive));
+}
+
+.profile-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.person-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.person-name {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: hsl(var(--card-foreground));
+  line-height: 1.3;
+}
+
+.person-id {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  background: hsl(var(--muted));
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  display: inline-block;
+}
+
+.gender-tag {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.gender-tag.male {
+  background: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+}
+
+.gender-tag.female {
+  background: hsl(var(--destructive) / 0.1);
+  color: hsl(var(--destructive));
+}
+
+/* Card Content */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: hsl(var(--card-foreground));
+}
+
+.info-icon {
+  width: 1rem;
+  height: 1rem;
+  color: hsl(var(--muted-foreground));
+  flex-shrink: 0;
+}
+
+.info-icon.location {
+  color: hsl(var(--heritage-green));
+}
+
+.info-icon.death {
+  color: hsl(var(--destructive));
+}
+
+/* Info Sections */
+.info-section {
+  border-top: 1px solid hsl(var(--border));
+  padding-top: 1rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: hsl(var(--card-foreground));
+  font-size: 0.875rem;
+}
+
+.section-icon {
+  width: 1rem;
+  height: 1rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.children-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.child-tag {
+  background: hsl(var(--accent) / 0.1);
+  color: hsl(var(--accent-foreground));
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid hsl(var(--accent) / 0.2);
+}
+
+.child-tag:hover {
+  background: hsl(var(--accent) / 0.2);
+  transform: translateY(-1px);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .genealogy-content {
-        padding: 10px;
-    }
-    
-    .family-branch {
-        padding: 15px;
-        margin-bottom: 20px;
-    }
-    
-    .member-name {
-        font-size: 1.2em;
-    }
-    
-    .marriage-info {
-        padding: 10px;
-    }
+  .genealogy-container {
+    padding: 1rem;
+  }
+  
+  .genealogy-title {
+    font-size: 2rem;
+  }
+  
+  .search-filter-section {
+    flex-direction: column;
+  }
+  
+  .filter-buttons {
+    justify-content: center;
+  }
+  
+  .family-members {
+    grid-template-columns: 1fr;
+  }
+  
+  .person-card {
+    padding: 1rem;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .gender-tag {
+    align-self: flex-start;
+  }
 }
 
-/* Accessibility Improvements */
+@media (max-width: 480px) {
+  .genealogy-header {
+    padding: 1.5rem;
+  }
+  
+  .genealogy-title {
+    font-size: 1.75rem;
+  }
+  
+  .person-name {
+    font-size: 1.125rem;
+  }
+  
+  .children-tags {
+    flex-direction: column;
+  }
+}
+
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
-    .child-item {
-        transition: none;
-    }
+  .person-card,
+  .filter-btn,
+  .child-tag {
+    transition: none;
+  }
 }
 
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-    .family-branch {
-        border-width: 6px;
-    }
-    
-    .child-item {
-        border-width: 4px;
-    }
+/* Focus styles */
+.search-input:focus,
+.filter-btn:focus,
+.child-tag:focus {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
 }
 
 /* Print styles */
 @media print {
-    .genealogy-content {
-        max-width: none;
-        padding: 0;
-    }
-    
-    .family-branch {
-        break-inside: avoid;
-        border-left: 2px solid #000;
-        background-color: #fff;
-        box-shadow: none;
-    }
-    
-    .marriage-info {
-        background-color: #f0f0f0;
-        border-left: 2px solid #000;
-    }
-}
-
-/* Focus styles for keyboard navigation */
-.member-name:focus,
-.child-item:focus {
-    outline: 2px solid #3498db;
-    outline-offset: 2px;
-}
-
-/* Skip link for accessibility */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 6px;
-    background: #000;
-    color: #fff;
-    padding: 8px;
-    text-decoration: none;
-    z-index: 1000;
-}
-
-.skip-link:focus {
-    top: 6px;
-}
-
-/* Genealogy Container and Header */
-.genealogy-container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.genealogy-header {
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 8px;
-}
-
-.genealogy-title {
-    margin: 0 0 20px 0;
-    font-size: 2.5em;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.genealogy-nav {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.nav-btn {
-    padding: 10px 20px;
-    background-color: rgba(255,255,255,0.2);
-    color: white;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
-}
-
-.nav-btn:hover {
-    background-color: rgba(255,255,255,0.3);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.nav-btn:focus {
-    outline: 2px solid white;
-    outline-offset: 2px;
-}
-
-/* Enhanced member interactions */
-.member-name {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.member-name:hover {
-    color: #3498db;
-    transform: translateX(5px);
-}
-
-.member-name.expanded {
-    color: #e74c3c;
-}
-
-/* Responsive navigation */
-@media (max-width: 768px) {
-    .genealogy-title {
-        font-size: 2em;
-    }
-    
-    .genealogy-nav {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .nav-btn {
-        width: 200px;
-        margin: 5px 0;
-    }
+  .genealogy-container {
+    max-width: none;
+    padding: 0;
+  }
+  
+  .person-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  
+  .search-filter-section,
+  .results-counter {
+    display: none;
+  }
 } 

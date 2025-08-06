@@ -46,6 +46,7 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="stylesheet" type="text/css" href="js/modern-search.css">
+    <link rel="stylesheet" type="text/css" href="arvore.css">
     
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -117,60 +118,631 @@
 </head>
 
 <body>
-    <header role="banner">
-        <nav role="navigation" aria-label="Navegação principal">
-            <div class="mobile">
-                <h1 id="mobile-titulo" aria-label="Título da família">
-                    <span>Família Grizzo . Grice . Gris . Grissi</span>
-                </h1>
-                <p id="mobile-subtitulo" aria-label="Subtítulo da família">
-                    <span>Uma família originalmente italiana</span>
-                </p>
-                <div id="mobile-centralizarmenu">
-                    <div id="navcontainer">
-                        <ul id="navlist" role="menubar" aria-label="Menu de navegação">
-                            <li role="none">
-                                <a href="./" role="menuitem" aria-label="Página Principal"> 
-                                    Página Principal
-                                </a> |
-                            </li>
-                            <li role="none">
-                                <a href="./arvore-genealogica.html" id="current" role="menuitem" aria-current="page" aria-label="Árvore Genealógica (página atual)"> 
-                                    Árvore Genealógica
-                                </a> |
-                            </li>
-                            <li role="none">
-                                <a href="./historia.html" role="menuitem" aria-label="História da Família"> 
-                                    História
-                                </a> |
-                            </li>
-                            <li role="none">
-                                <a href="./lembrancas.html" role="menuitem" aria-label="Lembranças da Família"> 
-                                    Lembranças
-                                </a> |
-                            </li>
-                            <li role="none">
-                                <a href="./fotos.html" role="menuitem" aria-label="Galeria de Fotos"> 
-                                    Fotos
-                                </a> |
-                            </li>
-                            <li role="none">
-                                <a href="./contato.html" role="menuitem" aria-label="Página de Contato"> 
-                                    Contato
-                                </a> |
-                            </li>
-                        </ul>
-                    </div>
+    <!-- Header -->
+    <header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div class="container">
+            <a href="/" class="flex items-center space-x-2">
+                <div class="heritage-gradient">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path>
+                        <path d="M12 22v-3"></path>
+                    </svg>
                 </div>
-            </div>
-        </nav>
+                <div class="logo-text">
+                    <h1>Família Grissi</h1>
+                    <p>Uma família originalmente italiana</p>
+                </div>
+            </a>
+            
+            <nav class="nav-desktop">
+                <a class="nav-link" href="./">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                        <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                    Início
+                </a>
+                <a class="nav-link active" href="./arvore-genealogica.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path>
+                        <path d="M12 22v-3"></path>
+                    </svg>
+                    Árvore Genealógica
+                </a>
+                <a class="nav-link" href="./historia.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                        <path d="M12 7v5l4 2"></path>
+                    </svg>
+                    História
+                </a>
+                <a class="nav-link" href="./lembrancas.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                    </svg>
+                    Lembranças
+                </a>
+                <a class="nav-link" href="./fotos.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                        <circle cx="12" cy="13" r="3"></circle>
+                    </svg>
+                    Fotos
+                </a>
+                <a class="nav-link" href="./atualizacoes.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Atualizações
+                </a>
+                <a class="nav-link" href="./contato.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                    Contato
+                </a>
+            </nav>
+            
+            <button class="mobile-menu-btn" type="button" aria-label="Abrir menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" x2="20" y1="12" y2="12"></line>
+                    <line x1="4" x2="20" y1="6" y2="6"></line>
+                    <line x1="4" x2="20" y1="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
     </header>
 
     <main role="main" id="intro">
         <section id="arvore-content" aria-label="Conteúdo da árvore genealógica" role="region">
-            <!-- The genealogy tree content will be loaded here -->
-            <div class="genealogy-loading" aria-live="polite" aria-label="Carregando árvore genealógica">
-                <p>Carregando árvore genealógica...</p>
+            <!-- Modern Genealogy Tree Layout -->
+            <div class="genealogy-container">
+
+                <!-- Search and Filter Section -->
+                <div class="search-filter-section">
+                    <div class="search-container">
+                        <div class="search-input-wrapper">
+                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input type="text" class="search-input" placeholder="Pesquisar por nome, local de nascimento..." />
+                        </div>
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button class="filter-btn active">Todas as Gerações</button>
+                        <button class="filter-btn">1ª Geração</button>
+                        <button class="filter-btn">2ª Geração</button>
+                    </div>
+                </div>
+
+                <!-- Results Counter -->
+                <div class="results-counter">
+                    <span>Mostrando 7 de 7 membros da família</span>
+                </div>
+
+                <!-- Family Members Cards -->
+                <div class="family-members">
+                    <!-- Person 1: LUIGI DI ANGELO GRIZZO -->
+                    <div class="person-card" data-generation="1">
+                        <div class="card-header">
+                            <div class="profile-icon male">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="person-info">
+                                <h3 class="person-name">LUIGI DI ANGELO GRIZZO</h3>
+                                <div class="person-id">ID: 1.1 • 1ª Geração</div>
+                            </div>
+                            <div class="gender-tag male">Masculino</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="info-row">
+                                <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>Nascimento: 15/11/1832</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <svg class="info-icon location" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>Local de nascimento: Pordenone, Província de Udine, Itália</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <svg class="info-icon death" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>Falecimento: 09/02/1901</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <svg class="info-icon death" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>Local de falecimento: Barbacena, MG</span>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Pais</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>Pai: SEBASTIANO GRIZZO</div>
+                                    <div>Mãe: MARIA DE LORENZI</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    <span>Cônjuge(s)</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>ELISABETTA PUPPI</div>
+                                    <div>LUIGIA MORAS</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Filhos (5)</span>
+                                </div>
+                                <div class="section-content children-tags">
+                                    <span class="child-tag">ELISABETHA GIOVANNA PIA</span>
+                                    <span class="child-tag">ANTONIO AUGUSTO GRIZZO</span>
+                                    <span class="child-tag">GIOVANNI GRIZZO</span>
+                                    <span class="child-tag">ROZINA GRIZZO</span>
+                                    <span class="child-tag">MARIA GRIZZO</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Person 2: ELISABETHA GIOVANNA PIA -->
+                    <div class="person-card" data-generation="2">
+                        <div class="card-header">
+                            <div class="profile-icon female">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="person-info">
+                                <h3 class="person-name">ELISABETHA GIOVANNA PIA</h3>
+                                <div class="person-id">ID: 1.1.1 • 2ª Geração</div>
+                            </div>
+                            <div class="gender-tag female">Feminino</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="info-row">
+                                <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>Nascimento: 1865</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <svg class="info-icon location" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>Local de nascimento: Pordenone, provincia de Udine, Itália</span>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Pais</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>Pai: LUIGI DI ANGELO GRIZZO</div>
+                                    <div>Mãe: ELISABETTA PUPPI</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    <span>Cônjuge(s)</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>ANTONIO MORAS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Person 3: ANTONIO AUGUSTO GRIZZO -->
+                    <div class="person-card" data-generation="2">
+                        <div class="card-header">
+                            <div class="profile-icon male">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="person-info">
+                                <h3 class="person-name">ANTONIO AUGUSTO GRIZZO</h3>
+                                <div class="person-id">ID: 1.1.2 • 2ª Geração</div>
+                            </div>
+                            <div class="gender-tag male">Masculino</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="info-row">
+                                <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>Nascimento: 22/08/1868</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <svg class="info-icon location" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>Local de nascimento: Pordenone, Província de Udine, Itália</span>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Pais</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>Pai: LUIGI DI ANGELO GRIZZO</div>
+                                    <div>Mãe: ELISABETTA PUPPI</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    <span>Cônjuge(s)</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>LUIZA PRESOTTI</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Filhos (9)</span>
+                                </div>
+                                <div class="section-content children-tags">
+                                    <span class="child-tag">REGINA</span>
+                                    <span class="child-tag">AMABILE RISSA GRIS</span>
+                                    <span class="child-tag">ANGELINA GIUSEPPINA GRIS</span>
+                                    <span class="child-tag">ANGELIN GRIS</span>
+                                    <span class="child-tag">ELISA GRIS</span>
+                                    <span class="child-tag">ROSA GRIS</span>
+                                    <span class="child-tag">EMILIA GRIS</span>
+                                    <span class="child-tag">RENNE GRIS</span>
+                                    <span class="child-tag">CLEMENTINA GRIS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Person 4: GIOVANNI GRIZZO -->
+                    <div class="person-card" data-generation="2">
+                        <div class="card-header">
+                            <div class="profile-icon male">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="person-info">
+                                <h3 class="person-name">GIOVANNI GRIZZO</h3>
+                                <div class="person-id">ID: 1.1.3 • 2ª Geração</div>
+                            </div>
+                            <div class="gender-tag male">Masculino</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="info-row">
+                                <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>Nascimento: 15/09/1878</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <svg class="info-icon location" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>Local de nascimento: Pordenone, Provincia de Udine, Itália</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <svg class="info-icon death" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>Falecimento: 14/09/1940</span>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Pais</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>Pai: LUIGI DI ANGELO GRIZZO</div>
+                                    <div>Mãe: ELISABETTA PUPPI</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    <span>Cônjuge(s)</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>GIUSEPPINA TOFFOLO</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Filhos (10)</span>
+                                </div>
+                                <div class="section-content children-tags">
+                                    <span class="child-tag">ANGELICA ANNA GRIS</span>
+                                    <span class="child-tag">MARIA LUIZA GRIS</span>
+                                    <span class="child-tag">OLIVIO GRIS</span>
+                                    <span class="child-tag">RODOLPHO GRIS</span>
+                                    <span class="child-tag">VICTÓRIO GRIS</span>
+                                    <span class="child-tag">GERMANO GRIS</span>
+                                    <span class="child-tag">VITALINA GRIS</span>
+                                    <span class="child-tag">ERNESTO GRIS</span>
+                                    <span class="child-tag">JOSÉ GRIS</span>
+                                    <span class="child-tag">LAURITA GRIS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Person 5: ROZINA GRIZZO -->
+                    <div class="person-card" data-generation="2">
+                        <div class="card-header">
+                            <div class="profile-icon female">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="person-info">
+                                <h3 class="person-name">ROZINA GRIZZO</h3>
+                                <div class="person-id">ID: 1.1.4 • 2ª Geração</div>
+                            </div>
+                            <div class="gender-tag female">Feminino</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Pais</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>Pai: LUIGI DI ANGELO GRIZZO</div>
+                                    <div>Mãe: ELISABETTA PUPPI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Person 6: MARIA GRIZZO -->
+                    <div class="person-card" data-generation="2">
+                        <div class="card-header">
+                            <div class="profile-icon female">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="person-info">
+                                <h3 class="person-name">MARIA GRIZZO</h3>
+                                <div class="person-id">ID: 1.1.5 • 2ª Geração</div>
+                            </div>
+                            <div class="gender-tag female">Feminino</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Pais</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>Pai: LUIGI DI ANGELO GRIZZO</div>
+                                    <div>Mãe: ELISABETTA PUPPI</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Person 7: AMABILE RISSA GRIS -->
+                    <div class="person-card" data-generation="3">
+                        <div class="card-header">
+                            <div class="profile-icon female">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="person-info">
+                                <h3 class="person-name">AMABILE RISSA GRIS</h3>
+                                <div class="person-id">ID: 1.1.2.2 • 3ª Geração</div>
+                            </div>
+                            <div class="gender-tag female">Feminino</div>
+                        </div>
+                        
+                        <div class="card-content">
+                            <div class="info-row">
+                                <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>Nascimento: 31/03/1896</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <svg class="info-icon location" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>Local de nascimento: Barbacena, MG</span>
+                            </div>
+                            
+                            <div class="info-row">
+                                <svg class="info-icon death" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>Falecimento: 14/05/1999</span>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Pais</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>Pai: ANTONIO AUGUSTO GRIZZO</div>
+                                    <div>Mãe: LUIZA PRESOTTI</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                    </svg>
+                                    <span>Cônjuge(s)</span>
+                                </div>
+                                <div class="section-content">
+                                    <div>LUIZ PICININ</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-section">
+                                <div class="section-header">
+                                    <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="m22 21-2-2"></path>
+                                        <path d="M16 16.28A13.84 13.84 0 0 1 22 18"></path>
+                                    </svg>
+                                    <span>Filhos (2)</span>
+                                </div>
+                                <div class="section-content children-tags">
+                                    <span class="child-tag">LUCIA PICININ</span>
+                                    <span class="child-tag">CARLIM PICININ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -210,59 +782,17 @@
             try {
                 console.log('🚀 Initializing Modern Genealogy Application');
                 
-                // Show loading state
-                const contentElement = document.getElementById('arvore-content');
-                if (contentElement) {
-                    contentElement.classList.add('genealogy-loading');
-                    console.log('🔄 Loading state added');
-                }
+                // For now, we're using the new static layout
+                // The old dynamic loading is disabled to prevent conflicts
+                console.log('✅ Using new static genealogy layout');
                 
-                // Initialize the genealogy manager
-                if (window.GenealogyManager) {
-                    console.log('✅ Using new GenealogyManager');
-                    genealogyManager = new window.GenealogyManager();
-                } else {
-                    console.warn('⚠️ GenealogyManager not found, will fallback');
-                    throw new Error('GenealogyManager not available');
-                }
-                
-                // Load and process the genealogy tree
-                await genealogyManager.loadGenealogyTree();
-                
-                // Initialize search functionality
-                genealogyManager.initializeSearch();
-                
-                // Remove loading state
-                if (contentElement) {
-                    contentElement.classList.remove('genealogy-loading');
-                    console.log('✅ Loading state removed');
-                }
-                
-                // Log statistics
-                const stats = genealogyManager.getStatistics();
-                if (stats) {
-                    console.log('📊 Genealogy Statistics:', stats);
-                }
+                // Initialize search functionality (if needed later)
+                // genealogyManager.initializeSearch();
                 
                 console.log('🎉 Application initialized successfully');
                 
             } catch (error) {
                 console.error('❌ Failed to initialize application:', error);
-                
-                // Show user-friendly error message
-                const contentElement = document.getElementById('arvore-content');
-                if (contentElement) {
-                    contentElement.classList.remove('genealogy-loading');
-                    contentElement.innerHTML = `
-                        <div style="text-align: center; padding: 40px; color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 8px; margin: 20px;" role="alert" aria-live="assertive">
-                            <h2>Erro ao carregar a árvore genealógica</h2>
-                            <p>Desculpe, ocorreu um erro ao carregar o conteúdo. Por favor, tente recarregar a página.</p>
-                            <button onclick="location.reload()" style="margin-top: 15px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;" aria-label="Recarregar página">
-                                Recarregar Página
-                            </button>
-                        </div>
-                    `;
-                }
             }
         }
         
