@@ -70,7 +70,7 @@
 
 /* Genealogy Container */
 .genealogy-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
   background: hsl(var(--background));
@@ -162,11 +162,11 @@
   font-size: 0.875rem;
 }
 
-/* Family Members Grid */
+/* Family Members List */
 .family-members {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
 /* Person Card */
@@ -276,6 +276,24 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+/* Details Section - Two Columns on Desktop */
+.details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .details-section {
+    flex-direction: row;
+    gap: 2rem;
+  }
+  
+  .details-column {
+    flex: 1;
+  }
 }
 
 .info-row {
