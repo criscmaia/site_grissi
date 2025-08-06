@@ -71,12 +71,12 @@
 /* Genealogy Container */
 .genealogy-container {
   max-width: 1400px;
-  margin: 0 auto;
+    margin: 0 auto;
   padding: 2rem;
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: var(--font-family-sans);
-  line-height: 1.6;
+    line-height: 1.6;
 }
 
 
@@ -349,6 +349,86 @@
   color: hsl(var(--muted-foreground));
 }
 
+/* Family Units */
+.family-unit {
+  background: hsl(var(--muted) / 0.3);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.family-unit:last-child {
+  margin-bottom: 0;
+}
+
+.union-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.union-number {
+  font-weight: 600;
+  color: hsl(var(--primary));
+  font-size: 0.875rem;
+}
+
+.union-dates {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  background: hsl(var(--muted));
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+}
+
+.spouse-info {
+  margin-bottom: 1rem;
+}
+
+.spouse-name {
+  font-weight: 600;
+  color: hsl(var(--card-foreground));
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.spouse-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.spouse-details span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.children-section {
+  border-top: 1px solid hsl(var(--border) / 0.5);
+  padding-top: 0.75rem;
+}
+
+.children-header {
+  font-weight: 600;
+  color: hsl(var(--card-foreground));
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.children-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .children-tags {
   display: flex;
   flex-wrap: wrap;
@@ -375,9 +455,9 @@
 @media (max-width: 768px) {
   .genealogy-container {
     padding: 1rem;
-  }
-  
-  .genealogy-title {
+}
+
+.genealogy-title {
     font-size: 2rem;
   }
   
@@ -422,7 +502,7 @@
   }
   
   .children-tags {
-    flex-direction: column;
+        flex-direction: column;
   }
 }
 
@@ -459,5 +539,5 @@
   .search-filter-section,
   .results-counter {
     display: none;
-  }
+    }
 } 
