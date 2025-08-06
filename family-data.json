@@ -1,0 +1,646 @@
+{
+  "familyMembers": [
+    {
+      "id": "1.1",
+      "name": "LUIGI DI ANGELO GRIZZO",
+      "generation": 2,
+      "gender": "male",
+      "birth": {
+        "date": "15/11/1832",
+        "location": "Pordenone na Província de Udine, Itália"
+      },
+      "death": {
+        "date": "09/02/1901",
+        "location": "Barbacena, MG",
+        "age": 68
+      },
+      "parents": {
+        "father": "SEBASTIANO GRIZZO",
+        "mother": "MARIA DE LORENZI"
+      },
+      "families": [
+        {
+          "unionNumber": 1,
+          "spouse": {
+            "name": "ELISABETTA PUPPI",
+            "birth": {
+              "date": "Data não registrada",
+              "location": "PORCIA/ITALIA"
+            },
+            "death": {
+              "date": "08/11/1884",
+              "location": "Itália",
+              "age": 55
+            },
+            "parents": {
+              "father": "Data não registrada",
+              "mother": "Data não registrada"
+            }
+          },
+          "marriageDate": "~1860",
+          "endDate": "1884",
+          "children": [
+            {
+              "id": "1.1.1",
+              "name": "ELISABETHA GIOVANNA PIA",
+              "birthYear": 1865
+            },
+            {
+              "id": "1.1.2",
+              "name": "ANTONIO AUGUSTO GRIZZO",
+              "birthYear": 1868
+            }
+          ]
+        },
+        {
+          "unionNumber": 2,
+          "spouse": {
+            "name": "LUIGIA MORAS",
+            "birth": {
+              "date": "14/08/1857",
+              "location": "Palse"
+            },
+            "death": {
+              "date": "23/10/1889",
+              "location": "Colônia Rodrigo Silva, Barbacena, MG",
+              "age": 33
+            },
+            "parents": {
+              "father": "LUIGI",
+              "mother": "FIORINA ROMAN"
+            }
+          },
+          "marriageDate": "24/05/1885",
+          "endDate": "1889",
+          "children": [
+            {
+              "id": "1.1.3",
+              "name": "GIOVANNI GRIZZO",
+              "birthYear": 1878
+            },
+            {
+              "id": "1.1.4",
+              "name": "ROZINA GRIZZO",
+              "birthYear": "Data não registrada"
+            },
+            {
+              "id": "1.1.5",
+              "name": "MARIA GRIZZO",
+              "birthYear": "Data não registrada"
+            }
+          ]
+        }
+      ],
+      "observations": []
+    },
+    {
+      "id": "1.1.1",
+      "name": "ELISABETHA GIOVANNA PIA",
+      "generation": 3,
+      "gender": "female",
+      "birth": {
+        "date": "1865",
+        "location": "Pordenone, provincia de Udine, Itália"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "LUIGI DI ANGELO GRIZZO",
+        "mother": "ELISABETTA PUPPI"
+      },
+      "families": [
+        {
+          "unionNumber": 1,
+          "spouse": {
+            "name": "ANTONIO MORAS",
+            "birth": {
+              "date": "Data não registrada",
+              "location": "Data não registrada"
+            },
+            "death": {
+              "date": "Data não registrada",
+              "location": "Data não registrada",
+              "age": "Data não registrada"
+            },
+            "parents": {
+              "father": "FRANCESCO",
+              "mother": "ANGELA MINARO"
+            }
+          },
+          "marriageDate": "06/10/1884",
+          "endDate": "Data não registrada",
+          "children": []
+        }
+      ],
+      "observations": []
+    },
+    {
+      "id": "1.1.2",
+      "name": "ANTONIO AUGUSTO GRIZZO",
+      "generation": 3,
+      "gender": "male",
+      "birth": {
+        "date": "22/08/1868",
+        "location": "Pordenone, Província de Udine, Itália"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "LUIGI DI ANGELO GRIZZO",
+        "mother": "ELISABETTA PUPPI"
+      },
+      "families": [
+        {
+          "unionNumber": 1,
+          "spouse": {
+            "name": "LUIZA PRESOTTI",
+            "birth": {
+              "date": "06/11/1874",
+              "location": "Província de Trevizzo na Itália"
+            },
+            "death": {
+              "date": "22/09/1962",
+              "location": "Colônia Rodrigo Silva, Barbacena, MG",
+              "age": 87
+            },
+            "parents": {
+              "father": "SANTO PRESOTTI",
+              "mother": "ANGELA CASA GRANDE"
+            }
+          },
+          "marriageDate": "20/06/1893",
+          "endDate": "Data não registrada",
+          "children": [
+            {
+              "id": "1.1.2.1",
+              "name": "REGINA",
+              "birthYear": "Data não registrada"
+            },
+            {
+              "id": "1.1.2.2",
+              "name": "AMABILE RISSA GRIS",
+              "birthYear": 1896
+            },
+            {
+              "id": "1.1.2.3",
+              "name": "ANGELINA GIUSEPPINA GRIS",
+              "birthYear": 1898
+            },
+            {
+              "id": "1.1.2.4",
+              "name": "ANGELIN GRIS",
+              "birthYear": 1900
+            },
+            {
+              "id": "1.1.2.5",
+              "name": "ELISA GRIS",
+              "birthYear": 1902
+            },
+            {
+              "id": "1.1.2.6",
+              "name": "ROSA GRIS",
+              "birthYear": 1904
+            },
+            {
+              "id": "1.1.2.7",
+              "name": "EMILIA GRIS",
+              "birthYear": "Data não registrada"
+            },
+            {
+              "id": "1.1.2.8",
+              "name": "RENNE GRIS",
+              "birthYear": 1909
+            },
+            {
+              "id": "1.1.2.9",
+              "name": "CLEMENTINA GRIS",
+              "birthYear": 1911
+            }
+          ]
+        }
+      ],
+      "observations": []
+    },
+    {
+      "id": "1.1.3",
+      "name": "GIOVANNI GRIZZO",
+      "generation": 3,
+      "gender": "male",
+      "birth": {
+        "date": "1878",
+        "location": "Data não registrada"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "LUIGI DI ANGELO GRIZZO",
+        "mother": "LUIGIA MORAS"
+      },
+      "families": [
+        {
+          "unionNumber": 1,
+          "spouse": {
+            "name": "GIUSEPPINA TOFFOLO",
+            "birth": {
+              "date": "Data não registrada",
+              "location": "Data não registrada"
+            },
+            "death": {
+              "date": "Data não registrada",
+              "location": "Data não registrada",
+              "age": "Data não registrada"
+            },
+            "parents": {
+              "father": "Data não registrada",
+              "mother": "Data não registrada"
+            }
+          },
+          "marriageDate": "Data não registrada",
+          "endDate": "Data não registrada",
+          "children": [
+            {
+              "id": "1.1.3.1",
+              "name": "ANGELICA ANNA GRIS",
+              "birthYear": 1901
+            },
+            {
+              "id": "1.1.3.2",
+              "name": "MARIA LUIZA GRIS",
+              "birthYear": 1902
+            },
+            {
+              "id": "1.1.3.3",
+              "name": "OLIVIO GRIS",
+              "birthYear": "Data não registrada"
+            }
+          ]
+        }
+      ],
+      "observations": []
+    },
+    {
+      "id": "1.1.4",
+      "name": "ROZINA GRIZZO",
+      "generation": 3,
+      "gender": "female",
+      "birth": {
+        "date": "Data não registrada",
+        "location": "Data não registrada"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "LUIGI DI ANGELO GRIZZO",
+        "mother": "LUIGIA MORAS"
+      },
+      "families": [],
+      "observations": []
+    },
+    {
+      "id": "1.1.5",
+      "name": "MARIA GRIZZO",
+      "generation": 3,
+      "gender": "female",
+      "birth": {
+        "date": "Data não registrada",
+        "location": "Data não registrada"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "LUIGI DI ANGELO GRIZZO",
+        "mother": "LUIGIA MORAS"
+      },
+      "families": [],
+      "observations": []
+    },
+    {
+      "id": "1.1.2.2",
+      "name": "AMABILE RISSA GRIS",
+      "generation": 4,
+      "gender": "female",
+      "birth": {
+        "date": "31/03/1896",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "14/05/1999",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "ANTONIO AUGUSTO GRIZZO",
+        "mother": "LUIZA PRESOTTI"
+      },
+      "families": [
+        {
+          "unionNumber": 1,
+          "spouse": {
+            "name": "LUIZ PICININ",
+            "birth": {
+              "date": "Data não registrada",
+              "location": "Data não registrada"
+            },
+            "death": {
+              "date": "26/01/1941",
+              "location": "Data não registrada",
+              "age": "Data não registrada"
+            },
+            "parents": {
+              "father": "GIUSEPPE PICININ",
+              "mother": "THEREZA FABRI"
+            }
+          },
+          "marriageDate": "04/02/1914",
+          "endDate": "Data não registrada",
+          "children": [
+            {
+              "id": "1.1.2.2.1",
+              "name": "LUCIA PICININ",
+              "birthYear": 1914
+            },
+            {
+              "id": "1.1.2.2.2",
+              "name": "CARLIM PICININ",
+              "birthYear": 1917
+            }
+          ]
+        }
+      ],
+      "observations": []
+    },
+    {
+      "id": "1.1.2.3",
+      "name": "ANGELINA GIUSEPPINA GRIS",
+      "generation": 4,
+      "gender": "female",
+      "birth": {
+        "date": "14/04/1898",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "ANTONIO AUGUSTO GRIZZO",
+        "mother": "LUIZA PRESOTTI"
+      },
+      "families": [
+        {
+          "unionNumber": 1,
+          "spouse": {
+            "name": "ANTONIO SFREDO",
+            "birth": {
+              "date": "15/03/1892",
+              "location": "Data não registrada"
+            },
+            "death": {
+              "date": "Data não registrada",
+              "location": "Data não registrada",
+              "age": "Data não registrada"
+            },
+            "parents": {
+              "father": "OLIVIO SFREDO",
+              "mother": "ANNA SFREDO"
+            }
+          },
+          "marriageDate": "21/06/1916",
+          "endDate": "Data não registrada",
+          "children": []
+        }
+      ],
+      "observations": []
+    },
+    {
+      "id": "1.1.2.4",
+      "name": "ANGELIN GRIS",
+      "generation": 4,
+      "gender": "male",
+      "birth": {
+        "date": "14/04/1900",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "ANTONIO AUGUSTO GRIZZO",
+        "mother": "LUIZA PRESOTTI"
+      },
+      "families": [],
+      "observations": []
+    },
+    {
+      "id": "1.1.2.5",
+      "name": "ELISA GRIS",
+      "generation": 4,
+      "gender": "female",
+      "birth": {
+        "date": "31/07/1902",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "19/09/1987",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "ANTONIO AUGUSTO GRIZZO",
+        "mother": "LUIZA PRESOTTI"
+      },
+      "families": [],
+      "observations": []
+    },
+    {
+      "id": "1.1.2.6",
+      "name": "ROSA GRIS",
+      "generation": 4,
+      "gender": "female",
+      "birth": {
+        "date": "02/11/1904",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "ANTONIO AUGUSTO GRIZZO",
+        "mother": "LUIZA PRESOTTI"
+      },
+      "families": [],
+      "observations": []
+    },
+    {
+      "id": "1.1.2.7",
+      "name": "EMILIA GRIS",
+      "generation": 4,
+      "gender": "female",
+      "birth": {
+        "date": "Data não registrada",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "27/05/1983",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "ANTONIO AUGUSTO GRIZZO",
+        "mother": "LUIZA PRESOTTI"
+      },
+      "families": [],
+      "observations": []
+    },
+    {
+      "id": "1.1.2.8",
+      "name": "RENNE GRIS",
+      "generation": 4,
+      "gender": "female",
+      "birth": {
+        "date": "04/03/1909",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "ANTONIO AUGUSTO GRIZZO",
+        "mother": "LUIZA PRESOTTI"
+      },
+      "families": [],
+      "observations": []
+    },
+    {
+      "id": "1.1.2.9",
+      "name": "CLEMENTINA GRIS",
+      "generation": 4,
+      "gender": "female",
+      "birth": {
+        "date": "19/11/1911",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "03/03/2002",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "ANTONIO AUGUSTO GRIZZO",
+        "mother": "LUIZA PRESOTTI"
+      },
+      "families": [],
+      "observations": [
+        "Visitei o Lar dos Velhinhos de Santana em Barbacena no dia 26/03/2002, para conhecer a Clementina Grissi e lamentei quando me informaram que havia falecido em 03/03/2002."
+      ]
+    },
+    {
+      "id": "1.1.3.1",
+      "name": "ANGELICA ANNA GRIS",
+      "generation": 4,
+      "gender": "female",
+      "birth": {
+        "date": "26/08/1901",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "04/07/1904",
+        "location": "Data não registrada",
+        "age": 3
+      },
+      "parents": {
+        "father": "GIOVANNI GRIZZO",
+        "mother": "GIUSEPPINA TOFFOLO"
+      },
+      "families": [],
+      "observations": []
+    },
+    {
+      "id": "1.1.3.2",
+      "name": "MARIA LUIZA GRIS",
+      "generation": 4,
+      "gender": "female",
+      "birth": {
+        "date": "20/11/1902",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "GIOVANNI GRIZZO",
+        "mother": "GIUSEPPINA TOFFOLO"
+      },
+      "families": [
+        {
+          "unionNumber": 1,
+          "spouse": {
+            "name": "MÁRIO MICHÉA CANTON",
+            "birth": {
+              "date": "16/06/1897",
+              "location": "Barbacena, MG"
+            },
+            "death": {
+              "date": "Data não registrada",
+              "location": "Data não registrada",
+              "age": "Data não registrada"
+            },
+            "parents": {
+              "father": "VALENTINO CANTON",
+              "mother": "THEREZA SAL..."
+            }
+          },
+          "marriageDate": "19/02/1927",
+          "endDate": "Data não registrada",
+          "children": []
+        }
+      ],
+      "observations": []
+    },
+    {
+      "id": "1.1.3.3",
+      "name": "OLIVIO GRIS",
+      "generation": 4,
+      "gender": "male",
+      "birth": {
+        "date": "Data não registrada",
+        "location": "Barbacena, MG"
+      },
+      "death": {
+        "date": "Data não registrada",
+        "location": "Data não registrada",
+        "age": "Data não registrada"
+      },
+      "parents": {
+        "father": "GIOVANNI GRIZZO",
+        "mother": "GIUSEPPINA TOFFOLO"
+      },
+      "families": [],
+      "observations": []
+    }
+  ]
+} 

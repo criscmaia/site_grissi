@@ -423,13 +423,78 @@
   margin-bottom: 0.5rem;
 }
 
-.children-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+  .children-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
 
-.children-tags {
+  /* Loading and Error States */
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    min-height: 200px;
+  }
+
+  .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .loading-spinner svg {
+    width: 2rem;
+    height: 2rem;
+    color: hsl(var(--primary));
+  }
+
+  .loading-spinner p {
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    text-align: center;
+    gap: 1rem;
+    color: hsl(var(--destructive));
+  }
+
+  .error-container svg {
+    width: 3rem;
+    height: 3rem;
+    color: hsl(var(--destructive));
+  }
+
+  .error-container p {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .error-container button {
+    background: hsl(var(--destructive));
+    color: hsl(var(--destructive-foreground));
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: opacity 0.2s;
+  }
+
+  .error-container button:hover {
+    opacity: 0.8;
+  }
+  
+  .children-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
