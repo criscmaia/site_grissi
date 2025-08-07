@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regenerate Data with Fixed Extraction</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .progress { margin: 20px 0; }
+        .progress-bar { width: 100%; height: 20px; background-color: #f0f0f0; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background-color: #4CAF50; width: 0%; transition: width 0.3s; }
+        .status { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background-color: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        pre { background-color: #f8f9fa; padding: 15px; border-radius: 5px; overflow-x: auto; max-height: 400px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Regenerate Family Data with Fixed Extraction</h1>
+    
+    <div class="status info">
+        <h3>Issues Fixed:</h3>
+        <ul>
+            <li><strong>Birth Information:</strong> Fixed parsing of "Nascido em [location] em [date]" format</li>
+            <li><strong>Parent Information:</strong> Improved parsing of complex parent descriptions with birth details and grandparent info</li>
+            <li><strong>Location Handling:</strong> Proper separation of location and date information</li>
+            <li><strong>Generation Calculation:</strong> Now based on (amount of digits) - 1 (1.1.3.8.1.3.2 = 7 digits - 1 = Generation 6)</li>
+            <li><strong>Parent Assignment:</strong> Parent = ID above (could be male or female), Spouse = from "Filho de" section</li>
+            <li><strong>Sibling Detection:</strong> Same ID structure, different last digit</li>
+            <li><strong>Ancestors Section:</strong> Removed as requested</li>
+        </ul>
+    </div>
+
+    <div class="status info">
+        <h3>Example Fix (SANTIAGO RIBEIRO GRISSI CARDOSO):</h3>
+        <p><strong>Before:</strong> Generation: 2, Birth date: "Londres", Location: null</p>
+        <p><strong>After:</strong> Generation: 6 (7 digits - 1), Birth date: "30/12/2009", Location: "Londres, Reino Unido"</p>
+        <p><strong>Parent:</strong> RODRIGO GRISSI CARDOSO (ID above)</p>
+        <p><strong>Spouse:</strong> ANA PAULA RIBEIRO DA SILVA (from "Filho de" section)</p>
+        <p><strong>Siblings:</strong> 1.1.3.8.1.3.1 (GABRIELLA)</p>
+    </div>
+
+    <button onclick="startRegeneration()">Start Data Regeneration</button>
+    
+    <div class="progress" id="progress" style="display: none;">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div id="progress-text">0%</div>
+    </div>
+
+    <div id="status-container"></div>
+    
+    <div id="result-container" style="display: none;">
+        <h3>Regenerated Data Sample:</h3>
+        <div id="sample-data"></div>
+        
+        <h3>Download Options:</h3>
+        <button onclick="downloadJSON()">Download JSON</button>
+        <button onclick="downloadMinified()">Download Minified JSON</button>
+    </div>
+
+    <script src="js/genealogy-data-extractor.js"></script>
+    <script>
+        let extractedData = null;
+        let originalHTML = null;
+
+        async function loadOriginalHTML() {
+            try {
+                const response = await fetch('arvore completa_20250806_v1.html');
+                if (!response.ok) {
+                    throw new Error(`Failed to load HTML: ${response.status}`);
+                }
+                return await response.text();
+            } catch (error) {
+                throw new Error(`Error loading original HTML: ${error.message}`);
+            }
+        }
+
+        function updateProgress(percent, message) {
+            document.getElementById('progress').style.display = 'block';
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = `${percent}% - ${message}`;
+        }
+
+        function addStatus(message, type = 'info') {
+            const container = document.getElementById('status-container');
+            const statusDiv = document.createElement('div');
+            statusDiv.className = `status ${type}`;
+            statusDiv.innerHTML = `<strong>${new Date().toLocaleTimeString()}:</strong> ${message}`;
+            container.appendChild(statusDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function startRegeneration() {
+            try {
+                addStatus('Starting data regeneration with fixed extraction logic...', 'info');
+                updateProgress(10, 'Loading original HTML...');
+
+                // Load original HTML
+                originalHTML = await loadOriginalHTML();
+                updateProgress(30, 'HTML loaded, starting extraction...');
+
+                // Create extractor and process
+                const extractor = new GenealogyDataExtractor();
+                addStatus('Extracting data with improved parsing...', 'info');
+                
+                extractedData = await extractor.extractFromHTML(originalHTML);
+                updateProgress(80, 'Extraction completed, processing results...');
+
+                // Show sample data
+                const santiago = extractedData.familyMembers.find(m => m.id === "1.1.3.8.1.3.2");
+                if (santiago) {
+                    const sampleDiv = document.getElementById('sample-data');
+                    sampleDiv.innerHTML = `
+                        <h4>SANTIAGO RIBEIRO GRISSI CARDOSO (Fixed):</h4>
+                        <pre>${JSON.stringify(santiago, null, 2)}</pre>
+                    `;
+                }
+
+                updateProgress(100, 'Regeneration completed!');
+                addStatus(`✅ Successfully extracted ${extractedData.familyMembers.length} family members`, 'success');
+                
+                document.getElementById('result-container').style.display = 'block';
+                
+            } catch (error) {
+                addStatus(`❌ Error during regeneration: ${error.message}`, 'error');
+                console.error('Regeneration error:', error);
+            }
+        }
+
+        function downloadJSON() {
+            if (!extractedData) {
+                addStatus('❌ No data to download', 'error');
+                return;
+            }
+
+            const dataStr = JSON.stringify(extractedData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'family-data-fixed.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            addStatus('✅ JSON file downloaded: family-data-fixed.json', 'success');
+        }
+
+        function downloadMinified() {
+            if (!extractedData) {
+                addStatus('❌ No data to download', 'error');
+                return;
+            }
+
+            const dataStr = JSON.stringify(extractedData);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'family-data-fixed-minified.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            addStatus('✅ Minified JSON file downloaded: family-data-fixed-minified.json', 'success');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Raw Text</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug { background-color: #f0f8ff; padding: 10px; margin: 10px 0; border: 1px solid #ccc; }
+        pre { background-color: #f5f5f5; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Test Raw Text</h1>
+    
+    <div id="debug-output">Processing...</div>
+
+    <script>
+        function testRawText() {
+            const testHTML = `
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.1.</span> <span class="c13">TEREZINHA MOREIRA GRISSI</span></strong></p>
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.2.</span> <span class="c13">SIBLING 2</span></strong></p>
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.3.</span> <span class="c13">SIBLING 3</span></strong></p>
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.8.</span> <span class="c13">MARIA DE FÁTIMA MOREIRA GRISSI</span></strong></p>
+            `;
+            
+            // Parse HTML content
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(testHTML, 'text/html');
+            
+            // Extract all text content
+            const textContent = doc.body.textContent;
+            
+            const debugDiv = document.getElementById('debug-output');
+            debugDiv.innerHTML = `
+                <div class="debug">
+                    <h3>Raw Text Content:</h3>
+                    <pre>${textContent}</pre>
+                </div>
+                
+                <div class="debug">
+                    <h3>Split by ID Pattern:</h3>
+                    <pre>${textContent.split(/(\d+\.\d+(?:\.\d+)*\.)/).join('\n---\n')}</pre>
+                </div>
+            `;
+        }
+        
+        window.addEventListener('load', testRawText);
+    </script>
+</body>
+</html>

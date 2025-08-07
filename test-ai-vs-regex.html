@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI vs Regex Genealogy Extractor Comparison</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .extractor-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        .extractor-panel.ai {
+            border-color: #667eea;
+            background: #e3f2fd;
+        }
+        .extractor-panel.regex {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+        .extractor-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+        .extractor-header.ai {
+            background: #667eea;
+        }
+        .extractor-header.regex {
+            background: #dc3545;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .stat-item {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .log-section {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 3px 0;
+            padding: 3px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .log-info { background: #d1ecf1; color: #0c5460; }
+        .log-success { background: #d4edda; color: #155724; }
+        .log-warning { background: #fff3cd; color: #856404; }
+        .log-error { background: #f8d7da; color: #721c24; }
+        .control-section {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .btn {
+            background: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin: 10px;
+        }
+        .btn:hover {
+            background: #218838;
+        }
+        .btn.secondary {
+            background: #6c757d;
+        }
+        .btn.secondary:hover {
+            background: #5a6268;
+        }
+        .results-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .member-sample {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        .member-sample.error {
+            border-left-color: #dc3545;
+        }
+        .member-sample.success {
+            border-left-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI vs Regex Genealogy Extractor Comparison</h1>
+            <p>Compare the performance and accuracy of AI-powered vs Regex-based extraction</p>
+        </div>
+
+        <div class="control-section">
+            <button class="btn" onclick="runComparison()">🚀 Run Comparison Test</button>
+            <button class="btn secondary" onclick="showSampleData()">📊 Show Sample Data</button>
+            <button class="btn secondary" onclick="downloadComparisonReport()">📥 Download Report</button>
+        </div>
+
+        <div class="comparison-grid">
+            <!-- AI Extractor Panel -->
+            <div class="extractor-panel ai">
+                <div class="extractor-header ai">
+                    <h2>🤖 AI-Powered Extractor</h2>
+                    <p>Natural Language Processing</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="ai-total-members">-</div>
+                        <div class="stat-label">Total Members</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="ai-birth-info">-</div>
+                        <div class="stat-label">Birth Info Extracted</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="ai-errors">-</div>
+                        <div class="stat-label">Validation Errors</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="ai-processing-time">-</div>
+                        <div class="stat-label">Processing Time (ms)</div>
+                    </div>
+                </div>
+
+                <div class="log-section">
+                    <h4>AI Processing Log</h4>
+                    <div id="ai-log-content"></div>
+                </div>
+            </div>
+
+            <!-- Regex Extractor Panel -->
+            <div class="extractor-panel regex">
+                <div class="extractor-header regex">
+                    <h2>🔍 Regex-Based Extractor</h2>
+                    <p>Pattern Matching</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="regex-total-members">-</div>
+                        <div class="stat-label">Total Members</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="regex-birth-info">-</div>
+                        <div class="stat-label">Birth Info Extracted</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="regex-errors">-</div>
+                        <div class="stat-label">Validation Errors</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="regex-processing-time">-</div>
+                        <div class="stat-label">Processing Time (ms)</div>
+                    </div>
+                </div>
+
+                <div class="log-section">
+                    <h4>Regex Processing Log</h4>
+                    <div id="regex-log-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <h3>📊 Comparison Results</h3>
+            <div id="comparison-results"></div>
+        </div>
+
+        <div class="results-section">
+            <h3>🔍 Sample Data Comparison</h3>
+            <div id="sample-data-comparison"></div>
+        </div>
+    </div>
+
+    <script src="js/ai-genealogy-extractor.js?v=comparison&t=20250807"></script>
+    <script src="js/genealogy-data-extractor-fixed.js?v=comparison&t=20250807"></script>
+    <script>
+        console.log('🔍 Starting AI vs Regex comparison...');
+        
+        let aiResult = null;
+        let regexResult = null;
+        let comparisonData = {
+            ai: { startTime: 0, endTime: 0, errors: 0, members: 0, birthInfo: 0 },
+            regex: { startTime: 0, endTime: 0, errors: 0, members: 0, birthInfo: 0 }
+        };
+
+        function addLog(extractor, message, type = 'info') {
+            const logContent = document.getElementById(`${extractor}-log-content`);
+            if (logContent) {
+                const logDiv = document.createElement('div');
+                logDiv.className = `log-entry log-${type}`;
+                logDiv.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                logContent.appendChild(logDiv);
+                logContent.scrollTop = logContent.scrollHeight;
+            }
+            console.log(`[${extractor.toUpperCase()}] ${message}`);
+        }
+
+        function updateStats(extractor, data, errors) {
+            const birthInfoCount = data.familyMembers.filter(m => m.birthDate).length;
+            
+            document.getElementById(`${extractor}-total-members`).textContent = data.familyMembers.length;
+            document.getElementById(`${extractor}-birth-info`).textContent = birthInfoCount;
+            document.getElementById(`${extractor}-errors`).textContent = errors.totalErrors;
+            
+            const processingTime = comparisonData[extractor].endTime - comparisonData[extractor].startTime;
+            document.getElementById(`${extractor}-processing-time`).textContent = processingTime;
+            
+            // Update comparison data
+            comparisonData[extractor].members = data.familyMembers.length;
+            comparisonData[extractor].birthInfo = birthInfoCount;
+            comparisonData[extractor].errors = errors.totalErrors;
+        }
+
+        function validateJSON(data) {
+            const errors = {
+                generationErrors: 0,
+                parentErrors: 0,
+                siblingErrors: 0,
+                childrenErrors: 0,
+                birthInfoErrors: 0,
+                missingDataErrors: 0,
+                invalidDataErrors: 0,
+                totalErrors: 0
+            };
+
+            data.familyMembers.forEach(member => {
+                // Validate generation calculation
+                const expectedGeneration = member.id.split('.').length - 1;
+                if (member.generation !== expectedGeneration) {
+                    errors.generationErrors++;
+                }
+
+                // Validate birth info
+                if (!member.birthDate) {
+                    errors.birthInfoErrors++;
+                } else if (member.birthDate.length < 3) {
+                    errors.invalidDataErrors++;
+                }
+
+                // Validate missing critical data
+                if (!member.name || !member.id || member.generation === undefined) {
+                    errors.missingDataErrors++;
+                }
+            });
+
+            errors.totalErrors = errors.generationErrors + errors.parentErrors + errors.siblingErrors + 
+                                errors.childrenErrors + errors.birthInfoErrors + errors.missingDataErrors + errors.invalidDataErrors;
+            
+            return errors;
+        }
+
+        async function runComparison() {
+            try {
+                addLog('ai', '🤖 Starting AI-powered extraction...', 'info');
+                addLog('regex', '🔍 Starting regex-based extraction...', 'info');
+
+                // Load HTML content
+                const response = await fetch('arvore completa_20250806_v1.html');
+                if (!response.ok) {
+                    throw new Error(`Failed to load HTML file: ${response.status} ${response.statusText}`);
+                }
+                const htmlContent = await response.text();
+
+                // Run AI extraction
+                comparisonData.ai.startTime = performance.now();
+                const aiExtractor = new AIGenealogyExtractor();
+                aiResult = await aiExtractor.extractFromHTML(htmlContent);
+                comparisonData.ai.endTime = performance.now();
+                
+                addLog('ai', `✅ AI extraction completed: ${aiResult.familyMembers.length} members`, 'success');
+                const aiErrors = validateJSON(aiResult);
+                updateStats('ai', aiResult, aiErrors);
+
+                // Run Regex extraction
+                comparisonData.regex.startTime = performance.now();
+                const regexExtractor = new GenealogyDataExtractor();
+                regexResult = await regexExtractor.extractFromHTML(htmlContent);
+                comparisonData.regex.endTime = performance.now();
+                
+                addLog('regex', `✅ Regex extraction completed: ${regexResult.familyMembers.length} members`, 'success');
+                const regexErrors = validateJSON(regexResult);
+                updateStats('regex', regexResult, regexErrors);
+
+                // Show comparison results
+                showComparisonResults();
+
+            } catch (error) {
+                console.error('❌ Error in comparison:', error);
+                addLog('ai', `❌ Error: ${error.message}`, 'error');
+                addLog('regex', `❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function showComparisonResults() {
+            const resultsDiv = document.getElementById('comparison-results');
+            
+            const aiBirthRate = (comparisonData.ai.birthInfo / comparisonData.ai.members * 100).toFixed(1);
+            const regexBirthRate = (comparisonData.regex.birthInfo / comparisonData.regex.members * 100).toFixed(1);
+            
+            const aiTime = comparisonData.ai.endTime - comparisonData.ai.startTime;
+            const regexTime = comparisonData.regex.endTime - comparisonData.regex.startTime;
+            
+            resultsDiv.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0;">
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 5px; text-align: center;">
+                        <h4>📊 Total Members</h4>
+                        <p><strong>AI:</strong> ${comparisonData.ai.members}</p>
+                        <p><strong>Regex:</strong> ${comparisonData.regex.members}</p>
+                    </div>
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 5px; text-align: center;">
+                        <h4>🎯 Birth Info Success Rate</h4>
+                        <p><strong>AI:</strong> ${aiBirthRate}%</p>
+                        <p><strong>Regex:</strong> ${regexBirthRate}%</p>
+                    </div>
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 5px; text-align: center;">
+                        <h4>⚡ Processing Speed</h4>
+                        <p><strong>AI:</strong> ${aiTime.toFixed(0)}ms</p>
+                        <p><strong>Regex:</strong> ${regexTime.toFixed(0)}ms</p>
+                    </div>
+                    <div style="background: #e3f2fd; padding: 15px; border-radius: 5px; text-align: center;">
+                        <h4>❌ Validation Errors</h4>
+                        <p><strong>AI:</strong> ${comparisonData.ai.errors}</p>
+                        <p><strong>Regex:</strong> ${comparisonData.regex.errors}</p>
+                    </div>
+                </div>
+                
+                <div style="background: ${aiBirthRate > regexBirthRate ? '#d4edda' : '#f8d7da'}; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                    <h4>🏆 Winner Analysis</h4>
+                    <p><strong>Birth Info Extraction:</strong> ${aiBirthRate > regexBirthRate ? 'AI wins' : 'Regex wins'} (${Math.abs(aiBirthRate - regexBirthRate).toFixed(1)}% difference)</p>
+                    <p><strong>Processing Speed:</strong> ${aiTime < regexTime ? 'AI wins' : 'Regex wins'} (${Math.abs(aiTime - regexTime).toFixed(0)}ms difference)</p>
+                    <p><strong>Error Rate:</strong> ${comparisonData.ai.errors < comparisonData.regex.errors ? 'AI wins' : 'Regex wins'} (${Math.abs(comparisonData.ai.errors - comparisonData.regex.errors)} errors difference)</p>
+                </div>
+            `;
+        }
+
+        function showSampleData() {
+            if (!aiResult || !regexResult) {
+                alert('Please run the comparison first');
+                return;
+            }
+
+            const comparisonDiv = document.getElementById('sample-data-comparison');
+            
+            // Show first 3 members from each extractor
+            const aiSample = aiResult.familyMembers.slice(0, 3);
+            const regexSample = regexResult.familyMembers.slice(0, 3);
+            
+            let html = '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">';
+            
+            // AI Sample
+            html += '<div><h4>🤖 AI Sample Data</h4>';
+            aiSample.forEach(member => {
+                const hasErrors = !member.birthDate || member.birthDate.length < 3;
+                html += `
+                    <div class="member-sample ${hasErrors ? 'error' : 'success'}">
+                        <h5>${member.name} (${member.id})</h5>
+                        <p><strong>Birth Date:</strong> ${member.birthDate || 'MISSING'}</p>
+                        <p><strong>Birth Location:</strong> ${member.birthLocation || 'N/A'}</p>
+                        <p><strong>Generation:</strong> ${member.generation}</p>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            // Regex Sample
+            html += '<div><h4>🔍 Regex Sample Data</h4>';
+            regexSample.forEach(member => {
+                const hasErrors = !member.birthDate || member.birthDate.length < 3;
+                html += `
+                    <div class="member-sample ${hasErrors ? 'error' : 'success'}">
+                        <h5>${member.name} (${member.id})</h5>
+                        <p><strong>Birth Date:</strong> ${member.birthDate || 'MISSING'}</p>
+                        <p><strong>Birth Location:</strong> ${member.birthLocation || 'N/A'}</p>
+                        <p><strong>Generation:</strong> ${member.generation}</p>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            html += '</div>';
+            comparisonDiv.innerHTML = html;
+        }
+
+        function downloadComparisonReport() {
+            if (!aiResult || !regexResult) {
+                alert('Please run the comparison first');
+                return;
+            }
+
+            const report = {
+                comparisonDate: new Date().toISOString(),
+                sourceFile: 'arvore completa_20250806_v1.html',
+                results: {
+                    ai: {
+                        totalMembers: comparisonData.ai.members,
+                        birthInfoExtracted: comparisonData.ai.birthInfo,
+                        birthInfoSuccessRate: (comparisonData.ai.birthInfo / comparisonData.ai.members * 100).toFixed(1),
+                        processingTime: comparisonData.ai.endTime - comparisonData.ai.startTime,
+                        validationErrors: comparisonData.ai.errors
+                    },
+                    regex: {
+                        totalMembers: comparisonData.regex.members,
+                        birthInfoExtracted: comparisonData.regex.birthInfo,
+                        birthInfoSuccessRate: (comparisonData.regex.birthInfo / comparisonData.regex.members * 100).toFixed(1),
+                        processingTime: comparisonData.regex.endTime - comparisonData.regex.startTime,
+                        validationErrors: comparisonData.regex.errors
+                    }
+                },
+                winner: {
+                    birthInfo: comparisonData.ai.birthInfo > comparisonData.regex.birthInfo ? 'AI' : 'Regex',
+                    speed: (comparisonData.ai.endTime - comparisonData.ai.startTime) < (comparisonData.regex.endTime - comparisonData.regex.startTime) ? 'AI' : 'Regex',
+                    accuracy: comparisonData.ai.errors < comparisonData.regex.errors ? 'AI' : 'Regex'
+                }
+            };
+
+            const dataStr = JSON.stringify(report, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'ai-vs-regex-comparison-report.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            console.log('📥 Comparison report downloaded');
+        }
+    </script>
+</body>
+</html>

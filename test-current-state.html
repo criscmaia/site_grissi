@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current State Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+        pre { background-color: #f5f5f5; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Current State Test</h1>
+    
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="test-results">Processing...</div>
+    </div>
+
+    <script src="js/genealogy-data-extractor-fixed.js?v=test&t=20250807"></script>
+    <script>
+        async function testCurrentState() {
+            const extractor = new GenealogyDataExtractor();
+            
+            // Test data with all siblings
+            const testHTML = `
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.</span> <span class="c13">ERNESTO GRISSI</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1910, em Belo Horizonte, MG. Casou-se em 18/06/1938, com <strong>ZULMIRA MARZANO MOREIRA</strong>, que passou a assinar <strong>ZULMIRA MOREIRA GRISSI</strong>.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.1.</span> <span class="c13">TEREZINHA MOREIRA GRISSI</span></strong></p>
+                <p><span class="c13">Nascida em 15/05/1940, em Belo Horizonte, MG. Casou-se em 22/11/1960, com <strong>JOSÉ LUIZ FERREIRA CARDOSO</strong>, nascido em 10/03/1938, em Belo Horizonte, MG. Filho de <strong>ANTONIO FERREIRA CARDOSO</strong> e <strong>MARIA LUIZA CARDOSO</strong>. Ela passou a assinar <strong>TEREZINHA MOREIRA GRISSI CARDOSO</strong>.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.2.</span> <span class="c13">SIBLING 2</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1941, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.3.</span> <span class="c13">SIBLING 3</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1942, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.4.</span> <span class="c13">SIBLING 4</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1943, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.5.</span> <span class="c13">SIBLING 5</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1944, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.6.</span> <span class="c13">SIBLING 6</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1945, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.7.</span> <span class="c13">SIBLING 7</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1946, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.8.</span> <span class="c13">MARIA DE FÁTIMA MOREIRA GRISSI</span></strong></p>
+                <p><span class="c13">Nascida em 24/03/1951, em Belo Horizonte, MG. Casou-se em 24/01/1977 com <strong>ALOIZIO PIMENTA PINTO</strong>, nascido em 13/07/1947, em Sabinópolis, MG. Filho de <strong>ACIR PIMENTA SOARES</strong> e <strong>ZILDA PINTO SOARES</strong>. Ela passou a assinar <strong>MARIA DE FATIMA GRISSI PIMENTA</strong>.</span></p>
+                
+                <p><strong><span class="c18">QN -</span> <span class="c6">1.1.3.8.1.3.1.</span> <span class="c13">GABRIELLA NÓBREGA GRISSI CARDOSO</span></strong></p>
+                <p><span class="c13">Nascida em 15/05/1997, em Belo Horiz... Filha de <strong>MAÍZA MENDES DA NÓBREGA</strong></span></p>
+                
+                <p><strong><span class="c18">QN -</span> <span class="c6">1.1.3.8.1.3.2.</span> <span class="c13">SANTIAGO RIBEIRO GRISSI CARDOSO</span></strong></p>
+                <p><span class="c13">Nascido em Londres, Reino Unido em 30/12/2009. Filho de <strong>ANA PAULA RIBEIRO DA SILVA</strong>, nascida em 01/02/1969 em Recife/PE, filha de <strong>PAULO RIBEIRO DASILVA</strong> e <strong>IONE LARA DA SILVA</strong></span></p>
+            `;
+            
+            try {
+                const result = await extractor.extractFromHTML(testHTML);
+                const resultsDiv = document.getElementById('test-results');
+                
+                let resultsHTML = '<h3>Current State Test Results:</h3>';
+                
+                // Check specific issues
+                const terezinha = result.familyMembers.find(m => m.id === "1.1.3.8.1");
+                const maria = result.familyMembers.find(m => m.id === "1.1.3.8.8");
+                const gabriella = result.familyMembers.find(m => m.id === "1.1.3.8.1.3.1");
+                const santiago = result.familyMembers.find(m => m.id === "1.1.3.8.1.3.2");
+                
+                resultsHTML += `
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                        <h4>TEREZINHA (1.1.3.8.1)</h4>
+                        <ul>
+                            <li class="${terezinha && terezinha.relationships.siblings.length >= 7 ? 'success' : 'error'}">
+                                <strong>Siblings:</strong> ${terezinha ? terezinha.relationships.siblings.join(', ') : 'Not found'} 
+                                ${terezinha && terezinha.relationships.siblings.length >= 7 ? '✅' : '❌'} 
+                                (Expected: 7 siblings, got: ${terezinha ? terezinha.relationships.siblings.length : 0})
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                        <h4>MARIA DE FÁTIMA (1.1.3.8.8)</h4>
+                        <ul>
+                            <li class="${maria && maria.relationships.siblings.length >= 7 ? 'success' : 'error'}">
+                                <strong>Siblings:</strong> ${maria ? maria.relationships.siblings.join(', ') : 'Not found'} 
+                                ${maria && maria.relationships.siblings.length >= 7 ? '✅' : '❌'} 
+                                (Expected: 7 siblings, got: ${maria ? maria.relationships.siblings.length : 0})
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                        <h4>GABRIELLA (1.1.3.8.1.3.1)</h4>
+                        <ul>
+                            <li class="${gabriella && gabriella.parents.mother === 'MAÍZA MENDES DA NÓBREGA' ? 'success' : 'error'}">
+                                <strong>Mother:</strong> ${gabriella ? gabriella.parents.mother : 'Not found'} 
+                                ${gabriella && gabriella.parents.mother === 'MAÍZA MENDES DA NÓBREGA' ? '✅' : '❌'} 
+                                (Expected: MAÍZA MENDES DA NÓBREGA)
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                        <h4>SANTIAGO (1.1.3.8.1.3.2)</h4>
+                        <ul>
+                            <li class="${santiago && santiago.parents.mother === 'ANA PAULA RIBEIRO DA SILVA' ? 'success' : 'error'}">
+                                <strong>Mother:</strong> ${santiago ? santiago.parents.mother : 'Not found'} 
+                                ${santiago && santiago.parents.mother === 'ANA PAULA RIBEIRO DA SILVA' ? '✅' : '❌'} 
+                                (Expected: ANA PAULA RIBEIRO DA SILVA)
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                        <h4>All Members Found:</h4>
+                        <ul>
+                            ${result.familyMembers.map(m => `<li>${m.name} (${m.id})</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                
+                resultsDiv.innerHTML = resultsHTML;
+                
+            } catch (error) {
+                document.getElementById('test-results').innerHTML = `<p class="error">Test failed: ${error.message}</p>`;
+            }
+        }
+        
+        // Run test when page loads
+        window.addEventListener('load', testCurrentState);
+    </script>
+</body>
+</html>

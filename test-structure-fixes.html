@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Test Structure Fixes</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .original { background-color: #f0f8ff; }
+        .extracted { background-color: #f0fff0; }
+        .error { color: red; }
+        .success { color: green; }
+        .warning { color: orange; }
+        pre { background-color: #f5f5f5; padding: 10px; overflow-x: auto; }
+        .fix-item { margin: 10px 0; padding: 10px; border-left: 4px solid #007acc; }
+    </style>
+</head>
+<body>
+    <h1>Test Structure Fixes</h1>
+    
+    <div class="test-section original">
+        <h2>Issues Fixed:</h2>
+        <div class="fix-item">
+            <h3>1. Generation Calculation</h3>
+            <p><strong>Before:</strong> Based on generation markers (F, N, BN, TN, QN, PN)</p>
+            <p><strong>After:</strong> (amount of digits) - 1 (1.1.3.8.1.3.2 = 7 digits - 1 = Generation 6)</p>
+        </div>
+        
+        <div class="fix-item">
+            <h3>2. Parent Assignment</h3>
+            <p><strong>Before:</strong> Wrong parent extraction from "Filho de" section</p>
+            <p><strong>After:</strong> Parent = ID above (could be male or female), Spouse = from "Filho de" section</p>
+        </div>
+        
+        <div class="fix-item">
+            <h3>3. Sibling Detection</h3>
+            <p><strong>Before:</strong> Based on parent ID</p>
+            <p><strong>After:</strong> Same ID structure, different last digit (1.1.3.8.1.3.1, 1.1.3.8.1.3.2)</p>
+        </div>
+        
+        <div class="fix-item">
+            <h3>4. Ancestors Section</h3>
+            <p><strong>Before:</strong> Included ancestors array</p>
+            <p><strong>After:</strong> Removed as requested</p>
+        </div>
+    </div>
+
+    <div class="test-section extracted">
+        <h2>Test Results</h2>
+        <div id="test-results">Processing...</div>
+    </div>
+
+    <script src="js/genealogy-data-extractor.js?v=5&t=20250807"></script>
+    <script>
+        // Test if the JavaScript is loading correctly
+        console.log('Script loading test...');
+        console.log('Page loaded at:', new Date().toISOString());
+        console.log('Cache busting test - v5 loaded');
+        
+        if (typeof GenealogyDataExtractor !== 'undefined') {
+            console.log('✅ GenealogyDataExtractor loaded successfully');
+            console.log('Version check:', typeof GenealogyDataExtractor);
+        } else {
+            console.log('❌ GenealogyDataExtractor not found');
+        }
+        
+        async function testStructureFixes() {
+            const extractor = new GenealogyDataExtractor();
+            
+            // Test data including SANTIAGO and his family, plus the examples provided
+            const testHTML = `
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.</span> <span class="c13">ERNESTO GRISSI</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1910, em Belo Horizonte, MG. Casou-se em 18/06/1938, com <strong>ZULMIRA MARZANO MOREIRA</strong>, que passou a assinar <strong>ZULMIRA MOREIRA GRISSI</strong>.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.1.</span> <span class="c13">TEREZINHA MOREIRA GRISSI</span></strong></p>
+                <p><span class="c13">Nascida em 15/05/1940, em Belo Horizonte, MG. Casou-se em 22/11/1960, com <strong>JOSÉ LUIZ FERREIRA CARDOSO</strong>, nascido em 10/03/1938, em Belo Horizonte, MG. Filho de <strong>ANTONIO FERREIRA CARDOSO</strong> e <strong>MARIA LUIZA CARDOSO</strong>. Ela passou a assinar <strong>TEREZINHA MOREIRA GRISSI CARDOSO</strong>.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.2.</span> <span class="c13">SIBLING 2</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1941, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.3.</span> <span class="c13">SIBLING 3</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1942, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.4.</span> <span class="c13">SIBLING 4</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1943, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.5.</span> <span class="c13">SIBLING 5</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1944, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.6.</span> <span class="c13">SIBLING 6</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1945, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.7.</span> <span class="c13">SIBLING 7</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1946, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c16">BN -</span> <span class="c6">1.1.3.8.8.</span> <span class="c13">MARIA DE FÁTIMA MOREIRA GRISSI</span></strong></p>
+                <p><span class="c13">Nascida em 24/03/1951, em Belo Horizonte, MG. Casou-se em 24/01/1977 com <strong>ALOIZIO PIMENTA PINTO</strong>, nascido em 13/07/1947, em Sabinópolis, MG. Filho de <strong>ACIR PIMENTA SOARES</strong> e <strong>ZILDA PINTO SOARES</strong>. Ela passou a assinar <strong>MARIA DE FATIMA GRISSI PIMENTA</strong>.</span></p>
+                
+                <p><strong><span class="c37">TN -</span> <span class="c6">1.1.3.8.1.1.</span> <span class="c13">JAQUELINE GRISSI CARDOSO</span></strong></p>
+                <p><span class="c13">Nascida em 10/08/1961, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c37">TN -</span> <span class="c6">1.1.3.8.1.2.</span> <span class="c13">CARINA GRISSI CARDOSO</span></strong></p>
+                <p><span class="c13">Nascida em 05/12/1963, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c37">TN -</span> <span class="c6">1.1.3.8.1.3.</span> <span class="c13">RODRIGO GRISSI CARDOSO</span></strong></p>
+                <p><span class="c13">Nascido em 15/05/1995, em Belo Horizonte, MG.</span></p>
+                
+                <p><strong><span class="c18">QN -</span> <span class="c6">1.1.3.8.1.3.1.</span> <span class="c13">GABRIELLA NÓBREGA GRISSI CARDOSO</span></strong></p>
+                <p><span class="c13">Nascida em 15/05/1997, em Belo Horizonte, MG. Filha de <strong>MAÍZA MENDES DA NÓBREGA</strong></span></p>
+                
+                <p><strong><span class="c18">QN -</span> <span class="c6">1.1.3.8.1.3.2.</span> <span class="c13">SANTIAGO RIBEIRO GRISSI CARDOSO</span></strong></p>
+                <p><span class="c13">Nascido em Londres, Reino Unido em 30/12/2009. Filho de <strong>ANA PAULA RIBEIRO DA SILVA</strong>, nascida em 01/02/1969 em Recife/PE, filha de <strong>PAULO RIBEIRO DASILVA</strong> e <strong>IONE LARA DA SILVA</strong></span></p>
+                
+                <p><strong><span class="c37">TN -</span> <span class="c6">1.1.3.8.8.1.</span> <span class="c13">CAMILA GRISSI PIMENTA</span></strong></p>
+                <p><span class="c13">Nascida em 03/05/1983, em Belo Horizonte, MG. Casou-se em 02/02/2013 em Tiradentes/MG com <strong>CONRADO DE CARVALHO ARAUJO</strong>, nascido em 22/05/1984 em Cruzilia/MG, filho de <strong>MARCIO EVANDRO DE ARAUJO</strong> e <strong>ANA MARIA FARAGE DE CARVALHO</strong>.</span></p>
+                
+                <p><strong><span class="c37">TN -</span> <span class="c6">1.1.3.8.8.2.</span> <span class="c13">VINICIUS GRISSI PIMENTA</span></strong></p>
+                <p><span class="c13">Nascido em 17/12/1985, em Belo Horizonte, MG. Casou-se em 06/10/2023 em Las Vegas, Nevada, EUA com <strong>CARINA AVELAR SOARES DE GOUVEA</strong>, nascida em 14/05/1991, em Belo Horizonte, MG. Filha de <strong>VÂNIA ELIZABETH AVELAR DE GOUVEA</strong> e <strong>JORGE BENEDITO DE SOUZA SOARES DE GOUVEA</strong>.</span></p>
+            `;
+            
+            try {
+                const result = await extractor.extractFromHTML(testHTML);
+                const resultsDiv = document.getElementById('test-results');
+                
+                // Debug: Log the result
+                console.log('Extraction result:', result);
+                console.log('Raw sections:', result.rawSections);
+                
+                let resultsHTML = '<h3>Extracted Data:</h3>';
+                
+                // Test each family member
+                const members = result.familyMembers;
+                members.forEach(member => {
+                    // Calculate expected generation based on ID
+                    const digitCount = member.id.split('.').length;
+                    const expectedGeneration = digitCount - 1;
+                    
+                    resultsHTML += `
+                        <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                            <h4>${member.name} (ID: ${member.id})</h4>
+                            <ul>
+                                <li class="${member.generation === expectedGeneration ? 'success' : 'error'}">
+                                    <strong>Generation:</strong> ${member.generation} ${member.generation === expectedGeneration ? '✅' : '❌'} (Expected: ${expectedGeneration} for ID ${member.id})
+                                </li>
+                                <li class="${member.gender ? 'success' : 'error'}">
+                                    <strong>Gender:</strong> ${member.gender} ✅
+                                </li>
+                                <li class="${member.parents.father ? 'success' : 'error'}">
+                                    <strong>Father:</strong> ${member.parents.father || 'Not found'} ${member.parents.father ? '✅' : '❌'}
+                                </li>
+                                <li class="${member.parents.mother ? 'success' : 'error'}">
+                                    <strong>Mother:</strong> ${member.parents.mother || 'Not found'} ${member.parents.mother ? '✅' : '❌'}
+                                </li>
+                                <li class="${member.relationships.siblings.length > 0 ? 'success' : 'warning'}">
+                                    <strong>Siblings:</strong> ${member.relationships.siblings.length > 0 ? member.relationships.siblings.join(', ') : 'None found'} ${member.relationships.siblings.length > 0 ? '✅' : '⚠️'}
+                                </li>
+                                <li class="success">
+                                    <strong>Ancestors:</strong> Removed as requested ✅
+                                </li>
+                            </ul>
+                            <details>
+                                <summary>Full Data</summary>
+                                <pre>${JSON.stringify(member, null, 2)}</pre>
+                            </details>
+                        </div>
+                    `;
+                });
+                
+                // Specific tests for TEREZINHA (parent detection)
+                const terezinha = members.find(m => m.id === "1.1.3.8.1");
+                if (terezinha) {
+                    // Debug: Check parent detection
+                    console.log('TEREZINHA data:', terezinha);
+                    console.log('TEREZINHA parents:', terezinha.parents);
+                    
+                    resultsHTML += `
+                        <div style="margin: 20px 0; padding: 15px; background-color: #fce4ec; border: 2px solid #e91e63; border-radius: 5px;">
+                            <h3>🎯 TEREZINHA Specific Tests (Parent & Gender Detection):</h3>
+                            <ul>
+                                <li class="${terezinha.generation === 4 ? 'success' : 'error'}">
+                                    <strong>Generation:</strong> ${terezinha.generation} (ID: 1.1.3.8.1 = 5 digits - 1 = 4) ${terezinha.generation === 4 ? '✅' : '❌'}
+                                </li>
+                                <li class="${terezinha.gender === 'female' ? 'success' : 'error'}">
+                                    <strong>Gender:</strong> ${terezinha.gender} ${terezinha.gender === 'female' ? '✅' : '❌'} (Expected: female - "Nascida")
+                                </li>
+                                <li class="${terezinha.parents.father === 'ERNESTO GRISSI' ? 'success' : 'error'}">
+                                    <strong>Father:</strong> ${terezinha.parents.father} ${terezinha.parents.father === 'ERNESTO GRISSI' ? '✅' : '❌'} (Expected: ERNESTO GRISSI)
+                                </li>
+                                <li class="${terezinha.parents.mother && terezinha.parents.mother.includes('ZULMIRA MOREIRA GRISSI') ? 'success' : 'error'}">
+                                    <strong>Mother:</strong> ${terezinha.parents.mother} ${terezinha.parents.mother && terezinha.parents.mother.includes('ZULMIRA MOREIRA GRISSI') ? '✅' : '❌'} (Expected: ZULMIRA MOREIRA GRISSI from ERNESTO's marriage)
+                                </li>
+                                <li class="${terezinha.relationships.siblings.length >= 7 ? 'success' : 'error'}">
+                                    <strong>Siblings:</strong> ${terezinha.relationships.siblings.join(', ')} ${terezinha.relationships.siblings.length >= 7 ? '✅' : '❌'} (Expected: 1.1.3.8.2, 1.1.3.8.3, 1.1.3.8.4, 1.1.3.8.5, 1.1.3.8.6, 1.1.3.8.7, 1.1.3.8.8)
+                                </li>
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                // Specific tests for RODRIGO (parent and sibling detection)
+                const rodrigo = members.find(m => m.id === "1.1.3.8.1.3");
+                if (rodrigo) {
+                    resultsHTML += `
+                        <div style="margin: 20px 0; padding: 15px; background-color: #e3f2fd; border: 2px solid #2196F3; border-radius: 5px;">
+                            <h3>🎯 RODRIGO Specific Tests (Parent & Sibling Detection):</h3>
+                            <ul>
+                                <li class="${rodrigo.generation === 5 ? 'success' : 'error'}">
+                                    <strong>Generation:</strong> ${rodrigo.generation} (ID: 1.1.3.8.1.3 = 6 digits - 1 = 5) ${rodrigo.generation === 5 ? '✅' : '❌'}
+                                </li>
+                                <li class="${rodrigo.parents.mother === 'TEREZINHA MOREIRA GRISSI' ? 'success' : 'error'}">
+                                    <strong>Mother:</strong> ${rodrigo.parents.mother} ${rodrigo.parents.mother === 'TEREZINHA MOREIRA GRISSI' ? '✅' : '❌'} (Expected: TEREZINHA MOREIRA GRISSI)
+                                </li>
+                                <li class="${rodrigo.parents.father && rodrigo.parents.father.includes('JOSÉ LUIZ FERREIRA CARDOSO') ? 'success' : 'error'}">
+                                    <strong>Father:</strong> ${rodrigo.parents.father} ${rodrigo.parents.father && rodrigo.parents.father.includes('JOSÉ LUIZ FERREIRA CARDOSO') ? '✅' : '❌'} (Expected: JOSÉ LUIZ FERREIRA CARDOSO)
+                                </li>
+                                <li class="${rodrigo.relationships.siblings.includes('1.1.3.8.1.1') && rodrigo.relationships.siblings.includes('1.1.3.8.1.2') ? 'success' : 'error'}">
+                                    <strong>Siblings:</strong> ${rodrigo.relationships.siblings.join(', ')} ${rodrigo.relationships.siblings.includes('1.1.3.8.1.1') && rodrigo.relationships.siblings.includes('1.1.3.8.1.2') ? '✅' : '❌'} (Expected: 1.1.3.8.1.1, 1.1.3.8.1.2)
+                                </li>
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                // Specific tests for SANTIAGO
+                const santiago = members.find(m => m.id === "1.1.3.8.1.3.2");
+                if (santiago) {
+                    resultsHTML += `
+                        <div style="margin: 20px 0; padding: 15px; background-color: #e8f5e8; border: 2px solid #4CAF50; border-radius: 5px;">
+                            <h3>🎯 SANTIAGO Specific Tests:</h3>
+                            <ul>
+                                <li class="${santiago.generation === 6 ? 'success' : 'error'}">
+                                    <strong>Generation:</strong> ${santiago.generation} (ID: 1.1.3.8.1.3.2 = 7 digits - 1 = 6) ${santiago.generation === 6 ? '✅' : '❌'}
+                                </li>
+                                <li class="${santiago.parents.father === 'RODRIGO GRISSI CARDOSO' ? 'success' : 'error'}">
+                                    <strong>Father:</strong> ${santiago.parents.father} ${santiago.parents.father === 'RODRIGO GRISSI CARDOSO' ? '✅' : '❌'} (Expected: RODRIGO GRISSI CARDOSO)
+                                </li>
+                                <li class="${santiago.parents.mother && santiago.parents.mother.includes('ANA PAULA RIBEIRO DA SILVA') ? 'success' : 'error'}">
+                                    <strong>Mother:</strong> ${santiago.parents.mother} ${santiago.parents.mother && santiago.parents.mother.includes('ANA PAULA RIBEIRO DA SILVA') ? '✅' : '❌'}
+                                </li>
+                                <li class="${santiago.relationships.siblings.includes('1.1.3.8.1.3.1') ? 'success' : 'error'}">
+                                    <strong>Siblings:</strong> ${santiago.relationships.siblings.join(', ')} ${santiago.relationships.siblings.includes('1.1.3.8.1.3.1') ? '✅' : '❌'} (Expected: 1.1.3.8.1.3.1)
+                                </li>
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                // Specific tests for CAMILA and VINICIUS (mother case)
+                const camila = members.find(m => m.id === "1.1.3.8.8.1");
+                const vinicius = members.find(m => m.id === "1.1.3.8.8.2");
+                if (camila && vinicius) {
+                    resultsHTML += `
+                        <div style="margin: 20px 0; padding: 15px; background-color: #fff3cd; border: 2px solid #ffc107; border-radius: 5px;">
+                            <h3>🎯 CAMILA & VINICIUS Tests (Mother Case):</h3>
+                            <ul>
+                                <li class="${camila.generation === 5 ? 'success' : 'error'}">
+                                    <strong>CAMILA Generation:</strong> ${camila.generation} (ID: 1.1.3.8.8.1 = 6 digits - 1 = 5) ${camila.generation === 5 ? '✅' : '❌'}
+                                </li>
+                                <li class="${vinicius.generation === 5 ? 'success' : 'error'}">
+                                    <strong>VINICIUS Generation:</strong> ${vinicius.generation} (ID: 1.1.3.8.8.2 = 6 digits - 1 = 5) ${vinicius.generation === 5 ? '✅' : '❌'}
+                                </li>
+                                <li class="${camila.parents.mother === 'MARIA DE FÁTIMA MOREIRA GRISSI' ? 'success' : 'error'}">
+                                    <strong>CAMILA Mother:</strong> ${camila.parents.mother} ${camila.parents.mother === 'MARIA DE FÁTIMA MOREIRA GRISSI' ? '✅' : '❌'} (Expected: MARIA DE FÁTIMA MOREIRA GRISSI)
+                                </li>
+                                <li class="${vinicius.parents.mother === 'MARIA DE FÁTIMA MOREIRA GRISSI' ? 'success' : 'error'}">
+                                    <strong>VINICIUS Mother:</strong> ${vinicius.parents.mother} ${vinicius.parents.mother === 'MARIA DE FÁTIMA MOREIRA GRISSI' ? '✅' : '❌'} (Expected: MARIA DE FÁTIMA MOREIRA GRISSI)
+                                </li>
+                                <li class="${camila.parents.father && camila.parents.father.includes('ALOIZIO PIMENTA PINTO') ? 'success' : 'error'}">
+                                    <strong>CAMILA Father:</strong> ${camila.parents.father} ${camila.parents.father && camila.parents.father.includes('ALOIZIO PIMENTA PINTO') ? '✅' : '❌'}
+                                </li>
+                                <li class="${vinicius.parents.father && vinicius.parents.father.includes('ALOIZIO PIMENTA PINTO') ? 'success' : 'error'}">
+                                    <strong>VINICIUS Father:</strong> ${vinicius.parents.father} ${vinicius.parents.father && vinicius.parents.father.includes('ALOIZIO PIMENTA PINTO') ? '✅' : '❌'}
+                                </li>
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                resultsDiv.innerHTML = resultsHTML;
+                
+            } catch (error) {
+                document.getElementById('test-results').innerHTML = `<p class="error">Test failed: ${error.message}</p>`;
+            }
+        }
+        
+        // Run test when page loads
+        window.addEventListener('load', testStructureFixes);
+    </script>
+</body>
+</html>

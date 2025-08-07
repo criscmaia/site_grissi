@@ -1,0 +1,451 @@
+[
+  {
+    "id": "F - 1.1.2",
+    "name": "ANTONIO AUGUSTO GRIZZO",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 2,
+    "gender": "male",
+    "birthDate": "22/08/1868",
+    "birthLocation": "Pordenone, Província de Udine, Itália",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "LUIGI DI ANGELO GRIZZO",
+      "mother": "ELISABETTA PUPPI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "LUIZA PRESOTTI",
+          "legalName": null,
+          "birthDate": "06/11/1874",
+          "birthLocation": "Província de Trevizzo na Itália",
+          "deathDate": "22/09/1962",
+          "marriageDate": "20/06/1893",
+          "parents": {
+            "father": "SANTO PRESOTTI",
+            "mother": "ANGELA CASA GRANDE"
+          }
+        },
+        "children": [
+          {
+            "id": "N - 1.1.2.1",
+            "name": "REGINA"
+          },
+          {
+            "id": "N - 1.1.2.2",
+            "name": "AMABILE RISSA GRIS"
+          },
+          {
+            "id": "N - 1.1.2.3",
+            "name": "ANGELINA GIUSEPPINA GRIS"
+          },
+          {
+            "id": "N - 1.1.2.4",
+            "name": "ANGELIN GRIS"
+          },
+          {
+            "id": "N - 1.1.2.5",
+            "name": "ELISA GRIS"
+          },
+          {
+            "id": "N - 1.1.2.6",
+            "name": "ROSA GRIS"
+          },
+          {
+            "id": "N - 1.1.2.7",
+            "name": "EMILIA GRIS"
+          },
+          {
+            "id": "N - 1.1.2.8",
+            "name": "RENNE GRIS"
+          },
+          {
+            "id": "N - 1.1.2.9",
+            "name": "CLEMENTINA GRIS"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "F - 1.1.1"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "N - 1.1.2.1",
+    "name": "REGINA",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": null,
+    "birthDate": null,
+    "birthLocation": null,
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ANTONIO AUGUSTO GRIZZO",
+      "mother": "LUIZA PRESOTTI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.2.2",
+        "N - 1.1.2.3",
+        "N - 1.1.2.4",
+        "N - 1.1.2.5",
+        "N - 1.1.2.6",
+        "N - 1.1.2.7",
+        "N - 1.1.2.8",
+        "N - 1.1.2.9"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "N - 1.1.2.2",
+    "name": "AMABILE RISSA GRIS",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": "female",
+    "birthDate": "31/03/1896",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": "14/05/1999",
+    "deathLocation": null,
+    "parents": {
+      "father": "ANTONIO AUGUSTO GRIZZO",
+      "mother": "LUIZA PRESOTTI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "LUIZ PICININ",
+          "legalName": null,
+          "birthDate": null,
+          "birthLocation": null,
+          "deathDate": "26/01/1941",
+          "marriageDate": "04/02/1914",
+          "parents": {
+            "father": "GIUSEPPE PICININ",
+            "mother": "THEREZA FABRI"
+          }
+        },
+        "children": [
+          {
+            "id": "BN - 1.1.2.2.1",
+            "name": "LUCIA PICININ"
+          },
+          {
+            "id": "BN - 1.1.2.2.2",
+            "name": "CARLIM PICININ"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.2.1",
+        "N - 1.1.2.3",
+        "N - 1.1.2.4",
+        "N - 1.1.2.5",
+        "N - 1.1.2.6",
+        "N - 1.1.2.7",
+        "N - 1.1.2.8",
+        "N - 1.1.2.9"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "N - 1.1.2.3",
+    "name": "ANGELINA GIUSEPPINA GRIS",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": "female",
+    "birthDate": "14/04/1898",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ANTONIO AUGUSTO GRIZZO",
+      "mother": "LUIZA PRESOTTI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "ANTONIO SFREDO",
+          "legalName": null,
+          "birthDate": "15/03/1892",
+          "birthLocation": null,
+          "deathDate": null,
+          "marriageDate": "21/06/1916",
+          "parents": {
+            "father": "OLIVIO SFREDO",
+            "mother": "ANNA SFREDO"
+          }
+        },
+        "children": []
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.2.1",
+        "N - 1.1.2.2",
+        "N - 1.1.2.4",
+        "N - 1.1.2.5",
+        "N - 1.1.2.6",
+        "N - 1.1.2.7",
+        "N - 1.1.2.8",
+        "N - 1.1.2.9"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "N - 1.1.2.4",
+    "name": "ANGELIN GRIS",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": "male",
+    "birthDate": "14/04/1900",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ANTONIO AUGUSTO GRIZZO",
+      "mother": "LUIZA PRESOTTI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.2.1",
+        "N - 1.1.2.2",
+        "N - 1.1.2.3",
+        "N - 1.1.2.5",
+        "N - 1.1.2.6",
+        "N - 1.1.2.7",
+        "N - 1.1.2.8",
+        "N - 1.1.2.9"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "N - 1.1.2.5",
+    "name": "ELISA GRIS",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": "female",
+    "birthDate": "31/07/1902",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": "19/09/1987",
+    "deathLocation": null,
+    "parents": {
+      "father": "ANTONIO AUGUSTO GRIZZO",
+      "mother": "LUIZA PRESOTTI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.2.1",
+        "N - 1.1.2.2",
+        "N - 1.1.2.3",
+        "N - 1.1.2.4",
+        "N - 1.1.2.6",
+        "N - 1.1.2.7",
+        "N - 1.1.2.8",
+        "N - 1.1.2.9"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "N - 1.1.2.6",
+    "name": "ROSA GRIS",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": "female",
+    "birthDate": "02/11/1904",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ANTONIO AUGUSTO GRIZZO",
+      "mother": "LUIZA PRESOTTI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.2.1",
+        "N - 1.1.2.2",
+        "N - 1.1.2.3",
+        "N - 1.1.2.4",
+        "N - 1.1.2.5",
+        "N - 1.1.2.7",
+        "N - 1.1.2.8",
+        "N - 1.1.2.9"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "N - 1.1.2.7",
+    "name": "EMILIA GRIS",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": "female",
+    "birthDate": null,
+    "birthLocation": null,
+    "deathDate": "27/05/1983",
+    "deathLocation": null,
+    "parents": {
+      "father": "ANTONIO AUGUSTO GRIZZO",
+      "mother": "LUIZA PRESOTTI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.2.1",
+        "N - 1.1.2.2",
+        "N - 1.1.2.3",
+        "N - 1.1.2.4",
+        "N - 1.1.2.5",
+        "N - 1.1.2.6",
+        "N - 1.1.2.8",
+        "N - 1.1.2.9"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "N - 1.1.2.8",
+    "name": "RENNE GRIS",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": "female",
+    "birthDate": "04/03/1909",
+    "birthLocation": null,
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ANTONIO AUGUSTO GRIZZO",
+      "mother": "LUIZA PRESOTTI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.2.1",
+        "N - 1.1.2.2",
+        "N - 1.1.2.3",
+        "N - 1.1.2.4",
+        "N - 1.1.2.5",
+        "N - 1.1.2.6",
+        "N - 1.1.2.7",
+        "N - 1.1.2.9"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "N - 1.1.2.9",
+    "name": "CLEMENTINA GRIS",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": "female",
+    "birthDate": "19/11/1911",
+    "birthLocation": null,
+    "deathDate": "03/03/2002",
+    "deathLocation": null,
+    "parents": {
+      "father": "ANTONIO AUGUSTO GRIZZO",
+      "mother": "LUIZA PRESOTTI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.2.1",
+        "N - 1.1.2.2",
+        "N - 1.1.2.3",
+        "N - 1.1.2.4",
+        "N - 1.1.2.5",
+        "N - 1.1.2.6",
+        "N - 1.1.2.7",
+        "N - 1.1.2.8"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.2.2.1",
+    "name": "LUCIA PICININ",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "female",
+    "birthDate": "12/12/1914",
+    "birthLocation": null,
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "LUIZ PICININ",
+      "mother": "AMABILE RISSA GRIS"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "VICTÓRIO GRIS",
+          "legalName": null,
+          "birthDate": null,
+          "birthLocation": null,
+          "deathDate": null,
+          "marriageDate": "30/11/1935",
+          "parents": {
+            "father": null,
+            "mother": null
+          }
+        },
+        "children": []
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.2.2.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.2.2.2",
+    "name": "CARLIM PICININ",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "male",
+    "birthDate": "14/04/1917",
+    "birthLocation": null,
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "LUIZ PICININ",
+      "mother": "AMABILE RISSA GRIS"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.2.2.1"
+      ]
+    },
+    "observations": null
+  }
+]

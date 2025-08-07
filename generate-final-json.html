@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Generate Final JSON - Complete Family Data</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+        }
+        .progress-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .info { color: #17a2b8; }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .download-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .download-btn {
+            background: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin: 10px;
+        }
+        .download-btn:hover {
+            background: #218838;
+        }
+        .log-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .log-info { background: #d1ecf1; color: #0c5460; }
+        .log-success { background: #d4edda; color: #155724; }
+        .log-warning { background: #fff3cd; color: #856404; }
+        .log-error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Generate Final JSON - Complete Family Data</h1>
+            <p>Extracting all genealogical data from arvore completa_20250806_v1.html</p>
+        </div>
+
+        <div class="progress-section">
+            <h3>📊 Extraction Progress</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div id="progress-text">Initializing...</div>
+        </div>
+
+        <div id="stats" class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-members">-</div>
+                <div>Total Members</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="generations">-</div>
+                <div>Generations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="with-legal-names">-</div>
+                <div>With Legal Names</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="with-unions">-</div>
+                <div>With Unions</div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            🔄 Loading and processing complete family data...
+        </div>
+
+        <div id="error-container"></div>
+        
+        <div id="log-container" class="log-section" style="display: none;">
+            <h4>📝 Processing Log</h4>
+            <div id="log-content"></div>
+        </div>
+
+        <div id="download-section" class="download-section" style="display: none;">
+            <h3>📤 Download Generated Data</h3>
+            <button class="download-btn" onclick="downloadJSON()">Download Complete JSON</button>
+            <button class="download-btn" onclick="downloadCSV()">Download CSV Summary</button>
+            <button class="download-btn" onclick="downloadValidationReport()">Download Validation Report</button>
+        </div>
+    </div>
+
+    <script src="js/genealogy-data-extractor-fixed.js?v=final&t=20250807"></script>
+    <script>
+        console.log('🚀 Starting final JSON generation...');
+        
+        let extractionResult = null;
+        let processingLog = [];
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            processingLog.push({ message: logEntry, type });
+            
+            const logContent = document.getElementById('log-content');
+            if (logContent) {
+                const logDiv = document.createElement('div');
+                logDiv.className = `log-entry log-${type}`;
+                logDiv.textContent = logEntry;
+                logContent.appendChild(logDiv);
+                logContent.scrollTop = logContent.scrollHeight;
+            }
+            
+            console.log(logEntry);
+        }
+
+        function updateProgress(percent, text) {
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = text;
+        }
+
+        function updateStats(data) {
+            const members = data.familyMembers;
+            const generations = new Set(members.map(m => m.generation)).size;
+            const withLegalNames = members.filter(m => m.legalName && m.legalName !== m.name).length;
+            const withUnions = members.filter(m => m.unions && m.unions.length > 0).length;
+            
+            document.getElementById('total-members').textContent = members.length;
+            document.getElementById('generations').textContent = generations;
+            document.getElementById('with-legal-names').textContent = withLegalNames;
+            document.getElementById('with-unions').textContent = withUnions;
+        }
+
+        async function loadAndProcessCompleteData() {
+            try {
+                addLog('🔄 Starting complete data extraction...', 'info');
+                updateProgress(10, 'Loading HTML file...');
+                
+                if (typeof GenealogyDataExtractor === 'undefined') {
+                    throw new Error('GenealogyDataExtractor not loaded');
+                }
+
+                addLog('✅ GenealogyDataExtractor loaded successfully', 'success');
+                updateProgress(20, 'Initializing extractor...');
+
+                const extractor = new GenealogyDataExtractor();
+                
+                addLog('📁 Loading arvore completa_20250806_v1.html...', 'info');
+                updateProgress(30, 'Loading source HTML...');
+
+                // Load the complete HTML file
+                const response = await fetch('arvore completa_20250806_v1.html');
+                if (!response.ok) {
+                    throw new Error(`Failed to load HTML file: ${response.status} ${response.statusText}`);
+                }
+                
+                const htmlContent = await response.text();
+                addLog(`📄 HTML file loaded successfully (${htmlContent.length} characters)`, 'success');
+                updateProgress(50, 'Processing HTML content...');
+
+                addLog('🔍 Starting data extraction from complete HTML...', 'info');
+                const result = await extractor.extractFromHTML(htmlContent);
+                
+                addLog(`✅ Data extraction completed successfully`, 'success');
+                addLog(`📊 Extracted ${result.familyMembers.length} family members`, 'info');
+                addLog(`📊 Maximum generation: ${result.metadata.generations}`, 'info');
+                
+                updateProgress(80, 'Finalizing data...');
+                
+                // Update metadata with final information
+                result.metadata.lastUpdated = new Date().toISOString();
+                result.metadata.dataSource = 'arvore completa_20250806_v1.html';
+                result.metadata.totalMembers = result.familyMembers.length;
+                result.metadata.generations = Math.max(...result.familyMembers.map(m => m.generation));
+                
+                // Add validation information
+                const validationErrors = validateData(result);
+                result.metadata.validation = {
+                    generationErrors: validationErrors.generationErrors,
+                    parentErrors: validationErrors.parentErrors,
+                    siblingErrors: validationErrors.siblingErrors,
+                    unionErrors: validationErrors.unionErrors,
+                    totalErrors: validationErrors.totalErrors
+                };
+                
+                addLog(`🔍 Validation completed: ${validationErrors.totalErrors} errors found`, validationErrors.totalErrors > 0 ? 'warning' : 'success');
+                
+                extractionResult = result;
+                updateStats(result);
+                
+                updateProgress(100, 'Extraction completed successfully!');
+                addLog('🎉 Complete data extraction finished successfully!', 'success');
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('log-container').style.display = 'block';
+                document.getElementById('download-section').style.display = 'block';
+                
+            } catch (error) {
+                console.error('❌ Error in complete data extraction:', error);
+                addLog(`❌ Error: ${error.message}`, 'error');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error-container').innerHTML = `
+                    <div class="error-message">
+                        <h3>❌ Error in Complete Data Extraction</h3>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p><strong>Stack:</strong> ${error.stack}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function validateData(data) {
+            const errors = {
+                generationErrors: 0,
+                parentErrors: 0,
+                siblingErrors: 0,
+                unionErrors: 0,
+                totalErrors: 0
+            };
+
+            data.familyMembers.forEach(member => {
+                // Validate generation calculation
+                const expectedGeneration = member.id.split('.').length - 1;
+                if (member.generation !== expectedGeneration) {
+                    errors.generationErrors++;
+                    addLog(`⚠️ Generation error for ${member.name}: expected ${expectedGeneration}, got ${member.generation}`, 'warning');
+                }
+
+                // Validate parent consistency
+                if (member.parents && member.parents.father && member.parents.mother) {
+                    // Check if parents are from same generation
+                    const parentId = member.id.replace(/\.\d+$/, '');
+                    const parent = data.familyMembers.find(m => m.id === parentId);
+                    if (!parent) {
+                        errors.parentErrors++;
+                        addLog(`⚠️ Parent not found for ${member.name}`, 'warning');
+                    }
+                }
+
+                // Validate sibling consistency
+                if (member.relationships && member.relationships.siblings) {
+                    member.relationships.siblings.forEach(siblingId => {
+                        const sibling = data.familyMembers.find(m => m.id === siblingId);
+                        if (!sibling) {
+                            errors.siblingErrors++;
+                            addLog(`⚠️ Sibling not found: ${siblingId}`, 'warning');
+                        }
+                    });
+                }
+
+                // Validate union consistency
+                if (member.unions) {
+                    member.unions.forEach(union => {
+                        if (union.children) {
+                            union.children.forEach(childId => {
+                                const child = data.familyMembers.find(m => m.id === childId);
+                                if (!child) {
+                                    errors.unionErrors++;
+                                    addLog(`⚠️ Child not found in union: ${childId}`, 'warning');
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+            errors.totalErrors = errors.generationErrors + errors.parentErrors + errors.siblingErrors + errors.unionErrors;
+            return errors;
+        }
+
+        function downloadJSON() {
+            if (!extractionResult) {
+                alert('No data available for download');
+                return;
+            }
+
+            const dataStr = JSON.stringify(extractionResult, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'family-data-complete-v3.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            addLog('📥 Complete JSON file downloaded', 'success');
+        }
+
+        function downloadCSV() {
+            if (!extractionResult) {
+                alert('No data available for download');
+                return;
+            }
+
+            const members = extractionResult.familyMembers;
+            const headers = ['ID', 'Name', 'Legal Name', 'Generation', 'Gender', 'Birth Info', 'Father', 'Mother', 'Siblings', 'Unions', 'Name Changes'];
+            const csvContent = [
+                headers.join(','),
+                ...members.map(m => [
+                    m.id,
+                    `"${m.name}"`,
+                    `"${m.legalName || ''}"`,
+                    m.generation,
+                    m.gender,
+                    `"${m.birthInfo || ''}"`,
+                    `"${m.parents?.father || ''}"`,
+                    `"${m.parents?.mother || ''}"`,
+                    `"${m.relationships?.siblings?.join('; ') || ''}"`,
+                    `"${m.unions?.length || 0}"`,
+                    `"${m.nameChanges?.length || 0}"`
+                ].join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], {type: 'text/csv'});
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'family-data-summary.csv';
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            addLog('📥 CSV summary file downloaded', 'success');
+        }
+
+        function downloadValidationReport() {
+            if (!extractionResult) {
+                alert('No data available for download');
+                return;
+            }
+
+            const report = {
+                extractionDate: new Date().toISOString(),
+                sourceFile: 'arvore completa_20250806_v1.html',
+                summary: {
+                    totalMembers: extractionResult.familyMembers.length,
+                    generations: extractionResult.metadata.generations,
+                    membersWithLegalNames: extractionResult.familyMembers.filter(m => m.legalName && m.legalName !== m.name).length,
+                    membersWithUnions: extractionResult.familyMembers.filter(m => m.unions && m.unions.length > 0).length,
+                    membersWithNameChanges: extractionResult.familyMembers.filter(m => m.nameChanges && m.nameChanges.length > 0).length
+                },
+                validation: extractionResult.metadata.validation,
+                processingLog: processingLog
+            };
+
+            const dataStr = JSON.stringify(report, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'validation-report.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            addLog('📥 Validation report downloaded', 'success');
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', loadAndProcessCompleteData);
+    </script>
+</body>
+</html>

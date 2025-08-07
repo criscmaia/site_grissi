@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Enhanced Family Renderer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .info { color: #17a2b8; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Enhanced Family Renderer</h1>
+        
+        <div class="section">
+            <h2>📋 Debug Information</h2>
+            <button onclick="testScriptLoading()">Test Script Loading</button>
+            <button onclick="testJSONLoading()">Test JSON Loading</button>
+            <button onclick="testEnhancedRenderer()">Test Enhanced Renderer</button>
+            <div id="debugResults">Click buttons to test...</div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Debug Results</h2>
+            <pre id="debugOutput">Waiting for tests...</pre>
+        </div>
+    </div>
+
+    <!-- Load JavaScript modules -->
+    <script src="js/enhanced-family-renderer.js"></script>
+    
+    <script>
+        function log(message, type = 'info') {
+            const output = document.getElementById('debugOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'info';
+            output.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            console.log(message);
+        }
+
+        function testScriptLoading() {
+            log('🔍 Testing script loading...');
+            
+            if (typeof EnhancedFamilyRenderer !== 'undefined') {
+                log('✅ EnhancedFamilyRenderer class found', 'success');
+                log(`Class name: ${EnhancedFamilyRenderer.name}`);
+                log(`Constructor: ${typeof EnhancedFamilyRenderer}`);
+            } else {
+                log('❌ EnhancedFamilyRenderer class not found', 'error');
+            }
+            
+            if (typeof FamilyRenderer !== 'undefined') {
+                log('✅ FamilyRenderer class found', 'success');
+            } else {
+                log('❌ FamilyRenderer class not found', 'error');
+            }
+        }
+
+        async function testJSONLoading() {
+            log('🔍 Testing JSON file loading...');
+            
+            try {
+                const response = await fetch('family-data-v2 (7).json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                log(`✅ JSON loaded successfully`, 'success');
+                log(`📊 Total members: ${data.familyMembers.length}`);
+                log(`📈 Completeness: ${data.metadata.migrationInfo.validationResults.completenessPercentage}%`);
+                log(`📋 Metadata version: ${data.metadata.version}`);
+                
+            } catch (error) {
+                log(`❌ JSON loading failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function testEnhancedRenderer() {
+            log('🔍 Testing Enhanced Family Renderer...');
+            
+            if (typeof EnhancedFamilyRenderer === 'undefined') {
+                log('❌ EnhancedFamilyRenderer not available', 'error');
+                return;
+            }
+            
+            try {
+                const renderer = new EnhancedFamilyRenderer();
+                log('✅ EnhancedFamilyRenderer instance created', 'success');
+                
+                // Test initialization
+                await renderer.initialize();
+                log('✅ EnhancedFamilyRenderer initialized successfully', 'success');
+                
+            } catch (error) {
+                log(`❌ EnhancedFamilyRenderer test failed: ${error.message}`, 'error');
+                log(`Stack trace: ${error.stack}`, 'error');
+            }
+        }
+
+        // Auto-run tests on page load
+        window.addEventListener('load', function() {
+            log('🚀 Page loaded, running initial tests...');
+            setTimeout(() => {
+                testScriptLoading();
+                testJSONLoading();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+[
+  {
+    "id": "N - 1.1.3.5",
+    "name": "VICTÓRIO GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": "male",
+    "birthDate": "30/10/1907",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": "26/01/1941",
+    "deathLocation": null,
+    "parents": {
+      "father": "GIOVANNI GRIZZO",
+      "mother": "GIUSEPPINA TOFFOLO"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "LUCIA PICININ",
+          "legalName": "LUCIA PICININ GRISSI",
+          "birthDate": "12/12/1914",
+          "birthLocation": "Barbacena, MG",
+          "deathDate": "14/05/1999",
+          "marriageDate": "30/11/1935",
+          "parents": {
+            "father": "LUIZ PICININ",
+            "mother": "AMABILE MARIA GRIS"
+          }
+        },
+        "children": [
+          {
+            "id": "BN - 1.1.3.5.1",
+            "name": "ADÉLIA GRISSI"
+          },
+          {
+            "id": "BN - 1.1.3.5.2",
+            "name": "MARIA HELENA GRISSI"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.3.1",
+        "N - 1.1.3.2",
+        "N - 1.1.3.3",
+        "N - 1.1.3.4",
+        "N - 1.1.3.6",
+        "N - 1.1.3.7",
+        "N - 1.1.3.8",
+        "N - 1.1.3.9",
+        "N - 1.1.3.10"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.3.5.1",
+    "name": "ADÉLIA GRISSI",
+    "legalName": "ADELIA GRISSI BORGO",
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "female",
+    "birthDate": "27/03/1937",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "VICTÓRIO GRISSI",
+      "mother": "LUCIA PICININ"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "NILO BORGO",
+          "legalName": null,
+          "birthDate": "15/11/1938",
+          "birthLocation": "Barbacena, MG",
+          "deathDate": null,
+          "marriageDate": "25/02/1960",
+          "parents": {
+            "father": "MARGARIDO BORGO DE CARVALHO",
+            "mother": "IRENE ROSSI"
+          }
+        },
+        "children": [
+          {
+            "id": "TN - 1.1.3.5.1.1",
+            "name": "RITA DE CÁSSIA BORGO"
+          },
+          {
+            "id": "TN - 1.1.3.5.1.2",
+            "name": "ADAUTON BORGO"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.3.5.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.5.1.1",
+    "name": "RITA DE CÁSSIA BORGO",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "female",
+    "birthDate": "02/07/1962",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "NILO BORGO",
+      "mother": "ADÉLIA GRISSI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.5.1.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.5.1.2",
+    "name": "ADAUTON BORGO",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "17/01/1967",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "NILO BORGO",
+      "mother": "ADÉLIA GRISSI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.5.1.1"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.3.5.2",
+    "name": "MARIA HELENA GRISSI",
+    "legalName": "MARIA HELENA GRISSI PISSOLATI",
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "female",
+    "birthDate": "16/10/1938",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "VICTÓRIO GRISSI",
+      "mother": "LUCIA PICININ"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "MAURO JOSÉ PISSOLATI",
+          "legalName": null,
+          "birthDate": "28/12/1931",
+          "birthLocation": "Barbacena, MG",
+          "deathDate": "15/01/2023",
+          "marriageDate": "05/12/1959",
+          "parents": {
+            "father": "GERMANO IVIDIO PISSOLATI",
+            "mother": "OLIMPIA BIANCHETTI PISSOLATI"
+          }
+        },
+        "children": [
+          {
+            "id": "TN - 1.1.3.5.2.1",
+            "name": "MARCOS GRISSI PISSOLATI"
+          },
+          {
+            "id": "TN - 1.1.3.5.2.2",
+            "name": "MAURO ROBERTO GRISSI PISSOLATI"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.3.5.1"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.5.2.1",
+    "name": "MARCOS GRISSI PISSOLATI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "20/10/1960",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "MAURO JOSÉ PISSOLATI",
+      "mother": "MARIA HELENA GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "LÁZARA EULÁLIA MONT'ALVÃO DO PRADO",
+          "legalName": null,
+          "birthDate": "13/02/1962",
+          "birthLocation": "Ponte Nova, MG",
+          "deathDate": null,
+          "marriageDate": "13/02/1992",
+          "parents": {
+            "father": "ANTÔNIO RODRIGUES DO PRADO",
+            "mother": "MARIA WANILDA MONT'ALVÃO DO PRADO"
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.5.2.1.1",
+            "name": "LUCAS DO PRADO PISSOLATI"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.5.2.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.5.2.1.1",
+    "name": "LUCAS DO PRADO PISSOLATI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "18/05/1993",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "MARCOS GRISSI PISSOLATI",
+      "mother": "LÁZARA EULÁLIA MONT'ALVÃO DO PRADO"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": []
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.5.2.2",
+    "name": "MAURO ROBERTO GRISSI PISSOLATI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "16/07/1964",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "MAURO JOSÉ PISSOLATI",
+      "mother": "MARIA HELENA GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "CHRISTIANE LARA DE FARIA",
+          "legalName": "CHRISTIANE LARA DE FARIA PISSOLATI",
+          "birthDate": "28/02/1975",
+          "birthLocation": "São Paulo, SP",
+          "deathDate": null,
+          "marriageDate": "28/03/2002",
+          "parents": {
+            "father": "EDSON ENOCK DE FARIA",
+            "mother": "MARTILINA PALMA MOMESSO DE FARIA"
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.5.2.2.1",
+            "name": "BERNARDO ANTONIO DE FARIA PISSOLATI"
+          },
+          {
+            "id": "QN - 1.1.3.5.2.2.2",
+            "name": "GERMANO ANTONIO DE FARIA PISSOLATI"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.5.2.1"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.5.2.2.1",
+    "name": "BERNARDO ANTONIO DE FARIA PISSOLATI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "11/06/2011",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "MAURO ROBERTO GRISSI PISSOLATI",
+      "mother": "CHRISTIANE LARA DE FARIA"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.5.2.2.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.5.2.2.2",
+    "name": "GERMANO ANTONIO DE FARIA PISSOLATI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "23/11/2012",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "MAURO ROBERTO GRISSI PISSOLATI",
+      "mother": "CHRISTIANE LARA DE FARIA"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.5.2.2.1"
+      ]
+    },
+    "observations": null
+  }
+]

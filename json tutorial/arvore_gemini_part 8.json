@@ -1,0 +1,1696 @@
+[
+  {
+    "id": "N - 1.1.3.9",
+    "name": "JOSÉ GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 3,
+    "gender": "male",
+    "birthDate": "13/09/1918",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": "15/01/1991",
+    "deathLocation": null,
+    "parents": {
+      "father": "GIOVANNI GRIZZO",
+      "mother": "GIUSEPPINA TOFFOLO"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "EMILIA PIVA",
+          "legalName": "EMILIA PIVA GRISSI",
+          "birthDate": "19/05/1919",
+          "birthLocation": "Campestre, MG",
+          "deathDate": "24/11/1989",
+          "marriageDate": "30/04/1940",
+          "parents": {
+            "father": "EUGÊNIO PIVA",
+            "mother": "CECÍLIA MARIA JESUS"
+          }
+        },
+        "children": [
+          {
+            "id": "BN - 1.1.3.9.1",
+            "name": "DAURA GRISSI"
+          },
+          {
+            "id": "BN - 1.1.3.9.2",
+            "name": "JOÃO VICENTE GRISSI"
+          },
+          {
+            "id": "BN - 1.1.3.9.3",
+            "name": "DALVA GRISSI"
+          },
+          {
+            "id": "BN - 1.1.3.9.4",
+            "name": "DULCE GRISSI"
+          },
+          {
+            "id": "BN - 1.1.3.9.5",
+            "name": "MARIA LUIZA GRISSI"
+          },
+          {
+            "id": "BN - 1.1.3.9.6",
+            "name": "ANÉZIA JOSEFINA GRISSI"
+          },
+          {
+            "id": "BN - 1.1.3.9.7",
+            "name": "JOSÉ FERNANDES GRISSI"
+          },
+          {
+            "id": "BN - 1.1.3.9.8",
+            "name": "MARIA MADALENA GRISSI"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "N - 1.1.3.1",
+        "N - 1.1.3.2",
+        "N - 1.1.3.3",
+        "N - 1.1.3.4",
+        "N - 1.1.3.5",
+        "N - 1.1.3.6",
+        "N - 1.1.3.7",
+        "N - 1.1.3.8",
+        "N - 1.1.3.10"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.3.9.1",
+    "name": "DAURA GRISSI",
+    "legalName": "DAURA GRISSI CANDIAN",
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "female",
+    "birthDate": "05/06/1940",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSÉ GRISSI",
+      "mother": "EMILIA PIVA"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "NILSON JOVIANO CANDIAN",
+          "legalName": null,
+          "birthDate": "26/04/1935",
+          "birthLocation": "Dr. Sá Fortes, MG",
+          "deathDate": null,
+          "marriageDate": "11/05/1963",
+          "parents": {
+            "father": "CARLINHOS CANDIAN",
+            "mother": "MARIA EVIZERO CANDIAN"
+          }
+        },
+        "children": [
+          {
+            "id": "TN - 1.1.3.9.1.1",
+            "name": "AMARILDO CANDIAN"
+          },
+          {
+            "id": "TN - 1.1.3.9.1.2",
+            "name": "ZURAIDE CANDIAN"
+          },
+          {
+            "id": "TN - 1.1.3.9.1.3",
+            "name": "EVERALDO CANDIAN"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.3.9.2",
+        "BN - 1.1.3.9.3",
+        "BN - 1.1.3.9.4",
+        "BN - 1.1.3.9.5",
+        "BN - 1.1.3.9.6",
+        "BN - 1.1.3.9.7",
+        "BN - 1.1.3.9.8"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.1.1",
+    "name": "AMARILDO CANDIAN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "26/04/1964",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "NILSON JOVIANO CANDIAN",
+      "mother": "DAURA GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "MARIA APARECIDA BORGES",
+          "legalName": null,
+          "birthDate": "29/11/1965",
+          "birthLocation": null,
+          "deathDate": null,
+          "marriageDate": "27/12/1978",
+          "parents": {
+            "father": null,
+            "mother": null
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.9.1.1.1",
+            "name": "DANIEL CANDIAN"
+          },
+          {
+            "id": "QN - 1.1.3.9.1.1.2",
+            "name": "NILSON CANDIAN NETO"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.1.2",
+        "TN - 1.1.3.9.1.3"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.1.1.1",
+    "name": "DANIEL CANDIAN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "03/04/1981",
+    "birthLocation": "Juiz de Fora, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "AMARILDO CANDIAN",
+      "mother": "MARIA APARECIDA BORGES"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.1.1.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.1.1.2",
+    "name": "NILSON CANDIAN NETO",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "05/10/1998",
+    "birthLocation": "Juiz de Fora, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "AMARILDO CANDIAN",
+      "mother": "MARIA APARECIDA BORGES"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.1.1.1"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.1.2",
+    "name": "ZURAIDE CANDIAN",
+    "legalName": "ZURAIDE CANDIAN DRUMOND",
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "female",
+    "birthDate": "17/02/1966",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "NILSON JOVIANO CANDIAN",
+      "mother": "DAURA GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "ALDAIR DIVINO DRUMOND",
+          "legalName": null,
+          "birthDate": "13/04/1962",
+          "birthLocation": "Barbacena, MG",
+          "deathDate": null,
+          "marriageDate": "20/07/1995",
+          "parents": {
+            "father": "LUIS DRUMOND",
+            "mother": "VANDA JOZIFINA CARDOSO DRUMOND"
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.9.1.2.1",
+            "name": "KAROLINE DRUMOND"
+          },
+          {
+            "id": "QN - 1.1.3.9.1.2.2",
+            "name": "RAFAELA DRUMOND"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.1.1",
+        "TN - 1.1.3.9.1.3"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.1.2.1",
+    "name": "KAROLINE DRUMOND",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "female",
+    "birthDate": "11/04/1986",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ALDAIR DIVINO DRUMOND",
+      "mother": "ZURAIDE CANDIAN"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.1.2.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.1.2.2",
+    "name": "RAFAELA DRUMOND",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "female",
+    "birthDate": "27/12/1991",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ALDAIR DIVINO DRUMOND",
+      "mother": "ZURAIDE CANDIAN"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.1.2.1"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.1.3",
+    "name": "EVERALDO CANDIAN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "28/11/1970",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "NILSON JOVIANO CANDIAN",
+      "mother": "DAURA GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "JOELMA GROSSI",
+          "legalName": "JOELMA GROSSI CANDIAN",
+          "birthDate": "25/08/1973",
+          "birthLocation": "Dr. Sá Fortes, Barbacena, MG",
+          "deathDate": null,
+          "marriageDate": "05/02/1994",
+          "parents": {
+            "father": null,
+            "mother": null
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.9.1.3.1",
+            "name": "IGÔR LUCAS CANDIAN"
+          },
+          {
+            "id": "QN - 1.1.3.9.1.3.2",
+            "name": "MATEUS FELIPE CANDIAN"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.1.1",
+        "TN - 1.1.3.9.1.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.1.3.1",
+    "name": "IGÔR LUCAS CANDIAN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "20/12/1994",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "EVERALDO CANDIAN",
+      "mother": "JOELMA GROSSI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.1.3.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.1.3.2",
+    "name": "MATEUS FELIPE CANDIAN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "16/02/1998",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "EVERALDO CANDIAN",
+      "mother": "JOELMA GROSSI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.1.3.1"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.3.9.2",
+    "name": "JOÃO VICENTE GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "male",
+    "birthDate": "01/01/1942",
+    "birthLocation": "Dr. Sá Fortes, Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSÉ GRISSI",
+      "mother": "EMILIA PIVA"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "NILVA IEDA DIAS",
+          "legalName": "NILVA IEDA DIAS GRISSI",
+          "birthDate": "29/04/1945",
+          "birthLocation": "Antônio Carlos, MG",
+          "deathDate": null,
+          "marriageDate": "25/11/1967",
+          "parents": {
+            "father": "MAXIMINO DIAS",
+            "mother": "DARCY MARIA SAVASSI DIAS"
+          }
+        },
+        "children": [
+          {
+            "id": "TN - 1.1.3.9.2.1",
+            "name": "PAULO RICARDO GRISSI"
+          },
+          {
+            "id": "TN - 1.1.3.9.2.2",
+            "name": "CLÁUDIA GRISSI"
+          },
+          {
+            "id": "TN - 1.1.3.9.2.3",
+            "name": "FLAVIA GRISSI"
+          },
+          {
+            "id": "TN - 1.1.3.9.2.4",
+            "name": "LEONARDO DIAS GRISSI"
+          },
+          {
+            "id": "TN - 1.1.3.9.2.5",
+            "name": "CESAR AUGUSTO DIAS GRISSI"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.3.9.1",
+        "BN - 1.1.3.9.3",
+        "BN - 1.1.3.9.4",
+        "BN - 1.1.3.9.5",
+        "BN - 1.1.3.9.6",
+        "BN - 1.1.3.9.7",
+        "BN - 1.1.3.9.8"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.2.1",
+    "name": "PAULO RICARDO GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "29/10/1968",
+    "birthLocation": "Belo Horizonte, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOÃO VICENTE GRISSI",
+      "mother": "NILVA IEDA DIAS"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "ANA CLAUDIA MACIEL RIBEIRO",
+          "legalName": null,
+          "birthDate": "04/04/1970",
+          "birthLocation": "Pompeu, MG",
+          "deathDate": null,
+          "marriageDate": "11/09/2004",
+          "parents": {
+            "father": "GERALDO RIBEIRO SOBRINHO",
+            "mother": "GISLEIDA DE CAMPOS MACIEL"
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.9.2.1.1",
+            "name": "ANA LUIZA MACIEL GRISSI"
+          },
+          {
+            "id": "QN - 1.1.3.9.2.1.2",
+            "name": "JOÃO PAULO MACIEL GRISSI"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.2.2",
+        "TN - 1.1.3.9.2.3",
+        "TN - 1.1.3.9.2.4",
+        "TN - 1.1.3.9.2.5"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.2.1.1",
+    "name": "ANA LUIZA MACIEL GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "female",
+    "birthDate": "26/12/2006",
+    "birthLocation": "Belo Horizonte, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "PAULO RICARDO GRISSI",
+      "mother": "ANA CLAUDIA MACIEL RIBEIRO"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.2.1.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.2.1.2",
+    "name": "JOÃO PAULO MACIEL GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "19/11/2008",
+    "birthLocation": "Belo Horizonte, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "PAULO RICARDO GRISSI",
+      "mother": "ANA CLAUDIA MACIEL RIBEIRO"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.2.1.1"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.2.2",
+    "name": "CLÁUDIA GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": null,
+    "birthDate": null,
+    "birthLocation": null,
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOÃO VICENTE GRISSI",
+      "mother": "NILVA IEDA DIAS"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.2.1",
+        "TN - 1.1.3.9.2.3",
+        "TN - 1.1.3.9.2.4",
+        "TN - 1.1.3.9.2.5"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.2.3",
+    "name": "FLAVIA GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "female",
+    "birthDate": "03/03/1973",
+    "birthLocation": "Belo Horizonte, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOÃO VICENTE GRISSI",
+      "mother": "NILVA IEDA DIAS"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.2.1",
+        "TN - 1.1.3.9.2.2",
+        "TN - 1.1.3.9.2.4",
+        "TN - 1.1.3.9.2.5"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.2.4",
+    "name": "LEONARDO DIAS GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "23/09/1978",
+    "birthLocation": "Belo Horizonte, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOÃO VICENTE GRISSI",
+      "mother": "NILVA IEDA DIAS"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.2.1",
+        "TN - 1.1.3.9.2.2",
+        "TN - 1.1.3.9.2.3",
+        "TN - 1.1.3.9.2.5"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.2.5",
+    "name": "CESAR AUGUSTO DIAS GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "17/06/1981",
+    "birthLocation": "Belo Horizonte, Minas Gerais",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOÃO VICENTE GRISSI",
+      "mother": "NILVA IEDA DIAS"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.2.1",
+        "TN - 1.1.3.9.2.2",
+        "TN - 1.1.3.9.2.3",
+        "TN - 1.1.3.9.2.4"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.3.9.3",
+    "name": "DALVA GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "female",
+    "birthDate": "12/08/1944",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSÉ GRISSI",
+      "mother": "EMILIA PIVA"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "BRUNO BOTELLI GUERRA",
+          "legalName": null,
+          "birthDate": "18/04/1942",
+          "birthLocation": "Antônio Carlos, MG",
+          "deathDate": null,
+          "marriageDate": "13/11/1967",
+          "parents": {
+            "father": "ANTONIO GUERRA",
+            "mother": "DIGNIRA BOTELLI GUERRA"
+          }
+        },
+        "children": [
+          {
+            "id": "TN - 1.1.3.9.3.1",
+            "name": "ALESSANDRA GRISSI GUERRA"
+          },
+          {
+            "id": "TN - 1.1.3.9.3.2",
+            "name": "DIARLHES GRISSI GUERRA"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.3.9.1",
+        "BN - 1.1.3.9.2",
+        "BN - 1.1.3.9.4",
+        "BN - 1.1.3.9.5",
+        "BN - 1.1.3.9.6",
+        "BN - 1.1.3.9.7",
+        "BN - 1.1.3.9.8"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.3.1",
+    "name": "ALESSANDRA GRISSI GUERRA",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "female",
+    "birthDate": "31/03/1969",
+    "birthLocation": "Conselheiro Lafaiete, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "BRUNO BOTELLI GUERRA",
+      "mother": "DALVA GRISSI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.3.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.3.2",
+    "name": "DIARLHES GRISSI GUERRA",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "06/08/1974",
+    "birthLocation": "Conselheiro Lafaiete, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "BRUNO BOTELLI GUERRA",
+      "mother": "DALVA GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": null,
+          "legalName": null,
+          "birthDate": null,
+          "birthLocation": null,
+          "deathDate": null,
+          "marriageDate": null,
+          "parents": {
+            "father": null,
+            "mother": null
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.9.3.2.1",
+            "name": "LUCAS DAMATA GUERRA"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.3.1"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.3.2.1",
+    "name": "LUCAS DAMATA GUERRA",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "28/02/2011",
+    "birthLocation": "Conselheiro Lafaiete, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "DIARLHES GRISSI GUERRA",
+      "mother": null
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": []
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.3.9.4",
+    "name": "DULCE GRISSI",
+    "legalName": "DULCE GRISSI ZONZIN",
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "female",
+    "birthDate": "08/10/1946",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSÉ GRISSI",
+      "mother": "EMILIA PIVA"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "ERIO ILTON ZONZIN",
+          "legalName": null,
+          "birthDate": "27/01/1947",
+          "birthLocation": "Antônio Carlos, MG",
+          "deathDate": null,
+          "marriageDate": "25/01/1969",
+          "parents": {
+            "father": "CELESTINO FORTUNATO ZONZIN",
+            "mother": "HILDA DE SÁ DOMINGOS ZONZIN"
+          }
+        },
+        "children": [
+          {
+            "id": "TN - 1.1.3.9.4.1",
+            "name": "ADRIANA LANE ZONZIN"
+          },
+          {
+            "id": "TN - 1.1.3.9.4.2",
+            "name": "JEAN CARLO ZONZIN"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.3.9.1",
+        "BN - 1.1.3.9.2",
+        "BN - 1.1.3.9.3",
+        "BN - 1.1.3.9.5",
+        "BN - 1.1.3.9.6",
+        "BN - 1.1.3.9.7",
+        "BN - 1.1.3.9.8"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.4.1",
+    "name": "ADRIANA LANE ZONZIN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "female",
+    "birthDate": "18/01/1970",
+    "birthLocation": "Antônio Carlos, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ERIO ILTON ZONZIN",
+      "mother": "DULCE GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "LEONARDO JOSE DE OLIVEIRA FORTES",
+          "legalName": null,
+          "birthDate": null,
+          "birthLocation": null,
+          "deathDate": null,
+          "marriageDate": null,
+          "parents": {
+            "father": null,
+            "mother": null
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.9.4.1.1",
+            "name": "BEATRIZ"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.4.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.4.1.1",
+    "name": "BEATRIZ",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "female",
+    "birthDate": "2005",
+    "birthLocation": "Barbacena/MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "LEONARDO JOSE DE OLIVEIRA FORTES",
+      "mother": "ADRIANA LANE ZONZIN"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": []
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.4.2",
+    "name": "JEAN CARLO ZONZIN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "05/02/1973",
+    "birthLocation": "Antônio Carlos, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ERIO ILTON ZONZIN",
+      "mother": "DULCE GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "MONICA CRISTINA",
+          "legalName": null,
+          "birthDate": null,
+          "birthLocation": null,
+          "deathDate": null,
+          "marriageDate": null,
+          "parents": {
+            "father": null,
+            "mother": null
+          }
+        },
+        "children": []
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.4.1"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.3.9.5",
+    "name": "MARIA LUIZA GRISSI",
+    "legalName": "MARIA LUIZA GRISSI BERGAMINI",
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "female",
+    "birthDate": "20/02/1948",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": "29/06/2009",
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSÉ GRISSI",
+      "mother": "EMILIA PIVA"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "JOÃO MARCOS BERGAMINI",
+          "legalName": null,
+          "birthDate": "15/03/1948",
+          "birthLocation": "Barbacena, MG",
+          "deathDate": null,
+          "marriageDate": "31/01/1970",
+          "parents": {
+            "father": "JOSÉ BERGAMINI",
+            "mother": "MARIA LUIZA BERTOLLA BERGAMINI"
+          }
+        },
+        "children": [
+          {
+            "id": "TN - 1.1.3.9.5.1",
+            "name": "ANDREA BERGAMINI"
+          },
+          {
+            "id": "TN - 1.1.3.9.5.2",
+            "name": "JOÃO RICARDO BERGAMINI"
+          },
+          {
+            "id": "TN - 1.1.3.9.5.3",
+            "name": "VALÉRIA BERGAMINI"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.3.9.1",
+        "BN - 1.1.3.9.2",
+        "BN - 1.1.3.9.3",
+        "BN - 1.1.3.9.4",
+        "BN - 1.1.3.9.6",
+        "BN - 1.1.3.9.7",
+        "BN - 1.1.3.9.8"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.5.1",
+    "name": "ANDREA BERGAMINI",
+    "legalName": "ANDREA BERGAMINI REIS",
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "female",
+    "birthDate": "26/01/1971",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOÃO MARCOS BERGAMINI",
+      "mother": "MARIA LUIZA GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "WALTER DOS REIS ROSA",
+          "legalName": null,
+          "birthDate": "24/04/1969",
+          "birthLocation": "Rio de Janeiro, RJ",
+          "deathDate": null,
+          "marriageDate": "18/07/1998",
+          "parents": {
+            "father": "VALDIR MAURÍCIO ROSA",
+            "mother": "MARIA DO ROSÁRIO DOS REIS"
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.9.5.1.1",
+            "name": "JULIANA BERGAMINI REIS"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.5.2",
+        "TN - 1.1.3.9.5.3"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.5.1.1",
+    "name": "JULIANA BERGAMINI REIS",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "female",
+    "birthDate": "07/01/2000",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "WALTER DOS REIS ROSA",
+      "mother": "ANDREA BERGAMINI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": []
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.5.2",
+    "name": "JOÃO RICARDO BERGAMINI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "24/06/1972",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOÃO MARCOS BERGAMINI",
+      "mother": "MARIA LUIZA GRISSI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.5.1",
+        "TN - 1.1.3.9.5.3"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.5.3",
+    "name": "VALÉRIA BERGAMINI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "female",
+    "birthDate": "03/05/1980",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOÃO MARCOS BERGAMINI",
+      "mother": "MARIA LUIZA GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "ANDRÉ LEITE",
+          "legalName": null,
+          "birthDate": null,
+          "birthLocation": null,
+          "deathDate": null,
+          "marriageDate": null,
+          "parents": {
+            "father": null,
+            "mother": null
+          }
+        },
+        "children": []
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.5.1",
+        "TN - 1.1.3.9.5.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.3.9.6",
+    "name": "ANÉZIA JOSEFINA GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "female",
+    "birthDate": "21/10/1949",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": "31/12/2017",
+    "deathLocation": "Barbacena, MG",
+    "parents": {
+      "father": "JOSÉ GRISSI",
+      "mother": "EMILIA PIVA"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "ÉZIO HILTON ZONZIN",
+          "legalName": null,
+          "birthDate": "31/05/1945",
+          "birthLocation": "Barbacena, MG",
+          "deathDate": null,
+          "marriageDate": "25/09/1971",
+          "parents": {
+            "father": "CELESTINO FORTUNATO ZONZIN",
+            "mother": "HILDA DE SÁ DOMINGOS ZONZIN"
+          }
+        },
+        "children": [
+          {
+            "id": "TN - 1.1.3.9.6.1",
+            "name": "EULER MARCOS ZONZIN"
+          },
+          {
+            "id": "TN - 1.1.3.9.6.2",
+            "name": "PATRICIA ELIANE ZONZIN"
+          },
+          {
+            "id": "TN - 1.1.3.9.6.3",
+            "name": "WESLEY JOSÉ ZONZIN"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.3.9.1",
+        "BN - 1.1.3.9.2",
+        "BN - 1.1.3.9.3",
+        "BN - 1.1.3.9.4",
+        "BN - 1.1.3.9.5",
+        "BN - 1.1.3.9.7",
+        "BN - 1.1.3.9.8"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.6.1",
+    "name": "EULER MARCOS ZONZIN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "10/09/1972",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": "31/01/2020",
+    "deathLocation": null,
+    "parents": {
+      "father": "ÉZIO HILTON ZONZIN",
+      "mother": "ANÉZIA JOSEFINA GRISSI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.6.2",
+        "TN - 1.1.3.9.6.3"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.6.2",
+    "name": "PATRICIA ELIANE ZONZIN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "female",
+    "birthDate": "04/01/1975",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ÉZIO HILTON ZONZIN",
+      "mother": "ANÉZIA JOSEFINA GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "JOSE TADEU ESTEVES",
+          "legalName": null,
+          "birthDate": null,
+          "birthLocation": null,
+          "deathDate": null,
+          "marriageDate": null,
+          "parents": {
+            "father": null,
+            "mother": null
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.9.6.2.1",
+            "name": "ERIK ZONZIN ESTEVES"
+          },
+          {
+            "id": "QN - 1.1.3.9.6.2.2",
+            "name": "RODRIGO ZONZIN ESTEVES"
+          },
+          {
+            "id": "QN - 1.1.3.9.6.2.3",
+            "name": "IZADORA ZONZIN ESTEVES"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.6.1",
+        "TN - 1.1.3.9.6.3"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.6.2.1",
+    "name": "ERIK ZONZIN ESTEVES",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "28/09/1998",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSE TADEU ESTEVES",
+      "mother": "PATRICIA ELIANE ZONZIN"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.6.2.2",
+        "QN - 1.1.3.9.6.2.3"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.6.2.2",
+    "name": "RODRIGO ZONZIN ESTEVES",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "28/10/2002",
+    "birthLocation": "Barbacena/MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSE TADEU ESTEVES",
+      "mother": "PATRICIA ELIANE ZONZIN"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.6.2.1",
+        "QN - 1.1.3.9.6.2.3"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.6.2.3",
+    "name": "IZADORA ZONZIN ESTEVES",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "female",
+    "birthDate": "20/12/2006",
+    "birthLocation": "Barbacena/MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSE TADEU ESTEVES",
+      "mother": "PATRICIA ELIANE ZONZIN"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "QN - 1.1.3.9.6.2.1",
+        "QN - 1.1.3.9.6.2.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.6.3",
+    "name": "WESLEY JOSÉ ZONZIN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "15/07/1982",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "ÉZIO HILTON ZONZIN",
+      "mother": "ANÉZIA JOSEFINA GRISSI"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.6.1",
+        "TN - 1.1.3.9.6.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.3.9.7",
+    "name": "JOSÉ FERNANDES GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "male",
+    "birthDate": "08/01/1952",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": "31/03/2025",
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSÉ GRISSI",
+      "mother": "EMILIA PIVA"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "ANA MARIA MORAIS",
+          "legalName": "ANA MARIA MORAIS GRISSI",
+          "birthDate": "25/07/1955",
+          "birthLocation": "Barbacena, MG",
+          "deathDate": null,
+          "marriageDate": "29/04/1978",
+          "parents": {
+            "father": "ARMANDO MORAIS",
+            "mother": "DORVALINA GAVA MORAIS"
+          }
+        },
+        "children": [
+          {
+            "id": "TN - 1.1.3.9.7.1",
+            "name": "FERNANDA MÁRCIA GRISSI"
+          },
+          {
+            "id": "TN - 1.1.3.9.7.2",
+            "name": "PAULO SÉRGIO GRISSI"
+          },
+          {
+            "id": "TN - 1.1.3.9.7.3",
+            "name": "DENISE ANGÉLICA GRISSI"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.3.9.1",
+        "BN - 1.1.3.9.2",
+        "BN - 1.1.3.9.3",
+        "BN - 1.1.3.9.4",
+        "BN - 1.1.3.9.5",
+        "BN - 1.1.3.9.6",
+        "BN - 1.1.3.9.8"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.7.1",
+    "name": "FERNANDA MÁRCIA GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "female",
+    "birthDate": "26/06/1979",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSÉ FERNANDES GRISSI",
+      "mother": "ANA MARIA MORAIS"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.7.2",
+        "TN - 1.1.3.9.7.3"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.7.2",
+    "name": "PAULO SÉRGIO GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "30/05/1981",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSÉ FERNANDES GRISSI",
+      "mother": "ANA MARIA MORAIS"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "ADRIANA APARECIDA SILVA LUCAS",
+          "legalName": null,
+          "birthDate": "15/10/1978",
+          "birthLocation": "Parelheiros, SP",
+          "deathDate": null,
+          "marriageDate": "22/10/2005",
+          "parents": {
+            "father": "JOSÉ LUCAS VIDAL",
+            "mother": "FLORINDA MARIA SILVA LUCAS"
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.9.7.2.1",
+            "name": "RAFAEL LUCAS GRISSI"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.7.1",
+        "TN - 1.1.3.9.7.3"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.7.2.1",
+    "name": "RAFAEL LUCAS GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "male",
+    "birthDate": "25/03/2006",
+    "birthLocation": "Barbacena,MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "PAULO SÉRGIO GRISSI",
+      "mother": "ADRIANA APARECIDA SILVA LUCAS"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": []
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.7.3",
+    "name": "DENISE ANGÉLICA GRISSI",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "female",
+    "birthDate": "24/01/1983",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSÉ FERNANDES GRISSI",
+      "mother": "ANA MARIA MORAIS"
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": [
+        "TN - 1.1.3.9.7.1",
+        "TN - 1.1.3.9.7.2"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "BN - 1.1.3.9.8",
+    "name": "MARIA MADALENA GRISSI",
+    "legalName": "MARIA MADALENA GRISSI CANDIAN",
+    "nameChanges": [],
+    "generation": 4,
+    "gender": "female",
+    "birthDate": "19/10/1953",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "JOSÉ GRISSI",
+      "mother": "EMILIA PIVA"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": "OSMAR CANDIAN",
+          "legalName": null,
+          "birthDate": "21/09/1949",
+          "birthLocation": "Barbacena, MG",
+          "deathDate": null,
+          "marriageDate": "24/04/1976",
+          "parents": {
+            "father": "OSWALDO CANDIAN",
+            "mother": "UMBELINA TERESA ROMAN CANDIAN"
+          }
+        },
+        "children": [
+          {
+            "id": "TN - 1.1.3.9.8.1",
+            "name": "RODRIGO GRISSI CANDIAN"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": [
+        "BN - 1.1.3.9.1",
+        "BN - 1.1.3.9.2",
+        "BN - 1.1.3.9.3",
+        "BN - 1.1.3.9.4",
+        "BN - 1.1.3.9.5",
+        "BN - 1.1.3.9.6",
+        "BN - 1.1.3.9.7"
+      ]
+    },
+    "observations": null
+  },
+  {
+    "id": "TN - 1.1.3.9.8.1",
+    "name": "RODRIGO GRISSI CANDIAN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 5,
+    "gender": "male",
+    "birthDate": "30/10/1978",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "OSMAR CANDIAN",
+      "mother": "MARIA MADALENA GRISSI"
+    },
+    "unions": [
+      {
+        "partner": {
+          "name": null,
+          "legalName": null,
+          "birthDate": null,
+          "birthLocation": null,
+          "deathDate": null,
+          "marriageDate": null,
+          "parents": {
+            "father": null,
+            "mother": null
+          }
+        },
+        "children": [
+          {
+            "id": "QN - 1.1.3.9.8.1.1",
+            "name": "PAOLA BÁRBARA GRISSI CANDIAN"
+          }
+        ]
+      }
+    ],
+    "relationships": {
+      "siblings": []
+    },
+    "observations": null
+  },
+  {
+    "id": "QN - 1.1.3.9.8.1.1",
+    "name": "PAOLA BÁRBARA GRISSI CANDIAN",
+    "legalName": null,
+    "nameChanges": [],
+    "generation": 6,
+    "gender": "female",
+    "birthDate": "28/08/1997",
+    "birthLocation": "Barbacena, MG",
+    "deathDate": null,
+    "deathLocation": null,
+    "parents": {
+      "father": "RODRIGO GRISSI CANDIAN",
+      "mother": null
+    },
+    "unions": [],
+    "relationships": {
+      "siblings": []
+    },
+    "observations": null
+  }
+]

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated JSON Validator & Fixer</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+        }
+        .progress-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .info { color: #17a2b8; }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2em;
+            color: #667eea;
+        }
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .log-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 3px;
+        }
+        .log-info { background: #d1ecf1; color: #0c5460; }
+        .log-success { background: #d4edda; color: #155724; }
+        .log-warning { background: #fff3cd; color: #856404; }
+        .log-error { background: #f8d7da; color: #721c24; }
+        .download-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .download-btn {
+            background: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin: 10px;
+        }
+        .download-btn:hover {
+            background: #218838;
+        }
+        .validation-results {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .validation-pass { background: #d4edda; color: #155724; }
+        .validation-fail { background: #f8d7da; color: #721c24; }
+        .web-display {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .member-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+        .member-card.error {
+            border-left-color: #dc3545;
+        }
+        .member-card.warning {
+            border-left-color: #ffc107;
+        }
+        .member-card.success {
+            border-left-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Automated JSON Validator & Fixer</h1>
+            <p>Extract → Validate → Fix → Repeat until perfect</p>
+        </div>
+
+        <div class="progress-section">
+            <h3>📊 Processing Progress</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div id="progress-text">Initializing...</div>
+        </div>
+
+        <div id="stats" class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="total-members">-</div>
+                <div>Total Members</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="validation-errors">-</div>
+                <div>Validation Errors</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="iteration-count">-</div>
+                <div>Iterations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="fixes-applied">-</div>
+                <div>Fixes Applied</div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">
+            🔄 Starting automated validation and fixing process...
+        </div>
+
+        <div id="error-container"></div>
+        
+        <div id="validation-results" class="validation-results" style="display: none;"></div>
+        
+        <div id="log-container" class="log-section" style="display: none;">
+            <h4>📝 Processing Log</h4>
+            <div id="log-content"></div>
+        </div>
+
+        <div id="download-section" class="download-section" style="display: none;">
+            <h3>📤 Download Final Results</h3>
+            <button class="download-btn" onclick="downloadFinalJSON()">Download Perfect JSON</button>
+            <button class="download-btn" onclick="downloadValidationReport()">Download Validation Report</button>
+            <button class="download-btn" onclick="downloadFixLog()">Download Fix Log</button>
+            <button class="download-btn" onclick="showWebDisplay()">Show Web Display</button>
+        </div>
+
+        <div id="web-display" class="web-display" style="display: none;">
+            <h3>🌐 Web Display of Results</h3>
+            <div id="web-display-content"></div>
+        </div>
+    </div>
+
+    <script src="js/genealogy-data-extractor-fixed.js?v=auto-validator&t=20250807"></script>
+    <script>
+        console.log('🤖 Starting automated JSON validator...');
+        
+        let extractionResult = null;
+        let processingLog = [];
+        let iterationCount = 0;
+        let totalFixesApplied = 0;
+        let maxIterations = 10; // Prevent infinite loops
+
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${message}`;
+            processingLog.push({ message: logEntry, type, iteration: iterationCount });
+            
+            const logContent = document.getElementById('log-content');
+            if (logContent) {
+                const logDiv = document.createElement('div');
+                logDiv.className = `log-entry log-${type}`;
+                logDiv.textContent = logEntry;
+                logContent.appendChild(logDiv);
+                logContent.scrollTop = logContent.scrollHeight;
+            }
+            
+            console.log(logEntry);
+        }
+
+        function updateProgress(percent, text) {
+            document.getElementById('progress-fill').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = text;
+        }
+
+        function updateStats(data, errors, fixes) {
+            document.getElementById('total-members').textContent = data.familyMembers.length;
+            document.getElementById('validation-errors').textContent = errors.totalErrors;
+            document.getElementById('iteration-count').textContent = iterationCount;
+            document.getElementById('fixes-applied').textContent = totalFixesApplied;
+        }
+
+        function validateJSON(data) {
+            const errors = {
+                generationErrors: 0,
+                parentErrors: 0,
+                siblingErrors: 0,
+                childrenErrors: 0,
+                birthInfoErrors: 0,
+                missingDataErrors: 0,
+                invalidDataErrors: 0,
+                totalErrors: 0
+            };
+
+            const memberMap = new Map();
+            data.familyMembers.forEach(member => memberMap.set(member.id, member));
+
+            data.familyMembers.forEach(member => {
+                // 1. Validate generation calculation
+                const expectedGeneration = member.id.split('.').length - 1;
+                if (member.generation !== expectedGeneration) {
+                    errors.generationErrors++;
+                    addLog(`⚠️ Generation error for ${member.name}: expected ${expectedGeneration}, got ${member.generation}`, 'warning');
+                }
+
+                // 2. Validate birth info - check for missing or invalid data
+                if (!member.birthDate) {
+                    errors.birthInfoErrors++;
+                    addLog(`⚠️ Missing birth date for ${member.name} (${member.id})`, 'warning');
+                } else if (member.birthDate.includes('1') || member.birthDate.includes('0') || member.birthDate.length < 3) {
+                    errors.invalidDataErrors++;
+                    addLog(`⚠️ Invalid birth date for ${member.name}: ${member.birthDate}`, 'warning');
+                }
+
+                // 3. Validate death info - check for invalid data
+                if (member.deathDate && (member.deathDate.includes('0') || member.deathDate.includes('1') || member.deathDate.length < 3)) {
+                    errors.invalidDataErrors++;
+                    addLog(`⚠️ Invalid death date for ${member.name}: ${member.deathDate}`, 'warning');
+                }
+
+                // 4. Validate parent data - check for combined names like "SEBASTIANO GRIZZO e MARIA DE LORENZI"
+                if (member.parents) {
+                    if (member.parents.father && member.parents.father.includes(' e ')) {
+                        errors.invalidDataErrors++;
+                        addLog(`⚠️ Combined parent names in father field for ${member.name}: ${member.parents.father}`, 'warning');
+                    }
+                    if (member.parents.mother && member.parents.mother.includes(' e ')) {
+                        errors.invalidDataErrors++;
+                        addLog(`⚠️ Combined parent names in mother field for ${member.name}: ${member.parents.mother}`, 'warning');
+                    }
+                }
+
+                // 5. Validate observations - check for raw HTML/text
+                if (member.observations && member.observations.length > 0) {
+                    member.observations.forEach(obs => {
+                        if (obs.includes('F -') || obs.includes('N -') || obs.includes('BN -') || 
+                            obs.includes('TN -') || obs.includes('QN -') || obs.includes('PN -') ||
+                            /^\d+\.\d+/.test(obs)) {
+                            errors.invalidDataErrors++;
+                            addLog(`⚠️ Invalid observation for ${member.name}: ${obs}`, 'warning');
+                        }
+                    });
+                }
+
+                // 6. Validate sibling consistency and duplicates
+                if (member.relationships && member.relationships.siblings) {
+                    const uniqueSiblings = new Set(member.relationships.siblings);
+                    if (uniqueSiblings.size !== member.relationships.siblings.length) {
+                        errors.siblingErrors++;
+                        addLog(`⚠️ Duplicate siblings for ${member.name}: ${member.relationships.siblings.length} total, ${uniqueSiblings.size} unique`, 'warning');
+                    }
+                    
+                    member.relationships.siblings.forEach(siblingId => {
+                        const sibling = memberMap.get(siblingId);
+                        if (!sibling) {
+                            errors.siblingErrors++;
+                            addLog(`⚠️ Sibling not found: ${siblingId}`, 'warning');
+                        }
+                    });
+                }
+
+                // 7. Validate children for duplicates
+                if (member.children && member.children.length > 0) {
+                    const uniqueChildren = new Set(member.children);
+                    if (uniqueChildren.size !== member.children.length) {
+                        errors.childrenErrors++;
+                        addLog(`⚠️ Duplicate children for ${member.name}: ${member.children.length} total, ${uniqueChildren.size} unique`, 'warning');
+                    }
+                }
+
+                // 8. Validate children detection
+                const children = data.familyMembers.filter(m => 
+                    m.id.startsWith(member.id + '.') && 
+                    m.id.split('.').length === member.id.split('.').length + 1
+                );
+                
+                if (children.length > 0 && (!member.children || member.children.length === 0)) {
+                    errors.childrenErrors++;
+                    addLog(`⚠️ Children not detected for ${member.name}: found ${children.length} children`, 'warning');
+                }
+
+                // 9. Validate missing critical data
+                if (!member.name || !member.id || member.generation === undefined) {
+                    errors.missingDataErrors++;
+                    addLog(`⚠️ Missing critical data for member: ${member.id}`, 'warning');
+                }
+            });
+
+            errors.totalErrors = errors.generationErrors + errors.parentErrors + errors.siblingErrors + 
+                                errors.childrenErrors + errors.birthInfoErrors + errors.missingDataErrors + errors.invalidDataErrors;
+            
+            return errors;
+        }
+
+        function fixJSONIssues(data) {
+            let fixesApplied = 0;
+            const memberMap = new Map();
+            data.familyMembers.forEach(member => memberMap.set(member.id, member));
+
+            data.familyMembers.forEach(member => {
+                // Fix 1: Correct generation calculation
+                const expectedGeneration = member.id.split('.').length - 1;
+                if (member.generation !== expectedGeneration) {
+                    member.generation = expectedGeneration;
+                    fixesApplied++;
+                    addLog(`🔧 Fixed generation for ${member.name}: ${member.generation}`, 'info');
+                }
+
+                // Fix 2: Detect missing children and remove duplicates
+                const children = data.familyMembers.filter(m => 
+                    m.id.startsWith(member.id + '.') && 
+                    m.id.split('.').length === member.id.split('.').length + 1
+                );
+                
+                if (children.length > 0 && (!member.children || member.children.length === 0)) {
+                    member.children = children.map(child => child.id);
+                    fixesApplied++;
+                    addLog(`🔧 Fixed children detection for ${member.name}: added ${children.length} children`, 'info');
+                } else if (member.children && member.children.length > 0) {
+                    // Remove duplicate children
+                    const uniqueChildren = [...new Set(member.children)];
+                    if (uniqueChildren.length !== member.children.length) {
+                        member.children = uniqueChildren;
+                        fixesApplied++;
+                        addLog(`🔧 Fixed duplicate children for ${member.name}: removed ${member.children.length - uniqueChildren.length} duplicates`, 'info');
+                    }
+                }
+
+                // Fix 3: Ensure relationships object exists
+                if (!member.relationships) {
+                    member.relationships = { siblings: [] };
+                    fixesApplied++;
+                    addLog(`🔧 Added missing relationships object for ${member.name}`, 'info');
+                }
+
+                // Fix 4: Ensure parents object exists
+                if (!member.parents) {
+                    member.parents = { father: null, mother: null };
+                    fixesApplied++;
+                    addLog(`🔧 Added missing parents object for ${member.name}`, 'info');
+                }
+            });
+
+            return fixesApplied;
+        }
+
+        async function runAutomatedValidation() {
+            try {
+                addLog('🔄 Starting automated validation and fixing process...', 'info');
+                updateProgress(10, 'Loading extractor...');
+                
+                if (typeof GenealogyDataExtractor === 'undefined') {
+                    throw new Error('GenealogyDataExtractor not loaded');
+                }
+
+                addLog('✅ GenealogyDataExtractor loaded successfully', 'success');
+                updateProgress(20, 'Loading HTML file...');
+
+                const extractor = new GenealogyDataExtractor();
+                
+                // Load the complete HTML file
+                const response = await fetch('arvore completa_20250806_v1.html');
+                if (!response.ok) {
+                    throw new Error(`Failed to load HTML file: ${response.status} ${response.statusText}`);
+                }
+                
+                const htmlContent = await response.text();
+                addLog(`📄 HTML file loaded successfully (${htmlContent.length} characters)`, 'success');
+                updateProgress(30, 'Starting extraction...');
+
+                let currentData = null;
+                let previousErrorCount = Infinity;
+                let noImprovementCount = 0;
+
+                while (iterationCount < maxIterations) {
+                    iterationCount++;
+                    addLog(`🔄 Starting iteration ${iterationCount}...`, 'info');
+                    updateProgress(40 + (iterationCount * 5), `Iteration ${iterationCount}...`);
+
+                    // Extract data
+                    currentData = await extractor.extractFromHTML(htmlContent);
+                    
+                    // Validate the extracted data
+                    const validationErrors = validateJSON(currentData);
+                    
+                    addLog(`📊 Iteration ${iterationCount} results:`, 'info');
+                    addLog(`   - Total members: ${currentData.familyMembers.length}`, 'info');
+                    addLog(`   - Generation errors: ${validationErrors.generationErrors}`, 'info');
+                    addLog(`   - Parent errors: ${validationErrors.parentErrors}`, 'info');
+                    addLog(`   - Sibling errors: ${validationErrors.siblingErrors}`, 'info');
+                    addLog(`   - Children errors: ${validationErrors.childrenErrors}`, 'info');
+                    addLog(`   - Birth info errors: ${validationErrors.birthInfoErrors}`, 'info');
+                    addLog(`   - Missing data errors: ${validationErrors.missingDataErrors}`, 'info');
+                    addLog(`   - Total errors: ${validationErrors.totalErrors}`, 'info');
+
+                    // Check if we've improved
+                    if (validationErrors.totalErrors >= previousErrorCount) {
+                        noImprovementCount++;
+                        addLog(`⚠️ No improvement in iteration ${iterationCount}`, 'warning');
+                    } else {
+                        noImprovementCount = 0;
+                        addLog(`✅ Improvement detected in iteration ${iterationCount}`, 'success');
+                    }
+
+                    // Apply fixes
+                    const fixesApplied = fixJSONIssues(currentData);
+                    totalFixesApplied += fixesApplied;
+                    
+                    if (fixesApplied > 0) {
+                        addLog(`🔧 Applied ${fixesApplied} fixes in iteration ${iterationCount}`, 'info');
+                    }
+
+                    // Update stats
+                    updateStats(currentData, validationErrors, fixesApplied);
+
+                    // Check if we've reached perfection or hit a plateau
+                    if (validationErrors.totalErrors === 0) {
+                        addLog('🎉 Perfect JSON achieved! No more errors found.', 'success');
+                        break;
+                    } else if (noImprovementCount >= 3) {
+                        addLog('⚠️ No improvement for 3 iterations, stopping optimization', 'warning');
+                        break;
+                    }
+
+                    previousErrorCount = validationErrors.totalErrors;
+                }
+
+                // Final validation
+                const finalValidation = validateJSON(currentData);
+                
+                updateProgress(100, 'Process completed!');
+                addLog(`🎉 Automated process completed after ${iterationCount} iterations`, 'success');
+                addLog(`📊 Final results: ${finalValidation.totalErrors} errors remaining`, finalValidation.totalErrors > 0 ? 'warning' : 'success');
+                
+                extractionResult = currentData;
+                
+                // Show final validation results
+                const validationDiv = document.getElementById('validation-results');
+                validationDiv.style.display = 'block';
+                validationDiv.className = `validation-results ${finalValidation.totalErrors === 0 ? 'validation-pass' : 'validation-fail'}`;
+                validationDiv.innerHTML = `
+                    <h3>${finalValidation.totalErrors === 0 ? '🎉 Perfect JSON Achieved!' : '⚠️ Some Issues Remain'}</h3>
+                    <p><strong>Total Errors:</strong> ${finalValidation.totalErrors}</p>
+                    <p><strong>Iterations:</strong> ${iterationCount}</p>
+                    <p><strong>Total Fixes Applied:</strong> ${totalFixesApplied}</p>
+                    <p><strong>Total Members:</strong> ${currentData.familyMembers.length}</p>
+                `;
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('log-container').style.display = 'block';
+                document.getElementById('download-section').style.display = 'block';
+                
+            } catch (error) {
+                console.error('❌ Error in automated validation:', error);
+                addLog(`❌ Error: ${error.message}`, 'error');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error-container').innerHTML = `
+                    <div class="error-message">
+                        <h3>❌ Error in Automated Validation</h3>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p><strong>Stack:</strong> ${error.stack}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function downloadFinalJSON() {
+            if (!extractionResult) {
+                alert('No data available for download');
+                return;
+            }
+
+            const dataStr = JSON.stringify(extractionResult, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'family-data-perfect-v4.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            addLog('📥 Perfect JSON file downloaded', 'success');
+        }
+
+        function downloadValidationReport() {
+            if (!extractionResult) {
+                alert('No data available for download');
+                return;
+            }
+
+            const finalValidation = validateJSON(extractionResult);
+            const report = {
+                extractionDate: new Date().toISOString(),
+                sourceFile: 'arvore completa_20250806_v1.html',
+                summary: {
+                    totalMembers: extractionResult.familyMembers.length,
+                    generations: extractionResult.metadata.generations,
+                    iterations: iterationCount,
+                    totalFixesApplied: totalFixesApplied,
+                    finalErrorCount: finalValidation.totalErrors
+                },
+                validation: finalValidation,
+                processingLog: processingLog
+            };
+
+            const dataStr = JSON.stringify(report, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'automated-validation-report.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            addLog('📥 Validation report downloaded', 'success');
+        }
+
+        function downloadFixLog() {
+            if (!extractionResult) {
+                alert('No data available for download');
+                return;
+            }
+
+            const fixLog = {
+                extractionDate: new Date().toISOString(),
+                iterations: iterationCount,
+                totalFixesApplied: totalFixesApplied,
+                processingLog: processingLog.filter(log => log.type === 'info' && log.message.includes('🔧'))
+            };
+
+            const dataStr = JSON.stringify(fixLog, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'fix-log.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            addLog('📥 Fix log downloaded', 'success');
+        }
+
+        function showWebDisplay() {
+            if (!extractionResult) {
+                alert('No data available for display');
+                return;
+            }
+
+            const displayDiv = document.getElementById('web-display');
+            const contentDiv = document.getElementById('web-display-content');
+            
+            // Show first 20 members with their data
+            const membersToShow = extractionResult.familyMembers.slice(0, 20);
+            
+            let html = '<div style="max-height: 600px; overflow-y: auto;">';
+            html += `<h4>Showing first ${membersToShow.length} members (total: ${extractionResult.familyMembers.length})</h4>`;
+            
+                         membersToShow.forEach(member => {
+                 const hasErrors = !member.birthDate || 
+                                 (member.birthDate && member.birthDate.includes('1')) ||
+                                 (member.parents && member.parents.father && member.parents.father.includes(' e ')) ||
+                                 (member.observations && member.observations.some(obs => obs.includes('F -')));
+                 
+                 const cardClass = hasErrors ? 'error' : 'success';
+                 
+                 html += `
+                     <div class="member-card ${cardClass}">
+                         <h5>${member.name} (${member.id})</h5>
+                         <p><strong>Generation:</strong> ${member.generation}</p>
+                         <p><strong>Gender:</strong> ${member.gender}</p>
+                         <p><strong>Birth Date:</strong> ${member.birthDate || 'MISSING'}</p>
+                         <p><strong>Birth Location:</strong> ${member.birthLocation || 'N/A'}</p>
+                         <p><strong>Death Date:</strong> ${member.deathDate || 'N/A'}</p>
+                         <p><strong>Death Location:</strong> ${member.deathLocation || 'N/A'}</p>
+                         <p><strong>Father:</strong> ${member.parents?.father || 'N/A'}</p>
+                         <p><strong>Mother:</strong> ${member.parents?.mother || 'N/A'}</p>
+                         <p><strong>Children:</strong> ${member.children?.length || 0} children</p>
+                         <p><strong>Siblings:</strong> ${member.relationships?.siblings?.length || 0} siblings</p>
+                         <p><strong>Observations:</strong> ${member.observations?.length || 0} observations</p>
+                     </div>
+                 `;
+             });
+            
+            html += '</div>';
+            contentDiv.innerHTML = html;
+            displayDiv.style.display = 'block';
+            
+            addLog('🌐 Web display shown', 'success');
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', runAutomatedValidation);
+    </script>
+</body>
+</html>

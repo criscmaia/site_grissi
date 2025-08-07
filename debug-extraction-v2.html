@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Extraction v2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .info { color: #17a2b8; }
+        .debug { color: #6c757d; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Extraction v2</h1>
+        
+        <div class="section">
+            <h2>📋 Test Migration Process</h2>
+            <button onclick="testFullMigration()">Test Full Migration</button>
+            <div id="migrationResults">Click the button to test...</div>
+        </div>
+
+        <div class="section">
+            <h2>🔍 Step-by-Step Debug</h2>
+            <div id="stepDebug">Click the button above to start...</div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Sample Member Data</h2>
+            <pre id="sampleMember">Loading...</pre>
+        </div>
+    </div>
+
+    <script>
+        async function testFullMigration() {
+            try {
+                document.getElementById('migrationResults').innerHTML = '<div class="info">🔄 Starting migration test...</div>';
+                document.getElementById('stepDebug').innerHTML = '';
+                
+                // Load HTML content
+                const response = await fetch('arvore completa_20250806_v1.html');
+                const htmlContent = await response.text();
+                
+                logStep('📖 HTML loaded', `${htmlContent.length} characters`);
+                
+                // Parse HTML content
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+                const textContent = doc.body.textContent;
+                
+                logStep('🧹 HTML parsed', `Text content: ${textContent.length} characters`);
+                
+                // Find first section with vital info
+                const sections = textContent.split(/(\d+\.\d+(?:\.\d+)*\.)/);
+                let sampleSection = '';
+                
+                for (let i = 1; i < sections.length; i += 2) {
+                    if (sections[i] && sections[i + 1]) {
+                        const section = sections[i] + sections[i + 1];
+                        if (section.includes('Nascido') || section.includes('Falecido')) {
+                            sampleSection = section;
+                            break;
+                        }
+                    }
+                }
+                
+                logStep('📝 Section found', `Length: ${sampleSection.length} characters`);
+                
+                // Clean HTML tags
+                const cleanSection = sampleSection.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+                
+                logStep('🧹 HTML cleaned', `Clean length: ${cleanSection.length} characters`);
+                logStep('🔍 Clean text sample', cleanSection.substring(0, 200) + '...');
+                
+                // Test vital info extraction
+                const vitalInfo = extractVitalInfo(cleanSection);
+                
+                logStep('📊 Vital info extracted', JSON.stringify(vitalInfo, null, 2));
+                
+                // Test full member extraction
+                const member = extractFullMember(sampleSection);
+                
+                logStep('👤 Full member extracted', JSON.stringify(member, null, 2));
+                
+                // Show results
+                document.getElementById('migrationResults').innerHTML = `
+                    <div class="success">
+                        <h3>✅ Migration Test Results:</h3>
+                        <p><strong>Birth Date:</strong> ${vitalInfo.birth.formattedDate}</p>
+                        <p><strong>Birth Location:</strong> ${vitalInfo.birth.location || 'Not found'}</p>
+                        <p><strong>Death Date:</strong> ${vitalInfo.death.formattedDate}</p>
+                        <p><strong>Death Location:</strong> ${vitalInfo.death.location || 'Not found'}</p>
+                        <p><strong>Death Age:</strong> ${vitalInfo.death.age || 'Not found'}</p>
+                        <p><strong>Member Name:</strong> ${member.name}</p>
+                        <p><strong>Member ID:</strong> ${member.id}</p>
+                    </div>
+                `;
+                
+                document.getElementById('sampleMember').textContent = JSON.stringify(member, null, 2);
+                
+            } catch (error) {
+                document.getElementById('migrationResults').innerHTML = `
+                    <div class="error">
+                        <h3>❌ Error:</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function logStep(title, content) {
+            const debugDiv = document.getElementById('stepDebug');
+            const stepDiv = document.createElement('div');
+            stepDiv.className = 'debug';
+            stepDiv.innerHTML = `<strong>${title}:</strong> ${content}`;
+            debugDiv.appendChild(stepDiv);
+        }
+
+        function extractVitalInfo(section) {
+            const vitalInfo = {
+                birth: {
+                    date: null,
+                    location: null,
+                    formattedDate: "Data não registrada"
+                },
+                death: {
+                    date: null,
+                    location: null,
+                    age: null,
+                    formattedDate: "Data não registrada"
+                }
+            };
+
+            // Extract birth information
+            const birthMatch = section.match(/Nascido? em ([^,]+)(?:, em ([^.]+))?/i);
+            if (birthMatch) {
+                const birthDate = birthMatch[1].trim();
+                vitalInfo.birth.formattedDate = birthDate;
+                
+                // Extract location from the birth date string if it contains location info
+                const locationMatch = birthDate.match(/^([^,]+?)(?:\s+em\s+([^.]+))?$/);
+                if (locationMatch) {
+                    vitalInfo.birth.formattedDate = locationMatch[1].trim();
+                    if (locationMatch[2]) {
+                        vitalInfo.birth.location = locationMatch[2].trim();
+                    }
+                }
+                
+                // Try to parse date
+                const parsedDate = parseDate(locationMatch ? locationMatch[1].trim() : birthDate);
+                if (parsedDate) {
+                    vitalInfo.birth.date = parsedDate;
+                }
+            }
+
+            // Extract death information
+            const deathMatch = section.match(/Falecido? em ([^,]+)(?:, com (\d+) anos)?(?: na cidade de ([^.]+))?/i);
+            if (deathMatch) {
+                const deathDate = deathMatch[1].trim();
+                vitalInfo.death.formattedDate = deathDate;
+                
+                // Extract age and location from the death string
+                const deathDetailsMatch = deathDate.match(/^([^,]+?)(?:\s+com\s+(\d+)\s+anos)?(?:\s+na\s+cidade\s+de\s+([^.]+))?$/);
+                if (deathDetailsMatch) {
+                    vitalInfo.death.formattedDate = deathDetailsMatch[1].trim();
+                    if (deathDetailsMatch[2]) {
+                        vitalInfo.death.age = parseInt(deathDetailsMatch[2]);
+                    }
+                    if (deathDetailsMatch[3]) {
+                        vitalInfo.death.location = deathDetailsMatch[3].trim();
+                    }
+                }
+                
+                // Try to parse date
+                const parsedDate = parseDate(deathDetailsMatch ? deathDetailsMatch[1].trim() : deathDate);
+                if (parsedDate) {
+                    vitalInfo.death.date = parsedDate;
+                }
+            }
+
+            return vitalInfo;
+        }
+
+        function extractFullMember(section) {
+            // Extract person ID
+            const idMatch = section.match(/(\d+\.\d+(?:\.\d+)*\.)/);
+            const personId = idMatch ? idMatch[1].replace(/\.$/, '') : 'unknown';
+            
+            // Extract person name
+            const nameMatch = section.match(/(?:F\s*-\s*|N\s*-\s*|BN\s*-\s*|TN\s*-\s*|QN\s*-\s*|PN\s*-\s*)?\d+\.\d+(?:\.\d+)*\.\s*([A-ZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ\s]+?)(?=\n|$)/);
+            const personName = nameMatch ? nameMatch[1].trim() : 'Unknown';
+            
+            // Clean HTML tags from section for better pattern matching
+            const cleanSection = section.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+            
+            // Extract vital information
+            const vitalInfo = extractVitalInfo(cleanSection);
+            
+            return {
+                id: personId,
+                name: personName,
+                vitalInfo: vitalInfo
+            };
+        }
+
+        function parseDate(dateStr) {
+            if (!dateStr || dateStr === "Data não registrada") return null;
+            
+            // Handle various date formats
+            const patterns = [
+                /(\d{1,2})\/(\d{1,2})\/(\d{4})/, // DD/MM/YYYY
+                /(\d{4})/, // YYYY
+                /~(\d{4})/ // ~YYYY
+            ];
+
+            for (const pattern of patterns) {
+                const match = dateStr.match(pattern);
+                if (match) {
+                    if (match.length === 4) {
+                        // DD/MM/YYYY format
+                        const [_, day, month, year] = match;
+                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                    } else if (match.length === 2) {
+                        // YYYY or ~YYYY format
+                        const year = match[1];
+                        return `${year}-01-01`;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        // Auto-run test on page load
+        window.addEventListener('load', testFullMigration);
+    </script>
+</body>
+</html>

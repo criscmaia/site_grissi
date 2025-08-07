@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Extraction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+        .info { color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Extraction</h1>
+        
+        <div class="section">
+            <h2>📋 Test Vital Info Extraction</h2>
+            <button onclick="testVitalInfoExtraction()">Test Vital Info</button>
+            <div id="vitalInfoResults">Click the button to test...</div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Sample HTML Section</h2>
+            <pre id="sampleHtml">Loading...</pre>
+        </div>
+
+        <div class="section">
+            <h2>🧹 Cleaned Text</h2>
+            <pre id="cleanedText">Loading...</pre>
+        </div>
+
+        <div class="section">
+            <h2>📊 Extraction Results</h2>
+            <pre id="extractionResults">Loading...</pre>
+        </div>
+    </div>
+
+    <script>
+        async function testVitalInfoExtraction() {
+            try {
+                // Load HTML content
+                const response = await fetch('arvore completa_20250806_v1.html');
+                const htmlContent = await response.text();
+                
+                // Get first section with vital info
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+                const textContent = doc.body.textContent;
+                
+                // Find first section with vital info
+                const sections = textContent.split(/(\d+\.\d+(?:\.\d+)*\.)/);
+                let sampleSection = '';
+                
+                for (let i = 1; i < sections.length; i += 2) {
+                    if (sections[i] && sections[i + 1]) {
+                        const section = sections[i] + sections[i + 1];
+                        if (section.includes('Nascido') || section.includes('Falecido')) {
+                            sampleSection = section;
+                            break;
+                        }
+                    }
+                }
+                
+                // Show sample HTML
+                document.getElementById('sampleHtml').textContent = sampleSection.substring(0, 500) + '...';
+                
+                // Clean HTML tags
+                const cleanSection = sampleSection.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+                document.getElementById('cleanedText').textContent = cleanSection.substring(0, 500) + '...';
+                
+                // Test vital info extraction
+                const vitalInfo = extractVitalInfo(cleanSection);
+                document.getElementById('extractionResults').textContent = JSON.stringify(vitalInfo, null, 2);
+                
+                // Show results
+                document.getElementById('vitalInfoResults').innerHTML = `
+                    <div class="info">
+                        <h3>✅ Vital Info Extraction Test:</h3>
+                        <p><strong>Birth Date:</strong> ${vitalInfo.birth.formattedDate}</p>
+                        <p><strong>Birth Location:</strong> ${vitalInfo.birth.location || 'Not found'}</p>
+                        <p><strong>Death Date:</strong> ${vitalInfo.death.formattedDate}</p>
+                        <p><strong>Death Location:</strong> ${vitalInfo.death.location || 'Not found'}</p>
+                        <p><strong>Death Age:</strong> ${vitalInfo.death.age || 'Not found'}</p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                document.getElementById('vitalInfoResults').innerHTML = `
+                    <div class="error">
+                        <h3>❌ Error:</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function extractVitalInfo(section) {
+            const vitalInfo = {
+                birth: {
+                    date: null,
+                    location: null,
+                    formattedDate: "Data não registrada"
+                },
+                death: {
+                    date: null,
+                    location: null,
+                    age: null,
+                    formattedDate: "Data não registrada"
+                }
+            };
+
+            // Extract birth information
+            const birthMatch = section.match(/Nascido? em ([^,]+)(?:, em ([^.]+))?/i);
+            if (birthMatch) {
+                vitalInfo.birth.formattedDate = birthMatch[1].trim();
+                if (birthMatch[2]) {
+                    vitalInfo.birth.location = birthMatch[2].trim();
+                }
+                
+                // Try to parse date
+                const parsedDate = parseDate(birthMatch[1].trim());
+                if (parsedDate) {
+                    vitalInfo.birth.date = parsedDate;
+                }
+            }
+
+            // Extract death information
+            const deathMatch = section.match(/Falecido? em ([^,]+)(?:, com (\d+) anos)?(?: na cidade de ([^.]+))?/i);
+            if (deathMatch) {
+                vitalInfo.death.formattedDate = deathMatch[1].trim();
+                if (deathMatch[2]) {
+                    vitalInfo.death.age = parseInt(deathMatch[2]);
+                }
+                if (deathMatch[3]) {
+                    vitalInfo.death.location = deathMatch[3].trim();
+                }
+                
+                // Try to parse date
+                const parsedDate = parseDate(deathMatch[1].trim());
+                if (parsedDate) {
+                    vitalInfo.death.date = parsedDate;
+                }
+            }
+
+            return vitalInfo;
+        }
+
+        function parseDate(dateStr) {
+            if (!dateStr || dateStr === "Data não registrada") return null;
+            
+            // Handle various date formats
+            const patterns = [
+                /(\d{1,2})\/(\d{1,2})\/(\d{4})/, // DD/MM/YYYY
+                /(\d{4})/, // YYYY
+                /~(\d{4})/ // ~YYYY
+            ];
+
+            for (const pattern of patterns) {
+                const match = dateStr.match(pattern);
+                if (match) {
+                    if (match.length === 4) {
+                        // DD/MM/YYYY format
+                        const [_, day, month, year] = match;
+                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                    } else if (match.length === 2) {
+                        // YYYY or ~YYYY format
+                        const year = match[1];
+                        return `${year}-01-01`;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        // Auto-run test on page load
+        window.addEventListener('load', testVitalInfoExtraction);
+    </script>
+</body>
+</html>
