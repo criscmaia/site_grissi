@@ -30,7 +30,6 @@ const STATIC_RESOURCES = [
     '/lembrancas.html',
     '/fotos.html',
     '/contato.html',
-    '/arvore.html',
     '/arvore.css',
     '/audio/funiculi_funicula.mp3'
 ];

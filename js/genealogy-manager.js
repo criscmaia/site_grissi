@@ -39,29 +39,11 @@ class GenealogyManager {
         try {
             // Ensure manager is initialized
             await this.init();
-            
-            // Load the raw genealogy content
-            const response = await fetch('./arvore.html');
-            if (!response.ok) {
-                throw new Error(`Failed to load genealogy content: ${response.status}`);
-            }
-            
-            const data = await response.text();
-            this.contentElement.innerHTML = data;
-            
-            console.log('📄 Genealogy content loaded');
-            
-            // Process photos in parallel for both header names and biographical text
-            await Promise.all([
-                this.processHeaderNames(),
-                this.processBiographicalNames()
-            ]);
-            
-            console.log('✅ Genealogy tree processing completed');
+            // No-op: legacy arvore.html loading removed
+            console.log('ℹ️ loadGenealogyTree skipped: legacy arvore.html removed');
             
         } catch (error) {
             console.error('❌ Error loading genealogy tree:', error);
-            this.contentElement.innerHTML = '<p>Erro ao carregar a árvore genealógica.</p>';
             throw error;
         }
     }
