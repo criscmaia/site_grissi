@@ -90,7 +90,6 @@ SiteGrissi/
 ├── sw.js                   # Service Worker para cache
 ├── site.webmanifest        # PWA manifest completo
 ├── js/
-│   ├── photo-handler.js        # Handler de fotos otimizado
 │   ├── photo-matcher.js        # Matcher de fotos de perfil
 │   ├── photo-popup.js          # Popup de fotos em hover
 │   ├── final-family-renderer.js # Renderizador de dados da família
