@@ -3,9 +3,9 @@
  * Provides caching and offline functionality
  */
 
-const CACHE_NAME = 'sitegrissi-v1.0.0';
-const STATIC_CACHE = 'static-v1.0.0';
-const DYNAMIC_CACHE = 'dynamic-v1.0.0';
+const CACHE_NAME = 'sitegrissi-v1.1.0';
+const STATIC_CACHE = 'static-v1.1.0';
+const DYNAMIC_CACHE = 'dynamic-v1.1.0';
 
 // Critical resources to cache immediately
 const CRITICAL_RESOURCES = [
@@ -20,9 +20,10 @@ const CRITICAL_RESOURCES = [
     '/js/modern-search.css',
     '/images/home/grice2.JPG',
     '/favicon.ico',
-    '/apple-touch-icon.png',
-    '/favicon-32x32.png',
-    '/favicon-16x16.png'
+    '/assets/favicons/apple-touch-icon.png',
+    '/assets/favicons/favicon-32x32.png',
+    '/assets/favicons/favicon-16x16.png',
+    '/assets/favicons/site.webmanifest'
 ];
 
 // Resources to cache on first visit
@@ -172,8 +173,8 @@ self.addEventListener('push', event => {
     
     const options = {
         body: event.data ? event.data.text() : 'Nova atualização disponível',
-        icon: '/favicon-32x32.png',
-        badge: '/favicon-16x16.png',
+        icon: '/assets/favicons/favicon-32x32.png',
+        badge: '/assets/favicons/favicon-16x16.png',
         vibrate: [100, 50, 100],
         data: {
             dateOfArrival: Date.now(),
@@ -183,12 +184,12 @@ self.addEventListener('push', event => {
             {
                 action: 'explore',
                 title: 'Ver site',
-                icon: '/favicon-16x16.png'
+                icon: '/assets/favicons/favicon-16x16.png'
             },
             {
                 action: 'close',
                 title: 'Fechar',
-                icon: '/favicon-16x16.png'
+                icon: '/assets/favicons/favicon-16x16.png'
             }
         ]
     };
