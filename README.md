@@ -85,7 +85,7 @@ O site agora inclui monitoramento de:
 ```
 SiteGrissi/
 ├── index.html              # Página principal otimizada
-├── arvore-genealogica.html # Árvore genealógica moderna
+├── arvore-genealogica.html # Árvore genealógica moderna (oficial)
 ├── index.css               # CSS otimizado e responsivo
 ├── sw.js                   # Service Worker para cache
 ├── site.webmanifest        # PWA manifest completo

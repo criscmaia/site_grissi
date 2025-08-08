@@ -13,6 +13,7 @@ const CRITICAL_RESOURCES = [
     '/index.html',
     '/index.css',
     '/arvore-genealogica.html',
+    '/arvore-genealogica-final.html', // kept temporarily for transition
     '/js/genealogy-manager.js',
     '/js/photo-handler.js',
     '/js/modern-search-engine.js',

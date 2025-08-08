@@ -44,6 +44,9 @@
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     
     <!-- Stylesheets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="index.css">
     <link rel="stylesheet" type="text/css" href="js/modern-search.css">
     <link rel="stylesheet" type="text/css" href="arvore.css">
@@ -114,42 +117,79 @@
 <body>
     <!-- Header -->
     <header class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div class="container mx-auto px-4">
-            <nav class="flex items-center justify-between h-16">
-                <div class="flex items-center space-x-4">
-                    <a href="index.html" class="text-xl font-bold text-heritage-green">
-                        Família Grizzo . Grice . Gris . Grissi
-                    </a>
-                </div>
-                
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="index.html" class="text-sm font-medium transition-colors hover:text-heritage-green">
-                        Página Principal
-                    </a>
-                    <a href="historia.html" class="text-sm font-medium transition-colors hover:text-heritage-green">
-                        História
-                    </a>
-                    <a href="fotos.html" class="text-sm font-medium transition-colors hover:text-heritage-green">
-                        Fotos
-                    </a>
-                    <a href="lembrancas.html" class="text-sm font-medium transition-colors hover:text-heritage-green">
-                        Lembranças
-                    </a>
-                    <a href="arvore-genealogica.html" class="text-sm font-medium text-heritage-green active">
-                        Árvore Genealógica
-                    </a>
-                    <a href="contato.html" class="text-sm font-medium transition-colors hover:text-heritage-green">
-                        Contato
-                    </a>
-                </div>
-                
-                <!-- Mobile menu button -->
-                <button class="md:hidden p-2" aria-label="Menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        <div class="container">
+            <a href="/" class="flex items-center space-x-2">
+                <div class="heritage-gradient">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path>
+                        <path d="M12 22v-3"></path>
                     </svg>
-                </button>
+                </div>
+                <div class="logo-text">
+                    <h1>Família Grissi</h1>
+                    <p>Uma família originalmente italiana</p>
+                </div>
+            </a>
+            
+            <nav class="nav-desktop">
+                <a class="nav-link" href="./">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+                        <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                    Início
+                </a>
+                <a class="nav-link active" href="./arvore-genealogica.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z"></path>
+                        <path d="M12 22v-3"></path>
+                    </svg>
+                    Árvore Genealógica
+                </a>
+                <a class="nav-link" href="./historia.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                        <path d="M3 3v5h5"></path>
+                        <path d="M12 7v5l4 2"></path>
+                    </svg>
+                    História
+                </a>
+                <a class="nav-link" href="./lembrancas.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                    </svg>
+                    Lembranças
+                </a>
+                <a class="nav-link" href="./fotos.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                        <circle cx="12" cy="13" r="3"></circle>
+                    </svg>
+                    Fotos
+                </a>
+                <a class="nav-link" href="./atualizacoes.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Atualizações
+                </a>
+                <a class="nav-link" href="./contato.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                    Contato
+                </a>
             </nav>
+            
+            <button class="mobile-menu-btn" type="button" aria-label="Abrir menu">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" x2="20" y1="12" y2="12"></line>
+                    <line x1="4" x2="20" y1="6" y2="6"></line>
+                    <line x1="4" x2="20" y1="18" y2="18"></line>
+                </svg>
+            </button>
         </div>
     </header>
 
@@ -175,6 +215,11 @@
                         <button class="filter-btn active">Todas as Gerações</button>
                         <button class="filter-btn">1ª Geração</button>
                         <button class="filter-btn">2ª Geração</button>
+                        <button class="filter-btn">3ª Geração</button>
+                        <button class="filter-btn">4ª Geração</button>
+                        <button class="filter-btn">5ª Geração</button>
+                        <button class="filter-btn">6ª Geração</button>
+                        <button class="filter-btn">7ª Geração</button>
                     </div>
                 </div>
 
@@ -203,17 +248,18 @@
     <script src="js/photo-handler.js"></script>
     <script src="js/modern-search-engine.js"></script>
     <script src="js/genealogy-manager.js"></script>
-    <script src="js/family-renderer.js"></script>
+    <script src="js/final-family-renderer.js"></script>
 
     <script>
         /**
-         * Modern Genealogy Tree Application - Phase 1 & 2 Optimizations
+         * Modern Genealogy Tree Application - Final Version
          * Features:
          * - Photo manifest system (eliminates 120+ HTTP requests)
          * - Modular ES6 architecture
          * - Enhanced error handling
          * - Modern JavaScript features
          * - Optimized DOM operations
+         * - Loads from genealogy.json (final version)
          */
         
         // Global application state
@@ -226,24 +272,24 @@
          */
         async function initializeApplication() {
             try {
-                console.log('🚀 Initializing Modern Genealogy Application');
+                console.log('🚀 Initializing Final Genealogy Application');
                 
                 // Initialize Family Renderer
-                if (window.FamilyRenderer) {
-                    familyRenderer = new FamilyRenderer();
+                if (window.FinalFamilyRenderer) {
+                    familyRenderer = new FinalFamilyRenderer();
                     await familyRenderer.initialize();
-                    console.log('✅ Family Renderer initialized successfully');
+                    console.log('✅ Final Family Renderer initialized successfully');
                 } else {
-                    console.error('❌ FamilyRenderer not found');
+                    console.error('❌ FinalFamilyRenderer not found');
                 }
                 
                 // Initialize search functionality (if needed later)
                 // genealogyManager.initializeSearch();
                 
-                console.log('🎉 Application initialized successfully');
+                console.log('🎉 Final application initialized successfully');
                 
             } catch (error) {
-                console.error('❌ Failed to initialize application:', error);
+                console.error('❌ Failed to initialize final application:', error);
             }
         }
         
@@ -308,6 +354,14 @@
                     });
             });
         }
+        
+        // Mobile menu toggle
+        var mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                console.log('Mobile menu clicked');
+            });
+        }
     </script>
 </body>
-</html> 
+</html>
