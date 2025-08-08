@@ -34,6 +34,14 @@ class FinalFamilyRenderer {
             
             // Update results counter
             this.updateResultsCounter();
+
+            // Notify listeners that data is ready
+            try {
+                const members = Array.isArray(this.familyData?.familyMembers) ? this.familyData.familyMembers : [];
+                window.dispatchEvent(new CustomEvent('familyDataLoaded', { detail: members }));
+            } catch (e) {
+                console.warn('Could not dispatch familyDataLoaded event:', e);
+            }
             
             console.log('✅ Final Family Renderer initialized successfully');
             

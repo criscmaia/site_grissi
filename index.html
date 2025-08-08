@@ -50,7 +50,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png">
-    <link rel="manifest" href="/assets/favicons/site.webmanifest">
+    
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 
     <!-- Structured Data -->
@@ -419,29 +419,7 @@
             performanceMonitor = new PerformanceMonitor();
         }
         
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                        console.log('✅ Service Worker registered successfully:', registration.scope);
-                        
-                        // Check for updates
-                        registration.addEventListener('updatefound', function() {
-                            const newWorker = registration.installing;
-                            newWorker.addEventListener('statechange', function() {
-                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                    console.log('🔄 New service worker available');
-                                    // You could show a notification to the user here
-                                }
-                            });
-                        });
-                    })
-                    .catch(function(error) {
-                        console.error('❌ Service Worker registration failed:', error);
-                    });
-            });
-        }
+        
         
         // Mobile menu toggle
         document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
