@@ -83,48 +83,15 @@ class PhotoMatcher {
 
         const normalizedName = this.normalizePersonName(personName);
         
-        // Direct match
+        // Exact match only
         if (this.photoManifest.has(normalizedName)) {
             const photoFile = this.photoManifest.get(normalizedName);
-            console.log(`✅ PhotoMatcher: Found direct match for "${personName}" -> "${photoFile}"`);
+            console.log(`✅ PhotoMatcher: Found exact match for "${personName}" -> "${photoFile}"`);
             return photoFile;
         }
 
-        // Try partial matching (for cases where names might have slight differences)
-        for (const [normalizedPhotoName, photoFile] of this.photoManifest) {
-            if (this.isPartialMatch(normalizedName, normalizedPhotoName)) {
-                console.log(`✅ PhotoMatcher: Found partial match for "${personName}" -> "${photoFile}"`);
-                return photoFile;
-            }
-        }
-
-        console.log(`❌ PhotoMatcher: No photo found for "${personName}"`);
+        console.log(`❌ PhotoMatcher: No exact photo match found for "${personName}"`);
         return null;
-    }
-
-    /**
-     * Check if two names are a partial match
-     */
-    isPartialMatch(personName, photoName) {
-        // Split names into words
-        const personWords = personName.split(/\s+/).filter(word => word.length > 2);
-        const photoWords = photoName.split(/\s+/).filter(word => word.length > 2);
-        
-        // Check if most words match (at least 70% match)
-        let matchCount = 0;
-        for (const personWord of personWords) {
-            for (const photoWord of photoWords) {
-                if (personWord === photoWord || 
-                    personWord.includes(photoWord) || 
-                    photoWord.includes(personWord)) {
-                    matchCount++;
-                    break;
-                }
-            }
-        }
-        
-        const matchPercentage = matchCount / Math.max(personWords.length, photoWords.length);
-        return matchPercentage >= 0.7; // 70% match threshold
     }
 
     /**
@@ -144,7 +111,17 @@ class PhotoMatcher {
         
         const results = [];
         for (const member of familyMembers) {
-            const photoFile = await this.findPhotoForPerson(member.name);
+            // Try main name first, then legal name if different
+            let photoFile = await this.findPhotoForPerson(member.name);
+            
+            // If no photo found and legal name exists and is different, try legal name
+            if (!photoFile && member.legalName && member.legalName !== member.name) {
+                photoFile = await this.findPhotoForPerson(member.legalName);
+                if (photoFile) {
+                    console.log(`✅ PhotoMatcher: Found photo using legal name for "${member.name}" -> "${photoFile}"`);
+                }
+            }
+            
             results.push({
                 member,
                 photoFile,
