@@ -16,8 +16,7 @@ const CRITICAL_RESOURCES = [
     '/arvore-genealogica-final.html', // kept temporarily for transition
     '/js/genealogy-manager.js',
     '/js/photo-handler.js',
-    '/js/modern-search-engine.js',
-    '/js/modern-search.css',
+
     '/images/home/grice2.JPG',
     '/favicon.ico',
     '/assets/favicons/apple-touch-icon.png',
