@@ -29,6 +29,9 @@ class FinalFamilyRenderer {
             // Load family data from genealogy.json
             await this.loadFamilyData();
             
+            // Initialize photo matcher
+            await this.initializePhotoMatcher();
+            
             // Render all family members
             this.renderFamilyMembers();
             
@@ -48,6 +51,27 @@ class FinalFamilyRenderer {
         } catch (error) {
             console.error('❌ Failed to initialize Final Family Renderer:', error);
             this.showError('Erro ao carregar dados da família');
+        }
+    }
+
+    /**
+     * Initialize photo matcher for profile pictures
+     */
+    async initializePhotoMatcher() {
+        if (window.PhotoMatcher) {
+            this.photoMatcher = new PhotoMatcher();
+            await this.photoMatcher.init();
+            
+            // Get photo statistics
+            const stats = await this.photoMatcher.getPhotoStats(this.familyData.familyMembers);
+            console.log(`📸 Photo coverage: ${stats.membersWithPhotos}/${stats.totalMembers} (${stats.coveragePercentage}%)`);
+            
+            // Store photo results for use during rendering
+            this.photoResults = stats.photoResults;
+        } else {
+            console.warn('⚠️ PhotoMatcher not available');
+            this.photoMatcher = null;
+            this.photoResults = [];
         }
     }
 
@@ -121,13 +145,21 @@ class FinalFamilyRenderer {
         card.setAttribute('data-id', member.id);
         card.setAttribute('data-generation', member.generation);
 
+        // Check if member has a photo
+        const photoResult = this.photoResults?.find(r => r.member.id === member.id);
+        const hasPhoto = photoResult?.hasPhoto;
+        const photoUrl = photoResult?.photoUrl;
+
         card.innerHTML = `
             <div class="card-header">
                 <div class="profile-icon ${member.gender || 'unknown'}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
+                    ${hasPhoto ? 
+                        `<img src="${photoUrl}" alt="${member.name}" class="profile-photo" loading="lazy" />` :
+                        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>`
+                    }
                 </div>
                 <div class="person-info">
                     <h3 class="person-name">${member.name}</h3>
@@ -142,6 +174,15 @@ class FinalFamilyRenderer {
                 ${this.createObservationsSection(member)}
             </div>
         `;
+
+        // Add hover handlers for profile photos
+        if (hasPhoto && window.PhotoPopup) {
+            const profileIcon = card.querySelector('.profile-icon');
+            const profilePhoto = card.querySelector('.profile-photo');
+            if (profilePhoto) {
+                window.photoPopup.createHoverHandlers(profilePhoto, photoUrl, member.name);
+            }
+        }
 
         return card;
     }

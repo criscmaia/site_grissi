@@ -242,6 +242,8 @@
 
     <!-- Load JavaScript modules -->
     <script src="js/photo-handler.js"></script>
+    <script src="js/photo-matcher.js"></script>
+    <script src="js/photo-popup.js"></script>
     
     <script src="js/final-family-renderer.js"></script>
     <script src="js/search-filter-controller.js"></script>
@@ -261,6 +263,7 @@
         // Global application state
         let searchEngine = null;
         let familyRenderer = null;
+        let photoPopup = null;
         
         /**
          * Initialize the application with modern features
@@ -268,6 +271,15 @@
         async function initializeApplication() {
             try {
                 console.log('🚀 Initializing Final Genealogy Application');
+                
+                // Initialize Photo Popup
+                if (window.PhotoPopup) {
+                    photoPopup = new PhotoPopup();
+                    window.photoPopup = photoPopup; // Make globally available
+                    console.log('✅ Photo Popup initialized successfully');
+                } else {
+                    console.warn('⚠️ PhotoPopup not available');
+                }
                 
                 // Initialize Family Renderer
                 if (window.FinalFamilyRenderer) {

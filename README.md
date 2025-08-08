@@ -91,6 +91,8 @@ SiteGrissi/
 ├── site.webmanifest        # PWA manifest completo
 ├── js/
 │   ├── photo-handler.js        # Handler de fotos otimizado
+│   ├── photo-matcher.js        # Matcher de fotos de perfil
+│   ├── photo-popup.js          # Popup de fotos em hover
 │   ├── final-family-renderer.js # Renderizador de dados da família
 │   └── search-filter-controller.js # Controlador de busca e filtros
 └── images/                 # Assets otimizados
