@@ -124,7 +124,6 @@
     generationFilter: null,
     query: '',
     spotlightId: null,
-    filterView: false,
     suggestionsEl: null,
     suggestionIndex: [] // { id, name, generation, type: 'member'|'partner' }
   };
@@ -155,22 +154,33 @@
 
   function applyFilters() {
     const q = normalize(state.query);
-    const gen = state.filterView ? state.generationFilter : null; // gen applies only in filterView
+    const gen = state.generationFilter; // gen applies independently of search
 
     // Clear dimming
     state.cards.forEach(({ el }) => el.classList.remove('dimmed', 'spotlight'));
 
-    // No query → show all, reset highlights
+    // Apply generation filter first (independent of search)
+    state.members.forEach(m => {
+      const card = state.cards.get(m.id);
+      if (!card) return;
+      
+      // Generation filter: show only cards from selected generation (or all if "Todas" selected)
+      const genOk = gen == null || String(m.generation) === String(gen);
+      card.el.style.display = genOk ? '' : 'none';
+    });
+
+    // No query → just apply generation filter, reset highlights
     if (!q) {
-      let count = 0;
+      let visibleCount = 0;
       state.members.forEach(m => {
         const card = state.cards.get(m.id);
         if (!card) return;
-        card.el.style.display = '';
-        if (card.nameEl) card.nameEl.textContent = m.name;
-        count++;
+        if (card.el.style.display !== 'none') {
+          if (card.nameEl) card.nameEl.textContent = m.name;
+          visibleCount++;
+        }
       });
-      updateCounter(`${count} membro${count !== 1 ? 's' : ''} da família encontrado${count !== 1 ? 's' : ''}`);
+      updateCounter(`${visibleCount} membro${visibleCount !== 1 ? 's' : ''} da família encontrado${visibleCount !== 1 ? 's' : ''}`);
       state.spotlightId = null;
       hideSuggestions();
       return;
@@ -184,7 +194,7 @@
       hideSuggestions();
       // Find the member object for spotlight context
       const member = state.members.find(mm => mm.id === target.id) || { id: target.id, name: target.name, generation: target.generation };
-      runSpotlight(member, gen);
+      runSpotlight(member);
       return;
     }
 
@@ -197,15 +207,16 @@
     state.members.forEach(m => {
       const card = state.cards.get(m.id);
       if (!card) return;
-      card.el.style.display = '';
-      if (card.nameEl) {
-        if (fuzzyContains(q, normalize(m.name))) {
-          card.nameEl.innerHTML = highlightHtml(m.name, state.query);
-        } else {
-          card.nameEl.textContent = m.name;
+      if (card.el.style.display !== 'none') { // Only process visible cards
+        if (card.nameEl) {
+          if (fuzzyContains(q, normalize(m.name))) {
+            card.nameEl.innerHTML = highlightHtml(m.name, state.query);
+          } else {
+            card.nameEl.textContent = m.name;
+          }
         }
+        count++;
       }
-      count++;
     });
     updateCounter(`Sugestões: ${suggestions.length}${suggestions[0] ? ` • Melhor: ${suggestions[0].name}` : ''}`);
   }
@@ -226,7 +237,7 @@
     return results.sort((a, b) => b.score - a.score || a.name.localeCompare(b.name));
   }
 
-  function runSpotlight(member, gen) {
+  function runSpotlight(member) {
     // Build relatives set (children by id)
     const relativeIds = new Set();
     try {
@@ -234,7 +245,7 @@
       // We stored only partner names, but the DOM has child tags with data-id; spotlight relatives by child ids in DOM layer below
     } catch {}
 
-    // Show/hide or dim based on filterView
+    // Apply spotlight highlighting (dimming others, highlighting target and relatives)
     state.members.forEach(m => {
       const card = state.cards.get(m.id);
       if (!card) return;
@@ -251,14 +262,8 @@
       }
       if (relativeIds.has(m.id)) isRelative = true;
 
-      // Generation constraint applies only in filter view
-      const genOk = gen == null || String(m.generation) === String(gen);
-
-      if (state.filterView) {
-        const show = (isSpot || isRelative) && genOk;
-        card.el.style.display = show ? '' : 'none';
-      } else {
-        card.el.style.display = '';
+      // Apply dimming to non-spotlighted cards (only if card is visible due to generation filter)
+      if (card.el.style.display !== 'none') {
         if (!isSpot && !isRelative) {
           card.el.classList.add('dimmed');
         }
@@ -286,33 +291,31 @@
 
       // Scroll into view
       spot.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      updateCounter(`Destacado: ${member.name}${state.filterView ? ' • filtro ativo' : ''}`);
+      updateCounter(`Destacado: ${member.name}`);
     }
 
-    // Auto-clear highlight/dimming after 4s when not in filter view
-    if (!state.filterView) {
-      setTimeout(() => {
-        // Remove dimming and spotlight
-        state.cards.forEach(({ el }) => el.classList.remove('dimmed', 'spotlight'));
-        // Restore names
-        state.members.forEach(m => {
-          const c = state.cards.get(m.id);
-          if (!c) return;
-          if (c.nameEl) c.nameEl.textContent = m.name;
-        });
-        // Remove <strong> from spouse/children sections
-        if (spot && spot.el) {
-          spot.el.querySelectorAll('.spouse-name, .spouse-details, .children-list .child-tag').forEach(el => {
-            el.querySelectorAll('strong').forEach(s => {
-              const parent = s.parentNode;
-              while (s.firstChild) parent.insertBefore(s.firstChild, s);
-              parent.removeChild(s);
-            });
+    // Auto-clear highlight/dimming after 4s
+    setTimeout(() => {
+      // Remove dimming and spotlight
+      state.cards.forEach(({ el }) => el.classList.remove('dimmed', 'spotlight'));
+      // Restore names
+      state.members.forEach(m => {
+        const c = state.cards.get(m.id);
+        if (!c) return;
+        if (c.nameEl) c.nameEl.textContent = m.name;
+      });
+      // Remove <strong> from spouse/children sections
+      if (spot && spot.el) {
+        spot.el.querySelectorAll('.spouse-name, .spouse-details, .children-list .child-tag').forEach(el => {
+          el.querySelectorAll('strong').forEach(s => {
+            const parent = s.parentNode;
+            while (s.firstChild) parent.insertBefore(s.firstChild, s);
+            parent.removeChild(s);
           });
-        }
-        updateCounter('');
-      }, 2000);
-    }
+        });
+      }
+      updateCounter('');
+    }, 4000);
   }
 
   function updateCounter(text) {
@@ -330,7 +333,6 @@
       .suggestions-panel { position: absolute; left: 0; right: 0; top: 100%; z-index: 20; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; margin-top: 6px; box-shadow: 0 10px 20px rgba(0,0,0,.08); max-height: 320px; overflow: auto; }
       .suggestions-item { padding: 10px 12px; cursor: pointer; }
       .suggestions-item:hover { background: #fafafa; }
-      .filter-view-toggle { margin-left: 8px; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 6px; }
     `;
     document.head.appendChild(style);
   }
@@ -365,19 +367,7 @@
       });
     }
 
-    // Add Filter View toggle
-    const fb = document.querySelector('.filter-buttons');
-    if (fb && !fb.querySelector('.filter-view-toggle')) {
-      const label = document.createElement('label');
-      label.className = 'filter-view-toggle';
-      label.innerHTML = `<input type="checkbox"> Filtrar visualização`;
-      const checkbox = label.querySelector('input');
-      checkbox.addEventListener('change', () => {
-        state.filterView = checkbox.checked;
-        applyFilters();
-      });
-      fb.appendChild(label);
-    }
+
 
     // Suggestions panel under search input
     const wrapper = document.querySelector('.search-input-wrapper');
