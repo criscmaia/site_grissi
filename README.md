@@ -90,10 +90,9 @@ SiteGrissi/
 ├── sw.js                   # Service Worker para cache
 ├── site.webmanifest        # PWA manifest completo
 ├── js/
-│   ├── genealogy-manager.js    # Gerenciador principal
 │   ├── photo-handler.js        # Handler de fotos otimizado
-│   ├── modern-search-engine.js # Motor de busca moderno
-│   └── performance-monitor.js  # Monitor de performance
+│   ├── final-family-renderer.js # Renderizador de dados da família
+│   └── search-filter-controller.js # Controlador de busca e filtros
 └── images/                 # Assets otimizados
 ```
 

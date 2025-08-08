@@ -33,7 +33,6 @@
 
     <!-- Preload critical resources -->
     <link rel="preload" href="index.css" as="style">
-    <link rel="preload" href="js/genealogy-manager.js" as="script">
     <link rel="preload" href="js/photo-handler.js" as="script">
     
     <!-- DNS prefetch for external resources -->
@@ -244,7 +243,6 @@
     <!-- Load JavaScript modules -->
     <script src="js/photo-handler.js"></script>
     
-    <script src="js/genealogy-manager.js"></script>
     <script src="js/final-family-renderer.js"></script>
     <script src="js/search-filter-controller.js"></script>
 
@@ -261,7 +259,6 @@
          */
         
         // Global application state
-        let genealogyManager = null;
         let searchEngine = null;
         let familyRenderer = null;
         
@@ -282,7 +279,7 @@
                 }
                 
                 // Initialize search functionality (if needed later)
-                // genealogyManager.initializeSearch();
+                // Search is now handled by search-filter-controller.js
                 
                 console.log('🎉 Final application initialized successfully');
                 
