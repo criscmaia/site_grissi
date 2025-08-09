@@ -888,6 +888,26 @@
   transform: translateY(-1px);
 }
 
+/* Parent link chips (clickable, distinct from children) */
+.parent-link {
+  display: inline-block;
+  background: hsl(var(--primary) / 0.08);
+  color: hsl(var(--primary));
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid hsl(var(--primary) / 0.2);
+  text-decoration: none;
+}
+
+.parent-link:hover {
+  background: hsl(var(--primary) / 0.15);
+  transform: translateY(-1px);
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .genealogy-container {
