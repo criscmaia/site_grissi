@@ -8,6 +8,7 @@ class FinalFamilyRenderer {
         this.familyData = null;
         this.container = null;
         this.loadingElement = null;
+        this.nameToIds = new Map();
     }
 
     /**
@@ -28,6 +29,9 @@ class FinalFamilyRenderer {
             
             // Load family data from genealogy.json
             await this.loadFamilyData();
+
+            // Build name index for quick lookup (exact name → ids)
+            this.buildNameIndex();
             
             // Initialize photo matcher
             await this.initializePhotoMatcher();
@@ -37,6 +41,9 @@ class FinalFamilyRenderer {
             
             // Update results counter
             this.updateResultsCounter();
+
+            // Bind interactions (click/keyboard) for parent/child navigation
+            this.bindInteractions();
 
             // Notify listeners that data is ready
             try {
@@ -115,6 +122,34 @@ class FinalFamilyRenderer {
             console.error('❌ Failed to load family data:', error);
             throw error;
         }
+    }
+
+    /**
+     * Build a map of exact names to member IDs
+     */
+    buildNameIndex() {
+        try {
+            const members = Array.isArray(this.familyData?.familyMembers) ? this.familyData.familyMembers : [];
+            members.forEach(m => {
+                const key = (m.name || '').trim();
+                if (!key) return;
+                if (!this.nameToIds.has(key)) {
+                    this.nameToIds.set(key, []);
+                }
+                this.nameToIds.get(key).push(m.id);
+            });
+        } catch (e) {
+            console.warn('Could not build name index:', e);
+        }
+    }
+
+    /**
+     * Resolve a unique member id by exact name
+     */
+    resolveIdByExactName(name) {
+        const ids = this.nameToIds.get((name || '').trim());
+        if (Array.isArray(ids) && ids.length === 1) return ids[0];
+        return null;
     }
 
     /**
@@ -249,10 +284,18 @@ class FinalFamilyRenderer {
 
         const parents = [];
         if (member.parents.father) {
-            parents.push(`<strong>Pai:</strong> ${member.parents.father}`);
+            const fid = this.resolveIdByExactName(member.parents.father);
+            const fatherHtml = fid
+                ? `<span class="parent-link" data-id="${fid}" role="link" tabindex="0">${member.parents.father}</span>`
+                : `${member.parents.father}`;
+            parents.push(`<strong>Pai:</strong> ${fatherHtml}`);
         }
         if (member.parents.mother) {
-            parents.push(`<strong>Mãe:</strong> ${member.parents.mother}`);
+            const mid = this.resolveIdByExactName(member.parents.mother);
+            const motherHtml = mid
+                ? `<span class="parent-link" data-id="${mid}" role="link" tabindex="0">${member.parents.mother}</span>`
+                : `${member.parents.mother}`;
+            parents.push(`<strong>Mãe:</strong> ${motherHtml}`);
         }
 
         return `
@@ -390,7 +433,7 @@ class FinalFamilyRenderer {
         }
 
         const childrenList = children.map(child => 
-            `<span class="child-tag" data-id="${child.id}">${child.name}</span>`
+            `<span class="child-tag" data-id="${child.id}" role="link" tabindex="0">${child.name}</span>`
         ).join('');
 
         return `
@@ -459,6 +502,43 @@ class FinalFamilyRenderer {
             const generations = this.familyData.metadata.generations;
             counter.textContent = `${totalMembers} membros da família encontrados (${generations} gerações)`;
         }
+    }
+
+    /**
+     * Bind click and keyboard interactions for navigating to related members
+     */
+    bindInteractions() {
+        if (!this.container) return;
+        const navigate = (id) => {
+            if (!id) return;
+            if (window.shareManager && typeof window.shareManager.navigateToMember === 'function') {
+                window.shareManager.navigateToMember(id);
+            } else {
+                window.location.hash = encodeURIComponent(id);
+            }
+        };
+
+        this.container.addEventListener('click', (e) => {
+            const el = e.target.closest('.child-tag, .parent-link');
+            if (!el) return;
+            const id = el.getAttribute('data-id');
+            if (id) {
+                e.preventDefault();
+                navigate(id);
+            }
+        });
+
+        this.container.addEventListener('keydown', (e) => {
+            const el = e.target;
+            if (!el || !(el.classList?.contains('child-tag') || el.classList?.contains('parent-link'))) return;
+            if (e.key === 'Enter' || e.key === ' ') {
+                const id = el.getAttribute('data-id');
+                if (id) {
+                    e.preventDefault();
+                    navigate(id);
+                }
+            }
+        });
     }
 
     /**
