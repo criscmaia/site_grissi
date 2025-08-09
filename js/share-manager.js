@@ -280,7 +280,7 @@ class ShareManager {
     /**
      * Navigate to specific member
      */
-    navigateToMember(memberId) {
+    navigateToMember(memberId, options = { retries: 1 }) {
         if (!memberId) return;
 
         // Decode the member ID from URL
@@ -329,6 +329,42 @@ class ShareManager {
         }
         
         if (memberCard) {
+            // If the card is currently hidden due to filters, auto-adjust the generation filter
+            const computedDisplay = window.getComputedStyle(memberCard).display;
+            if (computedDisplay === 'none') {
+                const previousActive = document.querySelector('.filter-buttons .filter-btn.active');
+                const previousLabel = (previousActive?.textContent || '').trim();
+                const targetGeneration = memberCard.getAttribute('data-generation');
+                let targetButton = null;
+                if (targetGeneration) {
+                    const buttons = Array.from(document.querySelectorAll('.filter-buttons .filter-btn'));
+                    targetButton = buttons.find(btn => (btn.textContent || '').trim().startsWith(`${targetGeneration}ª`));
+                }
+
+                // Fallback to "Todas as Gerações" if specific generation button not found
+                if (!targetButton) {
+                    targetButton = Array.from(document.querySelectorAll('.filter-buttons .filter-btn'))
+                        .find(btn => (btn.textContent || '').includes('Todas')) || null;
+                }
+
+                if (targetButton && !targetButton.classList.contains('active')) {
+                    targetButton.click();
+                    const targetLabel = (targetButton.textContent || '').trim();
+                    // Toast with Undo to restore previous filter
+                    this.showActionToast(`Ajustei o filtro para ${targetLabel}.`, 'Desfazer', () => {
+                        if (previousActive && !previousActive.classList.contains('active')) {
+                            previousActive.click();
+                        }
+                    });
+                }
+
+                // Retry navigation after filters apply
+                if ((options?.retries || 0) > 0) {
+                    setTimeout(() => this.navigateToMember(memberId, { retries: (options.retries || 1) - 1 }), 60);
+                }
+                return;
+            }
+
             // Calculate header height for proper positioning
             const header = document.querySelector('header');
             const headerHeight = header ? header.offsetHeight : 80; // Default fallback
@@ -419,6 +455,39 @@ class ShareManager {
                 notification.remove();
             }, 300);
         }, 2000);
+    }
+
+    /**
+     * Show a toast with an action button (e.g., Undo)
+     */
+    showActionToast(message, actionLabel, onAction) {
+        const notification = document.createElement('div');
+        notification.className = 'share-notification';
+        const text = document.createElement('span');
+        text.textContent = message;
+        const button = document.createElement('button');
+        button.textContent = actionLabel || 'Desfazer';
+        button.style.marginLeft = '12px';
+        button.style.padding = '4px 8px';
+        button.style.border = '1px solid rgba(255,255,255,.6)';
+        button.style.background = 'transparent';
+        button.style.color = 'inherit';
+        button.style.borderRadius = '6px';
+        button.style.cursor = 'pointer';
+        button.addEventListener('click', () => {
+            try { onAction && onAction(); } catch {}
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 250);
+        });
+        notification.appendChild(text);
+        notification.appendChild(button);
+        document.body.appendChild(notification);
+        setTimeout(() => notification.classList.add('show'), 50);
+        // Auto-dismiss after 4 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 250);
+        }, 4000);
     }
 }
 

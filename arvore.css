@@ -331,6 +331,8 @@ body.no-scroll { overflow: hidden; }
   opacity: 0;
   transition: all 0.3s ease;
   z-index: 10000;
+  display: inline-flex;
+  align-items: center;
 }
 
 .share-notification.show {

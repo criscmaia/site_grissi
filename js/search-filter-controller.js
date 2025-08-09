@@ -293,6 +293,30 @@
   }
 
   function runSpotlight(member) {
+    // If target card exists but is hidden by generation filter, offer to auto-adjust
+    const cardEntry = state.cards.get(member.id);
+    if (cardEntry && cardEntry.el && cardEntry.el.style.display === 'none') {
+      try {
+        const previousActive = document.querySelector('.filter-buttons .filter-btn.active');
+        const previousLabel = (previousActive?.textContent || '').trim();
+        const targetGen = (member.generation != null) ? String(member.generation) : null;
+        const buttons = Array.from(document.querySelectorAll('.filter-buttons .filter-btn'));
+        let targetButton = targetGen ? buttons.find(b => (b.textContent || '').trim().startsWith(`${targetGen}ª`)) : null;
+        if (!targetButton) targetButton = buttons.find(b => (b.textContent || '').includes('Todas')) || null;
+
+        if (targetButton) {
+          // Non-intrusive toast with action to switch filters
+          showActionToast('Essa pessoa está oculta pelo filtro.', targetButton.textContent || 'Ver', () => {
+            targetButton.click();
+            // Re-run spotlight after filters apply
+            setTimeout(() => runSpotlight(member), 60);
+          }, previousActive ? () => {
+            previousActive.click();
+          } : null);
+          return; // do not proceed until user acts
+        }
+      } catch {}
+    }
     // Build relatives set (children by id)
     const relativeIds = new Set();
     try {
@@ -376,6 +400,44 @@
   function updateCounter(text) {
     const counter = document.querySelector('.results-counter span') || document.querySelector('.results-counter');
     if (counter) counter.textContent = text;
+  }
+
+  // Toast with one or two actions
+  function showActionToast(message, primaryLabel, onPrimary, onUndo) {
+    const el = document.createElement('div');
+    el.className = 'share-notification';
+    const msg = document.createElement('span');
+    msg.textContent = message;
+    el.appendChild(msg);
+    if (primaryLabel && onPrimary) {
+      const btn = document.createElement('button');
+      btn.textContent = primaryLabel;
+      btn.style.marginLeft = '12px';
+      btn.style.padding = '4px 8px';
+      btn.style.border = '1px solid rgba(255,255,255,.6)';
+      btn.style.background = 'transparent';
+      btn.style.color = 'inherit';
+      btn.style.borderRadius = '6px';
+      btn.style.cursor = 'pointer';
+      btn.onclick = () => { try{ onPrimary(); }catch{} el.classList.remove('show'); setTimeout(()=>el.remove(), 250); };
+      el.appendChild(btn);
+    }
+    if (onUndo) {
+      const undo = document.createElement('button');
+      undo.textContent = 'Desfazer';
+      undo.style.marginLeft = '8px';
+      undo.style.padding = '4px 8px';
+      undo.style.border = '1px solid rgba(255,255,255,.6)';
+      undo.style.background = 'transparent';
+      undo.style.color = 'inherit';
+      undo.style.borderRadius = '6px';
+      undo.style.cursor = 'pointer';
+      undo.onclick = () => { try{ onUndo(); }catch{} el.classList.remove('show'); setTimeout(()=>el.remove(), 250); };
+      el.appendChild(undo);
+    }
+    document.body.appendChild(el);
+    setTimeout(()=>el.classList.add('show'), 30);
+    setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(), 250); }, 4500);
   }
 
   function injectStyles() {
