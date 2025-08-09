@@ -123,6 +123,7 @@
     cards: new Map(), // id -> { el, nameEl }
     generationFilter: null,
     query: '',
+    // Advanced filters removed from UI; keep values inert
     birthYearFrom: null,
     birthYearTo: null,
     deathYearFrom: null,
@@ -183,36 +184,7 @@
   }
 
   function populateLocationDropdowns() {
-    const birthLocations = new Set();
-    const deathLocations = new Set();
-
-    state.members.forEach(m => {
-      if (m.birthLocation) birthLocations.add(m.birthLocation);
-      if (m.deathLocation) deathLocations.add(m.deathLocation);
-    });
-
-    const birthSelect = document.getElementById('birthLocationFilter');
-    const deathSelect = document.getElementById('deathLocationFilter');
-
-    if (birthSelect) {
-      birthSelect.innerHTML = '<option value="">Todos os locais</option>';
-      Array.from(birthLocations).sort().forEach(location => {
-        const option = document.createElement('option');
-        option.value = location;
-        option.textContent = location;
-        birthSelect.appendChild(option);
-      });
-    }
-
-    if (deathSelect) {
-      deathSelect.innerHTML = '<option value="">Todos os locais</option>';
-      Array.from(deathLocations).sort().forEach(location => {
-        const option = document.createElement('option');
-        option.value = location;
-        option.textContent = location;
-        deathSelect.appendChild(option);
-      });
-    }
+    // Advanced filters removed – no dropdown population necessary
   }
 
   function applyFilters() {
@@ -243,8 +215,9 @@
       const deathYearOk = isInYearRange(deathYear, deathFrom, deathTo);
       
       // Location filters
-      const birthLocationOk = !birthLocation || m.birthLocation === birthLocation;
-      const deathLocationOk = !deathLocation || m.deathLocation === deathLocation;
+    // Advanced filters removed; treat as always passing
+    const birthLocationOk = true;
+    const deathLocationOk = true;
       
       // Show card only if all filters pass
       const allFiltersOk = genOk && birthYearOk && deathYearOk && birthLocationOk && deathLocationOk;
@@ -435,36 +408,7 @@
     }
 
     // Bind date filter inputs
-    const birthYearFrom = document.getElementById('birthYearFrom');
-    const birthYearTo = document.getElementById('birthYearTo');
-    const deathYearFrom = document.getElementById('deathYearFrom');
-    const deathYearTo = document.getElementById('deathYearTo');
-
-    [birthYearFrom, birthYearTo, deathYearFrom, deathYearTo].forEach(input => {
-      if (input) {
-        input.addEventListener('input', () => {
-          state.birthYearFrom = birthYearFrom?.value ? parseInt(birthYearFrom.value) : null;
-          state.birthYearTo = birthYearTo?.value ? parseInt(birthYearTo.value) : null;
-          state.deathYearFrom = deathYearFrom?.value ? parseInt(deathYearFrom.value) : null;
-          state.deathYearTo = deathYearTo?.value ? parseInt(deathYearTo.value) : null;
-          applyFilters();
-        });
-      }
-    });
-
-    // Bind location filter selects
-    const birthLocationFilter = document.getElementById('birthLocationFilter');
-    const deathLocationFilter = document.getElementById('deathLocationFilter');
-
-    [birthLocationFilter, deathLocationFilter].forEach(select => {
-      if (select) {
-        select.addEventListener('change', () => {
-          state.birthLocationFilter = birthLocationFilter?.value || '';
-          state.deathLocationFilter = deathLocationFilter?.value || '';
-          applyFilters();
-        });
-      }
-    });
+    // Advanced filters removed – no bindings needed
 
     const buttons = document.querySelectorAll('.filter-buttons .filter-btn');
     if (buttons.length) {

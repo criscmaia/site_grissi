@@ -205,42 +205,7 @@
                             <input type="text" class="search-input" placeholder="Pesquisar por nome, local de nascimento..." />
                         </div>
                         
-                        <!-- Advanced Filters -->
-                        <div class="advanced-filters">
-                            <!-- Date Range Filters -->
-                            <div class="filter-group">
-                                <label class="filter-label">Período de Nascimento:</label>
-                                <div class="date-inputs">
-                                    <input type="number" class="date-input" id="birthYearFrom" placeholder="De" min="1800" max="2024" />
-                                    <span class="date-separator">-</span>
-                                    <input type="number" class="date-input" id="birthYearTo" placeholder="Até" min="1800" max="2024" />
-                                </div>
-                            </div>
-                            
-                            <div class="filter-group">
-                                <label class="filter-label">Período de Falecimento:</label>
-                                <div class="date-inputs">
-                                    <input type="number" class="date-input" id="deathYearFrom" placeholder="De" min="1800" max="2024" />
-                                    <span class="date-separator">-</span>
-                                    <input type="number" class="date-input" id="deathYearTo" placeholder="Até" min="1800" max="2024" />
-                                </div>
-                            </div>
-                            
-                            <!-- Location Filters -->
-                            <div class="filter-group">
-                                <label class="filter-label">Local de Nascimento:</label>
-                                <select class="location-select" id="birthLocationFilter">
-                                    <option value="">Todos os locais</option>
-                                </select>
-                            </div>
-                            
-                            <div class="filter-group">
-                                <label class="filter-label">Local de Falecimento:</label>
-                                <select class="location-select" id="deathLocationFilter">
-                                    <option value="">Todos os locais</option>
-                                </select>
-                            </div>
-                        </div>
+                        
                     </div>
                     
                     <div class="filter-buttons">
@@ -386,9 +351,12 @@
             performanceMonitor = new PerformanceMonitor();
         }
         
-        // Initialize when DOM is ready
+            // Initialize when DOM is ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
+                
+                // Ensure advanced filters are hidden by default
+                document.body.classList.remove('show-advanced-filters');
                 // Ensure fresh assets on GitHub Pages by clearing old SW/caches
                 (async function ensureFreshOnGhPages(){
                     if (location.hostname.endsWith('github.io')) {
@@ -412,6 +380,8 @@
                 initializeApplication();
             });
         } else {
+            // Ensure advanced filters are hidden by default
+            document.body.classList.remove('show-advanced-filters');
             // Ensure fresh assets on GitHub Pages by clearing old SW/caches
             (async function ensureFreshOnGhPages(){
                 if (location.hostname.endsWith('github.io')) {
