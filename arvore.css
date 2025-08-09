@@ -282,17 +282,38 @@
   height: 1rem;
 }
 
-.share-option.whatsapp:hover {
-  color: #25D366;
-}
-
-.share-option.telegram:hover {
-  color: #0088cc;
-}
+.share-option.whatsapp:hover { color: #25D366; }
+.share-option.telegram:hover { color: #24A1DE; }
 
 .share-option.email:hover {
   color: #EA4335;
 }
+
+/* Mobile share bottom sheet */
+.share-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.35);
+  z-index: 10000;
+  display: flex;
+  align-items: flex-end;
+}
+
+.share-menu.mobile {
+  width: 100%;
+  max-width: none;
+  border-radius: 12px 12px 0 0;
+  border: none;
+  box-shadow: 0 -10px 30px rgba(0,0,0,.2);
+  transform: translateY(100%);
+  animation: share-sheet-in .22s ease-out forwards;
+}
+
+@keyframes share-sheet-in {
+  to { transform: translateY(0); }
+}
+
+body.no-scroll { overflow: hidden; }
 
 /* Share Notification */
 .share-notification {

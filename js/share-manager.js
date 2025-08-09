@@ -88,11 +88,11 @@ class ShareManager {
      * Show share menu for a member
      */
     showShareMenu(memberId, memberName, triggerElement) {
-        // Remove existing menu
+        // Remove any existing menu/overlay
+        const existingOverlay = document.querySelector('.share-overlay');
+        if (existingOverlay) existingOverlay.remove();
         const existingMenu = document.querySelector('.share-menu');
-        if (existingMenu) {
-            existingMenu.remove();
-        }
+        if (existingMenu) existingMenu.remove();
 
         // Create share menu
         const menu = document.createElement('div');
@@ -116,14 +116,14 @@ class ShareManager {
                     Copiar Link
                 </button>
                 <button class="share-option whatsapp" onclick="window.shareManager.shareWhatsApp('${memberId}', '${memberName}')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.149-.672.149-.198.297-.767.967-.94 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.149-.173.198-.297.297-.496.099-.198.05-.372-.025-.521-.074-.149-.672-1.611-.921-2.207-.242-.579-.487-.5-.672-.51-.173-.009-.372-.011-.571-.011-.198 0-.521.074-.794.372-.272.297-1.04 1.016-1.04 2.479s1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.571-.347m-4.676 6.801h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.519-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.83 9.83 0 016.993 2.896 9.82 9.82 0 012.894 6.993c-.003 5.45-4.437 9.884-9.882 9.884m8.413-18.297A11.815 11.815 0 0012.796 0C5.735 0 .37 5.365.366 12.426c0 2.186.572 4.318 1.662 6.198L0 24l5.446-1.429a12.4 12.4 0 006.75 1.861h.005c7.06 0 12.426-5.365 12.429-12.426a12.34 12.34 0 00-3.652-8.815Z" />
                     </svg>
                     WhatsApp
                 </button>
                 <button class="share-option telegram" onclick="window.shareManager.shareTelegram('${memberId}', '${memberName}')">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+                        <path d="M23.954 4.569c-.27-.201-.621-.244-.931-.114L1.255 13.49c-.403.168-.66.567-.642 1.004.018.438.306.806.72.936l5.414 1.692 2.02 6.31c.129.4.484.68.9.7h.04c.393 0 .75-.229.906-.586l2.73-6.364 6.33 4.597c.168.122.369.185.57.185.159 0 .318-.038.463-.115.32-.169.545-.48.6-.836L24 5.377c.057-.371-.098-.744-.371-.978zM8.042 14.894l-3.62-1.131 12.674-5.292-9.054 6.423zm3.063 6.853l-1.533-4.79 7.163-6.15-5.63 10.94z" />
                     </svg>
                     Telegram
                 </button>
@@ -137,27 +137,58 @@ class ShareManager {
             </div>
         `;
 
-        // Position menu near trigger element
-        const rect = triggerElement.getBoundingClientRect();
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-        
-        menu.style.position = 'absolute';
-        menu.style.top = `${rect.bottom + scrollTop + 5}px`;
-        menu.style.left = `${rect.left + scrollLeft}px`;
-        menu.style.zIndex = '1000';
+        const isMobile = (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) || (navigator.maxTouchPoints > 0);
 
-        document.body.appendChild(menu);
+        if (isMobile) {
+            // Mobile: present as bottom sheet modal with overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'share-overlay';
+            menu.classList.add('mobile');
+            overlay.appendChild(menu);
+            document.body.appendChild(overlay);
+            document.body.classList.add('no-scroll');
 
-        // Close menu when clicking outside
-        setTimeout(() => {
-            document.addEventListener('click', function closeMenu(e) {
-                if (!menu.contains(e.target) && !triggerElement.contains(e.target)) {
-                    menu.remove();
-                    document.removeEventListener('click', closeMenu);
-                }
+            // Close interactions
+            const closeAll = () => {
+                document.body.classList.remove('no-scroll');
+                overlay.remove();
+            };
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeAll();
             });
-        }, 100);
+            const closeBtn = menu.querySelector('.close-btn');
+            if (closeBtn) closeBtn.onclick = closeAll;
+            // ESC key support
+            const onKey = (e) => { if (e.key === 'Escape') { closeAll(); document.removeEventListener('keydown', onKey);} };
+            document.addEventListener('keydown', onKey);
+        } else {
+            // Desktop: position near trigger, clamped to viewport to avoid horizontal scroll
+            document.body.appendChild(menu);
+            const rect = triggerElement.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+            menu.style.position = 'absolute';
+            menu.style.top = `${rect.bottom + scrollTop + 5}px`;
+            // Clamp left within viewport (8px padding)
+            const menuWidth = menu.offsetWidth || 220;
+            const maxLeft = scrollLeft + window.innerWidth - menuWidth - 8;
+            const minLeft = scrollLeft + 8;
+            const rawLeft = rect.left + scrollLeft;
+            const clampedLeft = Math.max(minLeft, Math.min(maxLeft, rawLeft));
+            menu.style.left = `${clampedLeft}px`;
+            menu.style.zIndex = '1000';
+
+            // Close menu when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function closeMenu(e) {
+                    if (!menu.contains(e.target) && !triggerElement.contains(e.target)) {
+                        menu.remove();
+                        document.removeEventListener('click', closeMenu);
+                    }
+                });
+            }, 100);
+        }
     }
 
     /**
@@ -170,6 +201,10 @@ class ShareManager {
         if (navigator.clipboard) {
             navigator.clipboard.writeText(url).then(() => {
                 this.showNotification('Link copiado!');
+                // Close any open share UI
+                document.querySelector('.share-overlay')?.remove();
+                document.querySelector('.share-menu')?.remove();
+                document.body.classList.remove('no-scroll');
             }).catch(() => {
                 this.fallbackCopy(url);
             });
