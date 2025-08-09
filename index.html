@@ -171,7 +171,7 @@
                 </a>
             </nav>
             
-            <button class="mobile-menu-btn" type="button" aria-label="Abrir menu">
+            <button class="mobile-menu-btn" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-nav">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="4" x2="20" y1="12" y2="12"></line>
                     <line x1="4" x2="20" y1="6" y2="6"></line>
@@ -179,6 +179,16 @@
                 </svg>
             </button>
         </div>
+        <!-- Mobile Nav -->
+        <nav id="mobile-nav" class="mobile-nav" aria-label="Menu de navegação móvel" hidden>
+            <a class="mobile-nav-link" href="./">Início</a>
+            <a class="mobile-nav-link" href="./arvore-genealogica.html">Árvore Genealógica</a>
+            <a class="mobile-nav-link" href="./historia.html">História</a>
+            <a class="mobile-nav-link" href="./lembrancas.html">Lembranças</a>
+            <a class="mobile-nav-link" href="./fotos.html">Fotos</a>
+            <a class="mobile-nav-link" href="./atualizacoes.html">Atualizações</a>
+            <a class="mobile-nav-link" href="./contato.html">Contato</a>
+        </nav>
     </header>
 
     <!-- Main Content -->
@@ -422,10 +432,22 @@
         
         
         // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-            // Add mobile menu functionality here
-            console.log('Mobile menu clicked');
-        });
+        (function initMobileMenu(){
+            const btn = document.querySelector('.mobile-menu-btn');
+            const nav = document.getElementById('mobile-nav');
+            if (!btn || !nav) return;
+            const toggle = () => {
+                const isOpen = nav.classList.toggle('open');
+                if (isOpen) {
+                    nav.removeAttribute('hidden');
+                    btn.setAttribute('aria-expanded', 'true');
+                } else {
+                    nav.setAttribute('hidden', '');
+                    btn.setAttribute('aria-expanded', 'false');
+                }
+            };
+            btn.addEventListener('click', toggle);
+        })();
     </script>
 </body>
 </html> 

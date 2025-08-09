@@ -566,6 +566,47 @@ header .container {
     }
 }
 
+/* Mobile navigation drawer */
+.mobile-nav {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background: hsl(var(--card));
+    border-bottom: 1px solid hsl(var(--border));
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+    z-index: 49;
+}
+
+.mobile-nav.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.mobile-nav[hidden] { display: none; }
+
+.mobile-nav-link {
+    padding: 0.875rem 1rem;
+    border-top: 1px solid hsl(var(--border));
+    color: rgb(143, 110, 86);
+    text-decoration: none;
+    background: hsl(var(--card));
+}
+
+.mobile-nav-link:hover { background: hsl(var(--accent)); color: hsl(var(--foreground)); }
+
+@media (min-width: 768px) {
+    .mobile-menu-btn { display: none; }
+    .mobile-nav { display: none; }
+}
+
 /* ===== HERO SECTION ===== */
 .hero {
     position: relative;
