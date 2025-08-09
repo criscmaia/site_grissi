@@ -532,6 +532,8 @@ body.no-scroll { overflow: hidden; }
   transition: background 0.2s ease;
 }
 
+.photo-popup .close-btn { touch-action: manipulation; }
+
 .photo-popup button:hover {
   background: rgba(0, 0, 0, 0.7);
 }

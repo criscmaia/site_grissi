@@ -7,6 +7,7 @@ class PhotoPopup {
     constructor() {
         this.currentPopup = null;
         this.isEnabled = true;
+        this.suppressUntil = 0; // prevent immediate reopen after close
         this.init();
     }
 
@@ -19,7 +20,9 @@ class PhotoPopup {
         
         // Add global click handler to close popups
         document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('photo-popup-overlay')) {
+            const isOverlay = e.target.classList?.contains('photo-popup-overlay');
+            const isClose = e.target.closest?.('.photo-popup .close-btn');
+            if (isOverlay || isClose) {
                 this.hidePopup();
             }
         });
@@ -54,7 +57,7 @@ class PhotoPopup {
             width: 100%;
             height: 100%;
             z-index: 9999;
-            pointer-events: none;
+            pointer-events: none; /* will be turned on when popup is visible */
         `;
         
         document.body.appendChild(container);
@@ -66,9 +69,8 @@ class PhotoPopup {
      */
     showPopup(photoUrl, personName, triggerElement) {
         if (!this.isEnabled || !photoUrl) return;
-
-        // Hide any existing popup
-        this.hidePopup();
+        if (Date.now() < this.suppressUntil) return;
+        if (this.currentPopup) return; // already open
 
         // Create popup overlay
         const overlay = document.createElement('div');
@@ -120,6 +122,8 @@ class PhotoPopup {
 
         // Create close button
         const closeBtn = document.createElement('button');
+        closeBtn.className = 'close-btn';
+        closeBtn.setAttribute('aria-label', 'Fechar');
         closeBtn.innerHTML = `
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -142,7 +146,11 @@ class PhotoPopup {
             justify-content: center;
             transition: background 0.2s ease;
         `;
-        closeBtn.addEventListener('click', () => this.hidePopup());
+        // Close button interactions (support desktop and mobile simulators)
+        closeBtn.addEventListener('click', (e) => { e.stopPropagation(); this.suppressUntil = Date.now() + 400; this.hidePopup(); });
+        closeBtn.addEventListener('pointerdown', (e) => { e.stopPropagation(); });
+        closeBtn.addEventListener('pointerup', (e) => { e.stopPropagation(); this.suppressUntil = Date.now() + 400; this.hidePopup(); });
+        closeBtn.addEventListener('touchstart', (e) => { e.preventDefault(); e.stopPropagation(); this.suppressUntil = Date.now() + 400; this.hidePopup(); }, { passive: false });
         closeBtn.addEventListener('mouseenter', () => {
             closeBtn.style.background = 'rgba(0, 0, 0, 0.7)';
         });
@@ -173,6 +181,16 @@ class PhotoPopup {
 
         overlay.appendChild(popup);
         this.container.appendChild(overlay);
+        // Enable pointer events while popup is present
+        this.container.style.pointerEvents = 'auto';
+
+        // Close when clicking outside popup (overlay area)
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                this.suppressUntil = Date.now() + 400;
+                this.hidePopup();
+            }
+        });
 
         // Store reference
         this.currentPopup = overlay;
@@ -205,6 +223,8 @@ class PhotoPopup {
                 overlay.remove();
             }
             this.currentPopup = null;
+            // Disable pointer events again when no popup
+            if (this.container) this.container.style.pointerEvents = 'none';
         }, 300);
 
         console.log('📸 PhotoPopup: Hiding popup');
@@ -243,14 +263,18 @@ class PhotoPopup {
             // Don't hide immediately - let user move to popup
         };
 
-        // Add hover events
-        photoElement.addEventListener('mouseenter', showPopup);
-        photoElement.addEventListener('mouseleave', hidePopup);
+        // Add hover events (desktop only)
+        const supportsHover = window.matchMedia ? window.matchMedia('(hover: hover)').matches : true;
+        if (supportsHover) {
+            photoElement.addEventListener('mouseenter', showPopup);
+            photoElement.addEventListener('mouseleave', hidePopup);
+        }
 
-        // Add click handler for mobile
+        // Add click handler (mobile and desktop)
         photoElement.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
+            if (Date.now() < this.suppressUntil) return;
             this.showPopup(photoUrl, personName, photoElement);
         });
 
