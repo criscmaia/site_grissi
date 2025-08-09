@@ -204,6 +204,43 @@
                             </svg>
                             <input type="text" class="search-input" placeholder="Pesquisar por nome, local de nascimento..." />
                         </div>
+                        
+                        <!-- Advanced Filters -->
+                        <div class="advanced-filters">
+                            <!-- Date Range Filters -->
+                            <div class="filter-group">
+                                <label class="filter-label">Período de Nascimento:</label>
+                                <div class="date-inputs">
+                                    <input type="number" class="date-input" id="birthYearFrom" placeholder="De" min="1800" max="2024" />
+                                    <span class="date-separator">-</span>
+                                    <input type="number" class="date-input" id="birthYearTo" placeholder="Até" min="1800" max="2024" />
+                                </div>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label class="filter-label">Período de Falecimento:</label>
+                                <div class="date-inputs">
+                                    <input type="number" class="date-input" id="deathYearFrom" placeholder="De" min="1800" max="2024" />
+                                    <span class="date-separator">-</span>
+                                    <input type="number" class="date-input" id="deathYearTo" placeholder="Até" min="1800" max="2024" />
+                                </div>
+                            </div>
+                            
+                            <!-- Location Filters -->
+                            <div class="filter-group">
+                                <label class="filter-label">Local de Nascimento:</label>
+                                <select class="location-select" id="birthLocationFilter">
+                                    <option value="">Todos os locais</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label class="filter-label">Local de Falecimento:</label>
+                                <select class="location-select" id="deathLocationFilter">
+                                    <option value="">Todos os locais</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="filter-buttons">
@@ -245,6 +282,8 @@
     
     <script src="js/final-family-renderer.js"></script>
     <script src="js/search-filter-controller.js"></script>
+    <script src="js/export-manager.js"></script>
+    <script src="js/share-manager.js"></script>
 
     <script>
         /**
@@ -262,6 +301,8 @@
         let searchEngine = null;
         let familyRenderer = null;
         let photoPopup = null;
+        let exportManager = null;
+        let shareManager = null;
         
         /**
          * Initialize the application with modern features
@@ -290,6 +331,26 @@
                 
                 // Initialize search functionality (if needed later)
                 // Search is now handled by search-filter-controller.js
+                
+                // Initialize Share Manager
+                if (window.ShareManager) {
+                    shareManager = new ShareManager();
+                    shareManager.init();
+                    window.shareManager = shareManager; // Make globally available
+                    console.log('✅ Share Manager initialized successfully');
+                } else {
+                    console.warn('⚠️ ShareManager not available');
+                }
+                
+                // Initialize Export Manager (admin mode - set to true for admin access)
+                if (window.ExportManager) {
+                    exportManager = new ExportManager();
+                    exportManager.init(familyRenderer?.familyData || null, false); // Set to true for admin
+                    window.exportManager = exportManager; // Make globally available
+                    console.log('✅ Export Manager initialized successfully');
+                } else {
+                    console.warn('⚠️ ExportManager not available');
+                }
                 
                 console.log('🎉 Final application initialized successfully');
                 

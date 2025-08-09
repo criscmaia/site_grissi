@@ -154,7 +154,7 @@ class FinalFamilyRenderer {
             <div class="card-header">
                 <div class="profile-icon ${member.gender || 'unknown'}">
                     ${hasPhoto ? 
-                        `<img src="${photoUrl}" alt="${member.name}" class="profile-photo" loading="lazy" />` :
+                        `<img src="${photoUrl}" alt="${member.name}" class="profile-photo" loading="lazy" decoding="async" />` :
                         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>

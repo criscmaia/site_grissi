@@ -125,6 +125,284 @@
   box-shadow: 0 0 0 3px hsl(var(--ring) / 0.1);
 }
 
+/* Advanced Filters */
+.advanced-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-vintage);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.25rem;
+}
+
+.date-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: border-color 0.2s ease;
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+}
+
+.date-separator {
+  color: hsl(var(--muted-foreground));
+  font-weight: 500;
+}
+
+.location-select {
+  padding: 0.5rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+}
+
+.location-select:focus {
+  outline: none;
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+}
+
+.location-select option {
+  padding: 0.5rem;
+}
+
+/* Admin Export Section */
+.admin-export-section {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: var(--shadow-vintage);
+}
+
+.export-header h3 {
+  margin: 0 0 0.5rem 0;
+  color: hsl(var(--foreground));
+  font-size: 1.125rem;
+}
+
+.export-header p {
+  margin: 0 0 1rem 0;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.export-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.export-btn:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  border-color: hsl(var(--accent));
+}
+
+.export-btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Share Button */
+.share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 50%;
+  background: hsl(var(--background));
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.share-btn:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  border-color: hsl(var(--accent));
+}
+
+.share-btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Share Menu */
+.share-menu {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-heritage);
+  min-width: 200px;
+  overflow: hidden;
+}
+
+.share-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.share-menu-header h4 {
+  margin: 0;
+  font-size: 0.875rem;
+  color: hsl(var(--foreground));
+}
+
+.close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: none;
+  background: none;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+
+.close-btn:hover {
+  background: hsl(var(--accent));
+}
+
+.close-btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.share-options {
+  padding: 0.5rem;
+}
+
+.share-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  background: none;
+  color: hsl(var(--foreground));
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-radius: var(--radius);
+  transition: background 0.2s ease;
+}
+
+.share-option:hover {
+  background: hsl(var(--accent));
+}
+
+.share-option svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.share-option.whatsapp:hover {
+  color: #25D366;
+}
+
+.share-option.telegram:hover {
+  color: #0088cc;
+}
+
+.share-option.email:hover {
+  color: #EA4335;
+}
+
+/* Share Notification */
+.share-notification {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-heritage);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 10000;
+}
+
+.share-notification.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Highlighted member */
+.person-card.highlighted {
+  outline: 2px solid hsl(var(--primary));
+  box-shadow: 0 0 0 4px hsl(var(--primary) / 0.2);
+  animation: highlight-pulse 0.6s ease-in-out;
+}
+
+@keyframes highlight-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
 .filter-buttons {
   display: flex;
   gap: 0.5rem;
@@ -164,9 +442,10 @@
 
 /* Family Members List */
 .family-members {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
+  width: 100%;
 }
 
 /* Person Card */
@@ -179,6 +458,8 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .person-card:hover {
@@ -611,9 +892,9 @@
 @media (max-width: 768px) {
   .genealogy-container {
     padding: 1rem;
-}
+  }
 
-.genealogy-title {
+  .genealogy-title {
     font-size: 2rem;
   }
   
@@ -625,8 +906,25 @@
     justify-content: center;
   }
   
+  .advanced-filters {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  .date-inputs {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .date-separator {
+    display: none;
+  }
+  
   .family-members {
     grid-template-columns: 1fr;
+    max-width: 100%;
+    margin: 0;
   }
   
   .person-card {

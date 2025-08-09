@@ -108,11 +108,14 @@ class PhotoPopup {
         const img = document.createElement('img');
         img.src = photoUrl;
         img.alt = personName || 'Profile photo';
+        img.loading = 'eager'; // Load immediately for popup
+        img.decoding = 'async';
         img.style.cssText = `
             max-width: 100%;
             max-height: 70vh;
             border-radius: 8px;
             display: block;
+            object-fit: contain;
         `;
 
         // Create close button
