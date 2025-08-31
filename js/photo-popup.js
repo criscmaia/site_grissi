@@ -12,6 +12,16 @@ class PhotoPopup {
     }
 
     /**
+     * Get the appropriate display name for a person
+     * Children in unions always show their birth name (name)
+     * All other contexts show legal name if available, otherwise birth name
+     */
+    getDisplayName(person) {
+        if (!person) return '';
+        return person.legalName || person.name;
+    }
+
+    /**
      * Initialize the popup system
      */
     init() {

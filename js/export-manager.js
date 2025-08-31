@@ -1,7 +1,17 @@
 /**
- * ExportManager - Handles data export functionality for admin use
- * Provides JSON, CSV, and GEDCOM export options
+ * Export Manager for Family Data
+ * Handles exporting family data to various formats
  */
+
+/**
+ * Get the appropriate display name for a person
+ * Children in unions always show their birth name (name)
+ * All other contexts show legal name if available, otherwise birth name
+ */
+function getDisplayName(person) {
+    if (!person) return '';
+    return person.legalName || person.name;
+}
 
 class ExportManager {
     constructor() {
@@ -129,7 +139,7 @@ class ExportManager {
         this.familyData.familyMembers.forEach(member => {
             const row = [
                 member.id || '',
-                `"${member.name || ''}"`,
+                `"${getDisplayName(member)}"`,
                 member.generation || '',
                 member.gender || '',
                 `"${member.birthDate || ''}"`,
@@ -170,7 +180,7 @@ class ExportManager {
         // Add individuals
         this.familyData.familyMembers.forEach(member => {
             lines.push(`0 @I${member.id}@ INDI`);
-            lines.push(`1 NAME ${member.name || 'Unknown'}`);
+            lines.push(`1 NAME ${getDisplayName(member)}`);
             
             if (member.gender) {
                 lines.push(`1 SEX ${member.gender === 'male' ? 'M' : 'F'}`);
@@ -244,12 +254,13 @@ class ExportManager {
 
     /**
      * Get children names for CSV export
+     * Children always show their birth name (name), not legal name
      */
     getChildrenNames(member) {
         if (!member.unions) return '';
         return member.unions
             .flatMap(union => union.children || [])
-            .map(child => child.name)
+            .map(child => child.name) // Always use birth name for children
             .filter(Boolean)
             .join('; ');
     }

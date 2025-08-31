@@ -1,3 +1,28 @@
+/**
+ * Search and Filter Controller for Family Members
+ * Handles search functionality, filtering, and spotlight features
+ */
+
+// Global state
+const state = {
+  members: [],
+  cards: new Map(),
+  query: '',
+  spotlightId: null,
+  suggestionIndex: [],
+  lastQuery: ''
+};
+
+/**
+ * Get the appropriate display name for a person
+ * Children in unions always show their birth name (name)
+ * All other contexts show legal name if available, otherwise birth name
+ */
+function getDisplayName(person) {
+  if (!person) return '';
+  return person.legalName || person.name;
+}
+
 (function () {
   'use strict';
 
@@ -224,22 +249,22 @@
       card.el.style.display = allFiltersOk ? '' : 'none';
     });
 
-    // No query → just apply generation filter, reset highlights
-    if (!q) {
-      let visibleCount = 0;
-      state.members.forEach(m => {
-        const card = state.cards.get(m.id);
-        if (!card) return;
-        if (card.el.style.display !== 'none') {
-          if (card.nameEl) card.nameEl.textContent = m.name;
-          visibleCount++;
-        }
-      });
-      updateCounter(`${visibleCount} membro${visibleCount !== 1 ? 's' : ''} da família encontrado${visibleCount !== 1 ? 's' : ''}`);
-      state.spotlightId = null;
-      hideSuggestions();
-      return;
-    }
+          // No query → just apply generation filter, reset highlights
+      if (!q) {
+        let visibleCount = 0;
+        state.members.forEach(m => {
+          const card = state.cards.get(m.id);
+          if (!card) return;
+          if (card.el.style.display !== 'none') {
+            if (card.nameEl) card.nameEl.textContent = getDisplayName(m);
+            visibleCount++;
+          }
+        });
+        updateCounter(`${visibleCount} membro${visibleCount !== 1 ? 's' : ''} da família encontrado${visibleCount !== 1 ? 's' : ''}`);
+        state.spotlightId = null;
+        hideSuggestions();
+        return;
+      }
 
     // Exact match resolution (consider members and partners)
     const exactMatches = state.suggestionIndex.filter(e => normalize(e.name) === q);
@@ -264,16 +289,16 @@
       if (!card) return;
       if (card.el.style.display !== 'none') { // Only process visible cards
         if (card.nameEl) {
-          if (fuzzyContains(q, normalize(m.name))) {
-            card.nameEl.innerHTML = highlightHtml(m.name, state.query);
+          if (fuzzyContains(q, normalize(getDisplayName(m)))) {
+            card.nameEl.innerHTML = highlightHtml(getDisplayName(m), state.query);
           } else {
-            card.nameEl.textContent = m.name;
+            card.nameEl.textContent = getDisplayName(m);
           }
         }
         count++;
       }
     });
-    updateCounter(`Sugestões: ${suggestions.length}${suggestions[0] ? ` • Melhor: ${suggestions[0].name}` : ''}`);
+    updateCounter(`Sugestões: ${suggestions.length}${suggestions[0] ? ` • Melhor: ${getDisplayName(suggestions[0])}` : ''}`);
   }
 
   function scoreSuggestions(q, entries) {
@@ -350,8 +375,8 @@
 
       // Highlight names within spotlight card and relatives
       if (card.nameEl) {
-        if (isSpot || isRelative) card.nameEl.innerHTML = highlightHtml(m.name, member.name);
-        else card.nameEl.textContent = m.name;
+        if (isSpot || isRelative) card.nameEl.innerHTML = highlightHtml(getDisplayName(m), getDisplayName(member));
+        else card.nameEl.textContent = getDisplayName(m);
       }
     });
 
@@ -370,7 +395,7 @@
 
       // Scroll into view
       spot.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      updateCounter(`Destacado: ${member.name}`);
+      updateCounter(`Destacado: ${getDisplayName(member)}`);
     }
 
     // Auto-clear highlight/dimming after 4s
@@ -381,7 +406,7 @@
       state.members.forEach(m => {
         const c = state.cards.get(m.id);
         if (!c) return;
-        if (c.nameEl) c.nameEl.textContent = m.name;
+        if (c.nameEl) c.nameEl.textContent = getDisplayName(m);
       });
       // Remove <strong> from spouse/children sections
       if (spot && spot.el) {

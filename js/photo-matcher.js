@@ -1,7 +1,17 @@
 /**
- * PhotoMatcher - Handles matching family member names to photo files
- * Provides normalized name matching and photo URL generation
+ * PhotoMatcher - Matches family members with their profile photos
+ * Uses fuzzy matching to find photos based on names
  */
+
+/**
+ * Get the appropriate display name for a person
+ * Children in unions always show their birth name (name)
+ * All other contexts show legal name if available, otherwise birth name
+ */
+function getDisplayName(person) {
+    if (!person) return '';
+    return person.legalName || person.name;
+}
 
 class PhotoMatcher {
     constructor() {
@@ -118,7 +128,7 @@ class PhotoMatcher {
             if (!photoFile && member.legalName && member.legalName !== member.name) {
                 photoFile = await this.findPhotoForPerson(member.legalName);
                 if (photoFile) {
-                    console.log(`✅ PhotoMatcher: Found photo using legal name for "${member.name}" -> "${photoFile}"`);
+                    console.log(`✅ PhotoMatcher: Found photo using legal name for "${getDisplayName(member)}" -> "${photoFile}"`);
                 }
             }
             

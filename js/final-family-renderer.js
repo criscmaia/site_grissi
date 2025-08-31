@@ -12,6 +12,16 @@ class FinalFamilyRenderer {
     }
 
     /**
+     * Get the appropriate display name for a person
+     * Children in unions always show their birth name (name)
+     * All other contexts show legal name if available, otherwise birth name
+     */
+    getDisplayName(person) {
+        if (!person) return '';
+        return person.legalName || person.name;
+    }
+
+    /**
      * Initialize the family renderer
      */
     async initialize() {
@@ -189,7 +199,7 @@ class FinalFamilyRenderer {
             <div class="card-header">
                 <div class="profile-icon ${member.gender || 'unknown'}">
                     ${hasPhoto ? 
-                        `<img src="${photoUrl}" alt="${member.name}" class="profile-photo" loading="lazy" decoding="async" />` :
+                        `<img src="${photoUrl}" alt="${this.getDisplayName(member)}" class="profile-photo" loading="lazy" decoding="async" />` :
                         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
@@ -197,7 +207,7 @@ class FinalFamilyRenderer {
                     }
                 </div>
                 <div class="person-info">
-                    <h3 class="person-name">${member.name}</h3>
+                    <h3 class="person-name">${this.getDisplayName(member)}</h3>
                     <div class="person-id">${member.id}</div>
                     ${member.gender ? `<span class="gender-tag ${member.gender}">${member.gender === 'male' ? 'Masculino' : 'Feminino'}</span>` : ''}
                 </div>
@@ -215,7 +225,7 @@ class FinalFamilyRenderer {
             const profileIcon = card.querySelector('.profile-icon');
             const profilePhoto = card.querySelector('.profile-photo');
             if (profilePhoto) {
-                window.photoPopup.createHoverHandlers(profilePhoto, photoUrl, member.name);
+                window.photoPopup.createHoverHandlers(profilePhoto, photoUrl, this.getDisplayName(member));
             }
         }
 
@@ -392,7 +402,7 @@ class FinalFamilyRenderer {
         const details = [];
         
         if (spouse.name) {
-            details.push(`<strong>${spouse.name}</strong>`);
+            details.push(`<strong>${this.getDisplayName(spouse)}</strong>`);
         }
         
         if (spouse.birthDate || spouse.birthLocation) {
@@ -433,7 +443,7 @@ class FinalFamilyRenderer {
         }
 
         const childrenList = children.map(child => 
-            `<span class="child-tag" data-id="${child.id}" role="link" tabindex="0">${child.name}</span>`
+            `<span class="child-tag" data-id="${child.id}" role="link" tabindex="0">${this.getDisplayName(child)}</span>`
         ).join('');
 
         return `
