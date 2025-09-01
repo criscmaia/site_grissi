@@ -37,13 +37,27 @@ jobs:
         echo "Config file created:"
         ls -la config.js
         
-    - name: Deploy admin files to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+    - name: Checkout gh-pages branch
+      uses: actions/checkout@v4
       with:
-        personal_token: ${{ secrets.GRISSI_TOKEN_PAT }}
-        publish_dir: ./admin
-        destination_dir: admin
-        keep_files: true
+        ref: gh-pages
+        path: gh-pages-content
+        token: ${{ secrets.GRISSI_TOKEN_PAT }}
+        
+    - name: Update admin folder in gh-pages
+      run: |
+        # Remove old admin folder and copy new one
+        rm -rf gh-pages-content/admin
+        cp -r admin gh-pages-content/admin
+        
+    - name: Commit and push changes
+      run: |
+        cd gh-pages-content
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add admin/
+        git commit -m "Update admin interface" || exit 0
+        git push
         
     - name: Clean up sensitive files
       run: |
