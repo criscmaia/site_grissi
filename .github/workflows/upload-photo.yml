@@ -1,68 +1,99 @@
 name: Upload Photo from Website
 
 on:
-  repository_dispatch:
-    types: [upload_photo]
+  workflow_dispatch:
+    inputs:
+      password:
+        description: 'Admin password for upload'
+        required: true
+      filename:
+        description: 'The name of the file to upload'
+        required: true
+      blob_sha:
+        description: "The SHA of the file's blob content"
+        required: true
+      person_id:
+        description: 'ID of the person this photo belongs to'
+        required: false
+      person_name:
+        description: 'Name of the person this photo belongs to'
+        required: false
 
 jobs:
-  upload:
+  create-commit:
     runs-on: ubuntu-latest
 
     steps:
       - name: '🔒 Check Password'
-        if: ${{ github.event.client_payload.password != secrets.ADMIN_PASSWORD }}
+        if: ${{ github.event.inputs.password != secrets.ADMIN_PASSWORD }}
         run: |
           echo "❌ Incorrect password."
-          exit 1 # This will stop the workflow immediately
+          exit 1
 
-      - name: '✅ Password OK! Checkout repository'
-        uses: actions/checkout@v4
-        with:
-          # We need to use the PAT here to be able to push back to the repo
-          token: ${{ secrets.GRISSI_TOKEN_PAT }}
-
-      - name: '✍️ Decode and Write File'
+      - name: '✅ Password OK! Create commit via API'
+        env:
+          GH_TOKEN: ${{ secrets.GRISSI_TOKEN_PAT }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          BRANCH: 'master'
+          FILENAME: ${{ github.event.inputs.filename }}
+          BLOB_SHA: ${{ github.event.inputs.blob_sha }}
+          PERSON_NAME: ${{ github.event.inputs.person_name }}
         run: |
-          # The path where you want to save the images
-          mkdir -p images/arvore
-          
-          # Handle duplicate filenames by adding a timestamp suffix if file exists
-          filename="${{ github.event.client_payload.filename }}"
-          base_name="${filename%.*}"
-          extension="${filename##*.}"
-          final_filename="$filename"
-          
-          # If file exists, add timestamp to make it unique
-          if [ -f "images/arvore/$filename" ]; then
+          set -e # Exit immediately if a command fails
+
+          # Handle duplicate filenames by adding timestamp suffix if needed
+          base_name="${FILENAME%.*}"
+          extension="${FILENAME##*.}"
+          final_filename="$FILENAME"
+          file_path="images/arvore/$final_filename"
+
+          echo "1. Checking if file already exists..."
+          # Try to get the existing file - if it exists, we'll rename our new file
+          if gh api "repos/$OWNER/$REPO/contents/$file_path" >/dev/null 2>&1; then
             timestamp=$(date +"%Y%m%d_%H%M%S")
             final_filename="${base_name}_${timestamp}.${extension}"
-            echo "File exists, renaming to: $final_filename"
+            file_path="images/arvore/$final_filename"
+            echo "   - File exists, renaming to: $final_filename"
+          else
+            echo "   - Filename available: $final_filename"
           fi
-          
-          # Decode the Base64 content and write it to the file
-          echo "${{ github.event.client_payload.file_content_base64 }}" | base64 --decode > "images/arvore/$final_filename"
-          
-          # Store the final filename for the commit message
-          echo "FINAL_FILENAME=$final_filename" >> $GITHUB_ENV
 
-      - name: '🚀 Commit and Push File'
-        run: |
-          git config --global user.name "Image Uploader Bot"
-          git config --global user.email "bot@users.noreply.github.com"
-          git add "images/arvore/$FINAL_FILENAME"
-          
           # Create commit message with person info if provided
-          if [ -n "${{ github.event.client_payload.person_name }}" ]; then
-            commit_msg="🖼️ Add photo for ${{ github.event.client_payload.person_name }}: $FINAL_FILENAME"
+          if [ -n "$PERSON_NAME" ]; then
+            commit_message="🖼️ Add photo for $PERSON_NAME: $final_filename"
           else
-            commit_msg="🖼️ Add new image: $FINAL_FILENAME"
+            commit_message="🖼️ Add new image: $final_filename"
           fi
-          
-          # Check if there are changes to commit
-          if ! git diff-index --quiet HEAD; then
-            git commit -m "$commit_msg"
-            git push
-            echo "✅ Successfully uploaded: $FINAL_FILENAME"
-          else
-            echo "No changes to commit."
-          fi
+
+          echo "2. Getting latest commit SHA..."
+          LATEST_COMMIT_SHA=$(gh api "repos/$OWNER/$REPO/git/ref/heads/$BRANCH" --jq '.object.sha')
+          echo "   - Latest commit: $LATEST_COMMIT_SHA"
+
+          echo "3. Getting base tree SHA..."
+          BASE_TREE_SHA=$(gh api "repos/$OWNER/$REPO/git/commits/$LATEST_COMMIT_SHA" --jq '.tree.sha')
+          echo "   - Base tree: $BASE_TREE_SHA"
+
+          echo "4. Creating new tree..."
+          NEW_TREE_SHA=$(gh api "repos/$OWNER/$REPO/git/trees" \
+            -f base_tree="$BASE_TREE_SHA" \
+            -f "tree[0][path]=$file_path" \
+            -f "tree[0][mode]=100644" \
+            -f "tree[0][type]=blob" \
+            -f "tree[0][sha]=$BLOB_SHA" \
+            --jq '.sha')
+          echo "   - New tree: $NEW_TREE_SHA"
+
+          echo "5. Creating new commit..."
+          NEW_COMMIT_SHA=$(gh api "repos/$OWNER/$REPO/git/commits" \
+            -f message="$commit_message" \
+            -f "parents[0]=$LATEST_COMMIT_SHA" \
+            -f tree="$NEW_TREE_SHA" \
+            --jq '.sha')
+          echo "   - New commit: $NEW_COMMIT_SHA"
+
+          echo "6. Updating branch reference..."
+          gh api "repos/$OWNER/$REPO/git/refs/heads/$BRANCH" -X PATCH \
+            -f sha="$NEW_COMMIT_SHA"
+            
+          echo "✅ Successfully committed $final_filename"

@@ -689,48 +689,80 @@ class PhotoUploadManager {
     }
     
     async uploadViaWorkflow(filename, base64Content, person) {
-        const url = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/dispatches`;
+        // STEP 1: Create blob (upload file content to GitHub)
+        this.addLog(`🔼 Passo 1/2: Enviando conteúdo do arquivo...`, 'info');
         
-        const payload = {
-            event_type: 'upload_photo',
-            client_payload: {
-                password: this.uploadPassword,
-                filename: filename,
-                file_content_base64: base64Content,
-                person_id: person.type === 'member' ? person.data.id : null,
-                person_name: person.displayName
-            }
-        };
-        
-        const response = await fetch(url, {
+        const blobUrl = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/git/blobs`;
+        const blobResponse = await fetch(blobUrl, {
             method: 'POST',
             headers: {
                 'Accept': 'application/vnd.github.v3+json',
                 'Authorization': `Bearer ${this.github.triggerToken}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+                content: base64Content,
+                encoding: 'base64'
+            })
         });
+
+        if (!blobResponse.ok) {
+            let errorData;
+            try {
+                errorData = await blobResponse.json();
+            } catch (e) {
+                errorData = { message: `HTTP ${blobResponse.status}: ${blobResponse.statusText}` };
+            }
+            throw new Error(`Falha ao criar blob: ${errorData.message}`);
+        }
+
+        const blobData = await blobResponse.json();
+        const blobSha = blobData.sha;
+        this.addLog(`✅ Blob criado: ${blobSha.substring(0, 8)}...`, 'success');
+
+        // STEP 2: Trigger workflow with blob SHA
+        this.addLog(`⚙️ Passo 2/2: Iniciando workflow de commit...`, 'info');
         
-        if (response.status === 204) {
-            // Success - workflow was triggered
-            this.addLog(`🚀 Repository dispatch enviado para ${filename}`, 'info');
+        const workflowUrl = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/actions/workflows/upload-photo.yml/dispatches`;
+        const workflowPayload = {
+            ref: this.github.branch,
+            inputs: {
+                password: this.uploadPassword,
+                filename: filename,
+                blob_sha: blobSha,
+                person_id: person.type === 'member' ? person.data.id : null,
+                person_name: person.displayName
+            }
+        };
+
+        const workflowResponse = await fetch(workflowUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/vnd.github.v3+json',
+                'Authorization': `Bearer ${this.github.triggerToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(workflowPayload)
+        });
+
+        if (workflowResponse.status === 204) {
+            this.addLog(`🚀 Workflow iniciado para ${filename}`, 'success');
             return { success: true };
         } else {
             let errorData;
             try {
-                errorData = await response.json();
+                errorData = await workflowResponse.json();
             } catch (e) {
-                errorData = { message: `HTTP ${response.status}: ${response.statusText}` };
+                errorData = { message: `HTTP ${workflowResponse.status}: ${workflowResponse.statusText}` };
             }
-            
+
             // Handle specific error cases
-            if (response.status === 401) {
+            if (workflowResponse.status === 401) {
                 throw new Error('Token de acesso inválido ou sem permissão. Verifique se o token tem escopo "workflow".');
-            } else if (response.status === 404) {
-                throw new Error('Repositório não encontrado. Verifique a configuração.');
+            } else if (workflowResponse.status === 404) {
+                throw new Error('Repositório ou workflow não encontrado. Verifique a configuração.');
             } else {
-                throw new Error(errorData.message || `Erro ${response.status}: Falha ao enviar dispatch`);
+                throw new Error(errorData.message || `Erro ${workflowResponse.status}: Falha ao iniciar workflow`);
             }
         }
     }
