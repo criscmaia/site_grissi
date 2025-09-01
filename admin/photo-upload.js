@@ -21,8 +21,10 @@ class PhotoUploadManager {
             triggerToken: ''
         };
         
-        // Check if config is missing and setup fallback
-        this.configMissing = !window.UPLOAD_CONFIG || !window.UPLOAD_CONFIG.github?.triggerToken || window.UPLOAD_CONFIG.github.triggerToken === 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE';
+        // Check if config is properly loaded
+        this.configMissing = !window.UPLOAD_CONFIG || !window.UPLOAD_CONFIG.github?.triggerToken || 
+                            window.UPLOAD_CONFIG.github.triggerToken === 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE' ||
+                            !window.UPLOAD_CONFIG.github.triggerToken.startsWith('ghp_');
         
         this.init();
     }
@@ -195,7 +197,7 @@ class PhotoUploadManager {
     
     handleFileSelection(files) {
         const validFiles = [];
-        const maxSize = 5 * 1024 * 1024; // 5MB
+        const maxSize = 2 * 1024 * 1024; // Reduced to 2MB for Base64 compression
         const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         
         Array.from(files).forEach(file => {
@@ -205,7 +207,7 @@ class PhotoUploadManager {
             }
             
             if (file.size > maxSize) {
-                this.addLog(`❌ ${file.name}: Arquivo muito grande (máximo 5MB)`, 'error');
+                this.addLog(`❌ ${file.name}: Arquivo muito grande (máximo 2MB para upload via workflow)`, 'error');
                 return;
             }
             
@@ -641,13 +643,48 @@ class PhotoUploadManager {
     
     async fileToBase64(file) {
         return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const base64 = reader.result.split(',')[1];
-                resolve(base64);
+            // Compress image before converting to base64
+            this.compressImage(file, 0.7).then(compressedFile => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(compressedFile);
+            }).catch(reject);
+        });
+    }
+    
+    async compressImage(file, quality = 0.7) {
+        return new Promise((resolve) => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = () => {
+                // Calculate new dimensions (max 1200px on longest side)
+                const maxDimension = 1200;
+                let { width, height } = img;
+                
+                if (width > height && width > maxDimension) {
+                    height = (height * maxDimension) / width;
+                    width = maxDimension;
+                } else if (height > maxDimension) {
+                    width = (width * maxDimension) / height;
+                    height = maxDimension;
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                // Draw and compress
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                canvas.toBlob(resolve, 'image/jpeg', quality);
             };
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
+            
+            img.src = URL.createObjectURL(file);
         });
     }
     

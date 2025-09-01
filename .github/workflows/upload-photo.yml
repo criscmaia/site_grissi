@@ -11,7 +11,7 @@ on:
         description: 'The name of the file to upload'
         required: true
       file_content_base64:
-        description: 'The Base64-encoded content of the file'
+        description: 'The Base64-encoded content of the file (compressed)'
         required: true
       person_id:
         description: 'ID of the person this photo belongs to'
@@ -37,7 +37,7 @@ jobs:
           # We need to use the PAT here to be able to push back to the repo
           token: ${{ secrets.GRISSI_TOKEN_PAT }}
 
-      - name: '✍️ Decode and Write File'
+      - name: '✍️ Download and Write File'
         run: |
           # The path where you want to save the images
           mkdir -p images/arvore
