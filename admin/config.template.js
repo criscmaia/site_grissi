@@ -7,15 +7,15 @@
  * 3. Do NOT commit config.js to git (it's in .gitignore)
  */
 
-// GitHub Configuration - Fill in your actual values
+// GitHub Configuration - Automatically injected by GitHub Actions
 window.UPLOAD_CONFIG = {
     github: {
-        token: 'ghp_YOUR_ACTUAL_GITHUB_TOKEN_HERE', // Get from GitHub Settings → Developer settings → PAT
+        token: 'ghp_YOUR_ACTUAL_GITHUB_TOKEN_HERE', // Injected from GitHub Secrets
         repo: 'SiteGrissi',
         owner: 'criscmaia',
-        branch: 'master' // Change to 'main' if your repo uses main branch
+        branch: 'master'
     },
     auth: {
-        password: 'your_secure_password_here' // Choose a secure password
+        password: 'your_secure_password_here' // Injected from GitHub Secrets
     }
 };

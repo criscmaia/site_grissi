@@ -1,8 +1,8 @@
 # Photo Upload System - Setup Guide
 
-## 🔧 Configuration Required
+## 🔧 Automated Configuration with GitHub Actions
 
-Before using the photo upload system, you need to configure the GitHub integration in `photo-upload.js`.
+This system uses GitHub Actions for secure, automated deployment. No manual configuration files needed!
 
 ### 1. GitHub Personal Access Token (PAT)
 
@@ -15,30 +15,31 @@ Before using the photo upload system, you need to configure the GitHub integrati
 5. Click "Generate token"
 6. **IMPORTANT**: Copy the token immediately (you won't see it again)
 
-### 2. Create Configuration File
+### 2. Configure Repository Secrets
 
-1. Copy `config.template.js` to `config.js`:
-   ```bash
-   cp admin/config.template.js admin/config.js
-   ```
+1. Go to your GitHub repository → Settings → Secrets and variables → Actions
+2. Click "New repository secret" and add:
+   - **Name**: `GRISSI_TOKEN_PAT`
+   - **Value**: The token from step 1
+3. Click "New repository secret" again and add:
+   - **Name**: `ADMIN_PASSWORD`
+   - **Value**: Your desired admin password (choose something secure)
 
-2. Edit `admin/config.js` with your actual credentials:
+### 3. Deployment Process
 
-```javascript
-window.UPLOAD_CONFIG = {
-    github: {
-        token: 'ghp_your_actual_token_here', // Your PAT from step 1
-        repo: 'SiteGrissi',
-        owner: 'criscmaia', // Your GitHub username
-        branch: 'main'
-    },
-    auth: {
-        password: 'your_secure_password' // Choose a strong password
-    }
-};
-```
+The system automatically deploys when you make changes to the admin folder:
 
-3. **IMPORTANT**: The `config.js` file is automatically ignored by git (listed in .gitignore) to prevent accidental commits of sensitive data.
+1. Any commit to the `master` branch that modifies files in the `admin/` folder triggers deployment
+2. GitHub Actions securely injects your secrets into the configuration
+3. The admin interface is deployed to GitHub Pages at `/admin/`
+4. No sensitive data is ever committed to your repository
+
+### Manual Deployment (Optional)
+
+You can also trigger deployment manually:
+1. Go to your repository → Actions
+2. Select "Deploy Admin Interface" workflow
+3. Click "Run workflow"
 
 ## 🚀 Usage Instructions
 

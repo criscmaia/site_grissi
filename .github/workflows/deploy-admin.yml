@@ -1,0 +1,47 @@
+name: Deploy Admin Interface
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'admin/**'
+  workflow_dispatch:
+
+jobs:
+  deploy-admin:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Create config.js from template
+      run: |
+        cd admin
+        cp config.template.js config.js
+        
+        # Replace placeholders with actual secrets
+        sed -i "s/ghp_YOUR_ACTUAL_GITHUB_TOKEN_HERE/${{ secrets.GRISSI_TOKEN_PAT }}/g" config.js
+        sed -i "s/your_secure_password_here/${{ secrets.ADMIN_PASSWORD }}/g" config.js
+        
+        # Verify the file was created
+        echo "Config file created:"
+        ls -la config.js
+        
+    - name: Deploy admin files to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./admin
+        destination_dir: admin
+        keep_files: true
+        
+    - name: Clean up sensitive files
+      run: |
+        rm -f admin/config.js
+        echo "Cleaned up config.js"
