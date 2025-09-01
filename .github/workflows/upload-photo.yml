@@ -25,10 +25,15 @@ jobs:
 
     steps:
       - name: '🔒 Check Password'
-        if: ${{ github.event.inputs.password != secrets.ADMIN_PASSWORD }}
+        env:
+          INPUT_PASSWORD: ${{ github.event.inputs.password }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
         run: |
-          echo "❌ Incorrect password."
-          exit 1
+          if [ "$INPUT_PASSWORD" != "$ADMIN_PASSWORD" ]; then
+            echo "❌ Incorrect password."
+            exit 1
+          fi
+          echo "✅ Password verified"
 
       - name: '✅ Password OK! Create commit via API'
         env:
