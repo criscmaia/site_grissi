@@ -81,11 +81,9 @@ jobs:
 
           echo "4. Creating new tree..."
           NEW_TREE_SHA=$(gh api "repos/$OWNER/$REPO/git/trees" \
-            -f base_tree="$BASE_TREE_SHA" \
-            -f "tree[0][path]=$file_path" \
-            -f "tree[0][mode]=100644" \
-            -f "tree[0][type]=blob" \
-            -f "tree[0][sha]=$BLOB_SHA" \
+            --method POST \
+            --field base_tree="$BASE_TREE_SHA" \
+            --raw-field tree="[{\"path\":\"$file_path\",\"mode\":\"100644\",\"type\":\"blob\",\"sha\":\"$BLOB_SHA\"}]" \
             --jq '.sha')
           echo "   - New tree: $NEW_TREE_SHA"
 
