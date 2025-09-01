@@ -150,6 +150,24 @@ class PhotoUploadManager {
         alert('✅ Credenciais configuradas! Sistema pronto para uso.\n\nNOTA: Para uso futuro, crie um arquivo config.js local para evitar digitar as credenciais novamente.');
     }
     
+    async promptForUploadCredentials() {
+        return new Promise((resolve) => {
+            const githubToken = prompt(`🔐 GitHub Token necessário para upload!\n\nDigite seu GitHub Personal Access Token:`);
+            
+            if (!githubToken) {
+                resolve(false);
+                return;
+            }
+            
+            // Set the credentials
+            this.github.token = githubToken;
+            this.configMissing = false;
+            
+            this.addLog('✅ Credenciais configuradas para upload', 'success');
+            resolve(true);
+        });
+    }
+    
     showError(message) {
         const errorDiv = document.getElementById('auth-error');
         errorDiv.textContent = message;
@@ -536,8 +554,19 @@ class PhotoUploadManager {
     async startUploadProcess() {
         console.log('Upload process started');
         console.log('GitHub config:', { token: this.github.token ? 'SET' : 'NOT SET', owner: this.github.owner });
+        console.log('Config missing flag:', this.configMissing);
         
-        if (!this.github.token || !this.github.owner) {
+        // If config is missing and no token is set, prompt for credentials now
+        if ((!this.github.token || !this.github.owner) && this.configMissing) {
+            this.addLog('⚠️ Credenciais necessárias para upload', 'info');
+            await this.promptForUploadCredentials();
+            
+            // Check again after prompting
+            if (!this.github.token) {
+                this.addLog('❌ Upload cancelado - credenciais não fornecidas.', 'error');
+                return;
+            }
+        } else if (!this.github.token || !this.github.owner) {
             this.addLog('❌ Configuração do GitHub não encontrada. Contate o administrador.', 'error');
             console.error('GitHub configuration missing:', this.github);
             return;
