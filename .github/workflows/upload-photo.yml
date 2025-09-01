@@ -1,24 +1,8 @@
 name: Upload Photo from Website
 
-# This allows the workflow to be triggered by an API call
 on:
-  workflow_dispatch:
-    inputs:
-      password:
-        description: 'Admin password for upload'
-        required: true
-      filename:
-        description: 'The name of the file to upload'
-        required: true
-      file_content_base64:
-        description: 'The Base64-encoded content of the file (compressed)'
-        required: true
-      person_id:
-        description: 'ID of the person this photo belongs to'
-        required: false
-      person_name:
-        description: 'Name of the person this photo belongs to'
-        required: false
+  repository_dispatch:
+    types: [upload_photo]
 
 jobs:
   upload:
@@ -26,7 +10,7 @@ jobs:
 
     steps:
       - name: '🔒 Check Password'
-        if: ${{ github.event.inputs.password != secrets.ADMIN_PASSWORD }}
+        if: ${{ github.event.client_payload.password != secrets.ADMIN_PASSWORD }}
         run: |
           echo "❌ Incorrect password."
           exit 1 # This will stop the workflow immediately
@@ -37,13 +21,13 @@ jobs:
           # We need to use the PAT here to be able to push back to the repo
           token: ${{ secrets.GRISSI_TOKEN_PAT }}
 
-      - name: '✍️ Download and Write File'
+      - name: '✍️ Decode and Write File'
         run: |
           # The path where you want to save the images
           mkdir -p images/arvore
           
           # Handle duplicate filenames by adding a timestamp suffix if file exists
-          filename="${{ github.event.inputs.filename }}"
+          filename="${{ github.event.client_payload.filename }}"
           base_name="${filename%.*}"
           extension="${filename##*.}"
           final_filename="$filename"
@@ -56,7 +40,7 @@ jobs:
           fi
           
           # Decode the Base64 content and write it to the file
-          echo "${{ github.event.inputs.file_content_base64 }}" | base64 --decode > "images/arvore/$final_filename"
+          echo "${{ github.event.client_payload.file_content_base64 }}" | base64 --decode > "images/arvore/$final_filename"
           
           # Store the final filename for the commit message
           echo "FINAL_FILENAME=$final_filename" >> $GITHUB_ENV
@@ -68,8 +52,8 @@ jobs:
           git add "images/arvore/$FINAL_FILENAME"
           
           # Create commit message with person info if provided
-          if [ -n "${{ github.event.inputs.person_name }}" ]; then
-            commit_msg="🖼️ Add photo for ${{ github.event.inputs.person_name }}: $FINAL_FILENAME"
+          if [ -n "${{ github.event.client_payload.person_name }}" ]; then
+            commit_msg="🖼️ Add photo for ${{ github.event.client_payload.person_name }}: $FINAL_FILENAME"
           else
             commit_msg="🖼️ Add new image: $FINAL_FILENAME"
           fi

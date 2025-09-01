@@ -689,12 +689,11 @@ class PhotoUploadManager {
     }
     
     async uploadViaWorkflow(filename, base64Content, person) {
-        const workflowFile = 'upload-photo.yml';
-        const url = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/actions/workflows/${workflowFile}/dispatches`;
+        const url = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/dispatches`;
         
         const payload = {
-            ref: this.github.branch,
-            inputs: {
+            event_type: 'upload_photo',
+            client_payload: {
                 password: this.uploadPassword,
                 filename: filename,
                 file_content_base64: base64Content,
@@ -715,7 +714,7 @@ class PhotoUploadManager {
         
         if (response.status === 204) {
             // Success - workflow was triggered
-            this.addLog(`🚀 Workflow iniciado para ${filename}`, 'info');
+            this.addLog(`🚀 Repository dispatch enviado para ${filename}`, 'info');
             return { success: true };
         } else {
             let errorData;
@@ -729,9 +728,9 @@ class PhotoUploadManager {
             if (response.status === 401) {
                 throw new Error('Token de acesso inválido ou sem permissão. Verifique se o token tem escopo "workflow".');
             } else if (response.status === 404) {
-                throw new Error('Repositório ou workflow não encontrado. Verifique a configuração.');
+                throw new Error('Repositório não encontrado. Verifique a configuração.');
             } else {
-                throw new Error(errorData.message || `Erro ${response.status}: Falha ao iniciar workflow`);
+                throw new Error(errorData.message || `Erro ${response.status}: Falha ao enviar dispatch`);
             }
         }
     }
