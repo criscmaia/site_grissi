@@ -18,8 +18,15 @@ const state = {
  * Children in unions always show their birth name (name)
  * All other contexts show legal name if available, otherwise birth name
  */
-function getDisplayName(person) {
+function getDisplayName(person, context = 'default') {
   if (!person) return '';
+  
+  // Children contexts always show birth name
+  if (context === 'children') {
+    return person.name || '';
+  }
+  
+  // All other contexts show legal name with fallback to birth name
   return person.legalName || person.name;
 }
 
@@ -164,6 +171,7 @@ function getDisplayName(person) {
     state.members = members.map(m => ({
       id: m.id,
       name: m.name || '',
+      legalName: m.legalName || null,
       generation: m.generation ?? null,
       birthDate: m.birthDate || '',
       deathDate: m.deathDate || '',

@@ -16,8 +16,15 @@ class FinalFamilyRenderer {
      * Children in unions always show their birth name (name)
      * All other contexts show legal name if available, otherwise birth name
      */
-    getDisplayName(person) {
+    getDisplayName(person, context = 'default') {
         if (!person) return '';
+        
+        // Children contexts always show birth name
+        if (context === 'children') {
+            return person.name || '';
+        }
+        
+        // All other contexts show legal name with fallback to birth name
         return person.legalName || person.name;
     }
 
@@ -163,6 +170,33 @@ class FinalFamilyRenderer {
     }
 
     /**
+     * Find person data by birth name, searching both family members and spouse/partner records
+     * Returns an object with name and legalName if found, null otherwise
+     */
+    findPersonByBirthName(birthName) {
+        if (!birthName) return null;
+        
+        // First try to find as a family member
+        const member = this.familyData.familyMembers.find(m => m.name === birthName);
+        if (member) {
+            return { name: member.name, legalName: member.legalName };
+        }
+        
+        // If not found as member, search through all partner/spouse records
+        for (const member of this.familyData.familyMembers) {
+            if (member.unions) {
+                for (const union of member.unions) {
+                    if (union.partner && union.partner.name === birthName) {
+                        return { name: union.partner.name, legalName: union.partner.legalName };
+                    }
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    /**
      * Render all family members
      */
     renderFamilyMembers() {
@@ -295,16 +329,40 @@ class FinalFamilyRenderer {
         const parents = [];
         if (member.parents.father) {
             const fid = this.resolveIdByExactName(member.parents.father);
+            const fatherPerson = this.familyData.familyMembers.find(m => m.id === fid);
+            let fatherDisplayName;
+            
+            if (fatherPerson) {
+                // Found as family member - use getDisplayName for legal name
+                fatherDisplayName = this.getDisplayName(fatherPerson);
+            } else {
+                // Not found as family member - search partners/spouses for legal name
+                const fatherData = this.findPersonByBirthName(member.parents.father);
+                fatherDisplayName = fatherData ? (fatherData.legalName || fatherData.name) : member.parents.father;
+            }
+            
             const fatherHtml = fid
-                ? `<span class="parent-link" data-id="${fid}" role="link" tabindex="0">${member.parents.father}</span>`
-                : `${member.parents.father}`;
+                ? `<span class="parent-link" data-id="${fid}" role="link" tabindex="0">${fatherDisplayName}</span>`
+                : `${fatherDisplayName}`;
             parents.push(`<strong>Pai:</strong> ${fatherHtml}`);
         }
         if (member.parents.mother) {
             const mid = this.resolveIdByExactName(member.parents.mother);
+            const motherPerson = this.familyData.familyMembers.find(m => m.id === mid);
+            let motherDisplayName;
+            
+            if (motherPerson) {
+                // Found as family member - use getDisplayName for legal name
+                motherDisplayName = this.getDisplayName(motherPerson);
+            } else {
+                // Not found as family member - search partners/spouses for legal name
+                const motherData = this.findPersonByBirthName(member.parents.mother);
+                motherDisplayName = motherData ? (motherData.legalName || motherData.name) : member.parents.mother;
+            }
+            
             const motherHtml = mid
-                ? `<span class="parent-link" data-id="${mid}" role="link" tabindex="0">${member.parents.mother}</span>`
-                : `${member.parents.mother}`;
+                ? `<span class="parent-link" data-id="${mid}" role="link" tabindex="0">${motherDisplayName}</span>`
+                : `${motherDisplayName}`;
             parents.push(`<strong>Mãe:</strong> ${motherHtml}`);
         }
 
@@ -443,7 +501,7 @@ class FinalFamilyRenderer {
         }
 
         const childrenList = children.map(child => 
-            `<span class="child-tag" data-id="${child.id}" role="link" tabindex="0">${this.getDisplayName(child)}</span>`
+            `<span class="child-tag" data-id="${child.id}" role="link" tabindex="0">${this.getDisplayName(child, 'children')}</span>`
         ).join('');
 
         return `

@@ -8,8 +8,15 @@
  * Children in unions always show their birth name (name)
  * All other contexts show legal name if available, otherwise birth name
  */
-function getDisplayName(person) {
+function getDisplayName(person, context = 'default') {
     if (!person) return '';
+    
+    // Children contexts always show birth name
+    if (context === 'children') {
+        return person.name || '';
+    }
+    
+    // All other contexts show legal name with fallback to birth name
     return person.legalName || person.name;
 }
 
@@ -260,7 +267,7 @@ class ExportManager {
         if (!member.unions) return '';
         return member.unions
             .flatMap(union => union.children || [])
-            .map(child => child.name) // Always use birth name for children
+            .map(child => getDisplayName(child, 'children')) // Always use birth name for children
             .filter(Boolean)
             .join('; ');
     }
