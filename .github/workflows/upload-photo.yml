@@ -47,6 +47,15 @@ jobs:
         run: |
           set -e # Exit immediately if a command fails
 
+          # --- DEBUGGING STEP ---
+          echo "Received Blob SHA: --->${BLOB_SHA}<---"
+          if [[ -z "$BLOB_SHA" ]]; then
+            echo "::error::Blob SHA is empty! The workflow cannot continue."
+            exit 1
+          fi
+          echo "✅ Blob SHA is valid"
+          # --- END OF DEBUGGING STEP ---
+
           # Handle duplicate filenames by adding timestamp suffix if needed
           base_name="${FILENAME%.*}"
           extension="${FILENAME##*.}"
