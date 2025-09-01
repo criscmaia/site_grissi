@@ -654,9 +654,16 @@ class PhotoUploadManager {
             body: JSON.stringify(payload)
         });
         
-        // If branch not found, try alternate branch
+        // Handle different error scenarios
         if (!response.ok) {
-            const error = await response.json();
+            let error;
+            try {
+                error = await response.json();
+            } catch (e) {
+                error = { message: `HTTP ${response.status}: ${response.statusText}` };
+            }
+            
+            // Handle branch not found (try alternate branch)
             if (error.message && error.message.includes('Branch') && error.message.includes('not found')) {
                 const alternateBranch = this.github.branch === 'main' ? 'master' : 'main';
                 console.log(`Branch ${this.github.branch} not found, trying ${alternateBranch}`);
@@ -676,16 +683,73 @@ class PhotoUploadManager {
                     // Update our config for future uploads
                     this.github.branch = alternateBranch;
                     this.addLog(`✅ Usando branch ${alternateBranch}`, 'success');
+                } else {
+                    // Get error from second attempt
+                    try {
+                        error = await response.json();
+                    } catch (e) {
+                        error = { message: `HTTP ${response.status}: ${response.statusText}` };
+                    }
                 }
+            }
+            
+            // Handle file already exists (422 error)
+            if (response.status === 422) {
+                // Try to get existing file's SHA and update it
+                const existingFile = await this.getExistingFile(path);
+                if (existingFile) {
+                    this.addLog(`⚠️ Arquivo já existe, atualizando...`, 'info');
+                    payload.sha = existingFile.sha;
+                    
+                    const updateResponse = await fetch(url, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${this.github.token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (updateResponse.ok) {
+                        return updateResponse.json();
+                    } else {
+                        const updateError = await updateResponse.json();
+                        throw new Error(`Erro ao atualizar arquivo: ${updateError.message}`);
+                    }
+                } else {
+                    throw new Error(`Arquivo já existe mas não foi possível atualizar: ${error.message}`);
+                }
+            }
+            
+            // For other errors, throw with detailed message
+            if (!response.ok) {
+                throw new Error(error.message || `HTTP ${response.status}: Failed to upload to GitHub`);
             }
         }
         
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.message || 'Failed to upload to GitHub');
-        }
-        
         return response.json();
+    }
+    
+    async getExistingFile(path) {
+        const url = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/contents/${path}?ref=${this.github.branch}`;
+        
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `token ${this.github.token}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (response.ok) {
+                return await response.json();
+            }
+            return null;
+        } catch (error) {
+            console.warn('Failed to get existing file info:', error);
+            return null;
+        }
     }
     
     async updatePhotoManifest() {
