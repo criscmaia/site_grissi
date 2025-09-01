@@ -148,16 +148,28 @@ jobs:
             commit_message="$commit_message"$'\n\n'"📸 Update photo manifest - add $final_filename"
           fi
           
-          NEW_COMMIT_SHA=$(curl -s -X POST \
+          # Escape commit message for JSON
+          commit_message_escaped=$(printf '%s' "$commit_message" | jq -R -s .)
+          
+          COMMIT_RESPONSE=$(curl -s -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$OWNER/$REPO/git/commits" \
             -d "{
-              \"message\": \"$commit_message\",
+              \"message\": $commit_message_escaped,
               \"parents\": [\"$LATEST_COMMIT_SHA\"],
               \"tree\": \"$NEW_TREE_SHA\"
-            }" | jq -r '.sha')
+            }")
+          
+          NEW_COMMIT_SHA=$(echo "$COMMIT_RESPONSE" | jq -r '.sha')
           echo "   - New commit: $NEW_COMMIT_SHA"
+          
+          # Check if commit creation failed
+          if [ "$NEW_COMMIT_SHA" = "null" ] || [ -z "$NEW_COMMIT_SHA" ]; then
+            echo "❌ Commit creation failed. Response:"
+            echo "$COMMIT_RESPONSE" | jq '.'
+            exit 1
+          fi
 
           echo "7. Updating branch reference..."
           gh api "repos/$OWNER/$REPO/git/refs/heads/$BRANCH" -X PATCH \
