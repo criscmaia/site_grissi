@@ -22,7 +22,7 @@ class PhotoUploadManager {
         };
         
         // Check if config is missing and setup fallback
-        this.configMissing = !window.UPLOAD_CONFIG;
+        this.configMissing = !window.UPLOAD_CONFIG || !window.UPLOAD_CONFIG.github?.triggerToken || window.UPLOAD_CONFIG.github.triggerToken === 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE';
         
         this.init();
     }
@@ -548,7 +548,7 @@ class PhotoUploadManager {
         console.log('Config missing flag:', this.configMissing);
         
         // If config is missing and no trigger token is set, prompt for credentials now
-        if ((!this.github.triggerToken || !this.github.owner) && this.configMissing) {
+        if (this.configMissing) {
             this.addLog('⚠️ Credenciais necessárias para upload', 'info');
             await this.promptForUploadCredentials();
             
