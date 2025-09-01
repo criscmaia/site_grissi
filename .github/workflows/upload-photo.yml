@@ -88,27 +88,68 @@ jobs:
           BASE_TREE_SHA=$(gh api "repos/$OWNER/$REPO/git/commits/$LATEST_COMMIT_SHA" --jq '.tree.sha')
           echo "   - Base tree: $BASE_TREE_SHA"
 
-          echo "4. Creating new tree..."
-          # Create tree using curl instead of gh cli for better control
+          echo "4. Preparing manifest update..."
+          # Get current photo-manifest.json
+          MANIFEST_PATH="images/arvore/photo-manifest.json"
+          MANIFEST_RESPONSE=$(curl -s \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$OWNER/$REPO/contents/$MANIFEST_PATH")
+          
+          MANIFEST_CONTENT=$(echo "$MANIFEST_RESPONSE" | jq -r '.content' | base64 -d)
+          MANIFEST_SHA=$(echo "$MANIFEST_RESPONSE" | jq -r '.sha')
+          
+          # Check if photo needs to be added to manifest
+          if echo "$MANIFEST_CONTENT" | grep -q "\"$final_filename\""; then
+            echo "   - Photo already in manifest: $final_filename"
+            MANIFEST_BLOB_SHA=""
+          else
+            echo "   - Photo will be added to manifest: $final_filename"
+            
+            # Parse JSON, add new photo, and re-encode
+            NEW_MANIFEST=$(echo "$MANIFEST_CONTENT" | jq ". + [\"$final_filename\"] | sort")
+            NEW_MANIFEST_B64=$(echo -n "$NEW_MANIFEST" | base64 -w 0)
+            
+            # Create blob for updated manifest
+            MANIFEST_BLOB_SHA=$(curl -s -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/$OWNER/$REPO/git/blobs" \
+              -d "{\"content\": \"$NEW_MANIFEST_B64\", \"encoding\": \"base64\"}" | jq -r '.sha')
+            
+            echo "   - Manifest blob created: $MANIFEST_BLOB_SHA"
+          fi
+
+          echo "5. Creating new tree with both files..."
+          # Build tree array
+          if [ -n "$MANIFEST_BLOB_SHA" ]; then
+            # Include both image and updated manifest
+            TREE_JSON="[
+              {\"path\": \"$file_path\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$BLOB_SHA\"},
+              {\"path\": \"$MANIFEST_PATH\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$MANIFEST_BLOB_SHA\"}
+            ]"
+            echo "   - Including both image and manifest update"
+          else
+            # Include only image
+            TREE_JSON="[{\"path\": \"$file_path\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$BLOB_SHA\"}]"
+            echo "   - Including only image file"
+          fi
+          
           NEW_TREE_SHA=$(curl -s -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$OWNER/$REPO/git/trees" \
-            -d "{
-              \"base_tree\": \"$BASE_TREE_SHA\",
-              \"tree\": [
-                {
-                  \"path\": \"$file_path\",
-                  \"mode\": \"100644\",
-                  \"type\": \"blob\",
-                  \"sha\": \"$BLOB_SHA\"
-                }
-              ]
-            }" | jq -r '.sha')
+            -d "{\"base_tree\": \"$BASE_TREE_SHA\", \"tree\": $TREE_JSON}" | jq -r '.sha')
           echo "   - New tree: $NEW_TREE_SHA"
 
-          echo "5. Creating new commit..."
-          # Create commit using curl instead of gh cli for better array handling
+          echo "6. Creating new commit..."
+          # Create commit message that includes manifest update if applicable
+          if [ -n "$MANIFEST_BLOB_SHA" ]; then
+            commit_message="$commit_message
+
+📸 Update photo manifest - add $final_filename"
+          fi
+          
           NEW_COMMIT_SHA=$(curl -s -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
@@ -120,46 +161,8 @@ jobs:
             }" | jq -r '.sha')
           echo "   - New commit: $NEW_COMMIT_SHA"
 
-          echo "6. Updating photo manifest..."
-          # Get current photo-manifest.json
-          MANIFEST_PATH="images/arvore/photo-manifest.json"
-          MANIFEST_CONTENT=$(curl -s \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/$OWNER/$REPO/contents/$MANIFEST_PATH" | jq -r '.content' | base64 -d)
-          
-          # Add new photo to manifest if not already present
-          if echo "$MANIFEST_CONTENT" | grep -q "\"$final_filename\""; then
-            echo "   - Photo already in manifest: $final_filename"
-          else
-            echo "   - Adding photo to manifest: $final_filename"
-            
-            # Parse JSON, add new photo, and re-encode
-            NEW_MANIFEST=$(echo "$MANIFEST_CONTENT" | jq ". + [\"$final_filename\"] | sort")
-            NEW_MANIFEST_B64=$(echo -n "$NEW_MANIFEST" | base64 -w 0)
-            
-            # Get current manifest file SHA for update
-            MANIFEST_SHA=$(curl -s \
-              -H "Authorization: Bearer $GH_TOKEN" \
-              -H "Accept: application/vnd.github.v3+json" \
-              "https://api.github.com/repos/$OWNER/$REPO/contents/$MANIFEST_PATH" | jq -r '.sha')
-            
-            # Update photo-manifest.json
-            curl -s -X PUT \
-              -H "Authorization: Bearer $GH_TOKEN" \
-              -H "Accept: application/vnd.github.v3+json" \
-              "https://api.github.com/repos/$OWNER/$REPO/contents/$MANIFEST_PATH" \
-              -d "{
-                \"message\": \"📸 Update photo manifest - add $final_filename\",
-                \"content\": \"$NEW_MANIFEST_B64\",
-                \"sha\": \"$MANIFEST_SHA\"
-              }" > /dev/null
-            
-            echo "   - Manifest updated successfully"
-          fi
-
           echo "7. Updating branch reference..."
           gh api "repos/$OWNER/$REPO/git/refs/heads/$BRANCH" -X PATCH \
             -f sha="$NEW_COMMIT_SHA"
             
-          echo "✅ Successfully committed $final_filename and updated manifest"
+          echo "✅ Successfully committed $final_filename with manifest update"
