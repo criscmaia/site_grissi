@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upload de Fotos - Família Grizzo</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="../index.css">
+    <link rel="stylesheet" type="text/css" href="photo-upload.css">
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>🔒 Upload de Fotos da Família</h1>
+            <p>Interface administrativa para adicionar fotos ao arquivo genealógico</p>
+            <a href="../arvore-genealogica.html" class="back-link">← Voltar à Árvore Genealógica</a>
+        </header>
+
+        <!-- Authentication Section -->
+        <div id="auth-section" class="auth-section">
+            <div class="auth-card">
+                <h2>Acesso Restrito</h2>
+                <p>Digite a senha para acessar o sistema de upload:</p>
+                <input type="password" id="password-input" placeholder="Senha">
+                <button id="login-btn" onclick="authenticate()">Entrar</button>
+                <div id="auth-error" class="error-message"></div>
+            </div>
+        </div>
+
+        <!-- Main Upload Interface (hidden initially) -->
+        <div id="upload-section" class="upload-section" style="display: none;">
+            
+            <!-- Upload Area -->
+            <div class="upload-area">
+                <div id="dropzone" class="dropzone">
+                    <div class="dropzone-content">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17,8 12,3 7,8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <h3>Arraste fotos aqui ou clique para selecionar</h3>
+                        <p>Aceita JPG, PNG, GIF, WebP - Máximo 5MB por foto</p>
+                        <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+                        <button id="select-files-btn" class="btn-primary">Selecionar Arquivos</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Processing Queue -->
+            <div id="file-queue" class="file-queue" style="display: none;">
+                <h3>Fotos para Upload</h3>
+                <div id="queue-list" class="queue-list"></div>
+                <div class="queue-actions">
+                    <button id="upload-all-btn" class="btn-success" disabled>Upload Todas as Fotos</button>
+                    <button id="clear-queue-btn" class="btn-secondary">Limpar Lista</button>
+                </div>
+            </div>
+
+            <!-- Upload Progress -->
+            <div id="upload-progress" class="upload-progress" style="display: none;">
+                <h3>Progresso do Upload</h3>
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <div id="progress-text" class="progress-text">0% - Preparando...</div>
+                <div id="upload-log" class="upload-log"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Person Search Modal -->
+    <div id="person-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Selecionar Pessoa</h3>
+                <span class="close-btn" onclick="closePersonModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="photo-preview">
+                    <img id="modal-photo" src="" alt="Foto para upload">
+                    <div class="photo-info">
+                        <strong id="photo-filename"></strong>
+                        <span id="photo-size"></span>
+                    </div>
+                </div>
+                <div class="person-search">
+                    <label for="person-search-input">Buscar pessoa na família:</label>
+                    <input type="text" id="person-search-input" placeholder="Digite o nome..." oninput="searchPeople()">
+                    <div id="search-results" class="search-results"></div>
+                </div>
+                <div class="suggested-names" id="suggested-names" style="display: none;">
+                    <h4>Nomes encontrados no arquivo:</h4>
+                    <div id="filename-suggestions"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-person-btn" class="btn-primary" disabled onclick="confirmPersonSelection()">Confirmar</button>
+                <button class="btn-secondary" onclick="closePersonModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration file (not committed to git) -->
+    <script src="config.js"></script>
+    <script src="photo-upload.js"></script>
+</body>
+</html>

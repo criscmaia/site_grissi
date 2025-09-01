@@ -1,0 +1,604 @@
+/**
+ * Photo Upload System for Family Tree
+ * Handles authentication, file uploads, and GitHub API integration
+ */
+
+class PhotoUploadManager {
+    constructor() {
+        this.isAuthenticated = false;
+        this.familyMembers = [];
+        this.photoManifest = null;
+        this.fileQueue = [];
+        this.currentFileIndex = 0;
+        this.selectedPerson = null;
+        this.currentFile = null;
+        
+        // GitHub Configuration loaded from external config file
+        this.github = window.UPLOAD_CONFIG?.github || {
+            token: '',
+            repo: 'SiteGrissi',
+            owner: '',
+            branch: 'main'
+        };
+        
+        this.init();
+    }
+    
+    async init() {
+        this.bindEvents();
+        await this.loadFamilyData();
+        this.checkAuthentication();
+    }
+    
+    bindEvents() {
+        // Authentication
+        document.getElementById('login-btn').addEventListener('click', () => this.authenticate());
+        document.getElementById('password-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.authenticate();
+        });
+        
+        // File selection
+        document.getElementById('select-files-btn').addEventListener('click', () => {
+            document.getElementById('file-input').click();
+        });
+        
+        document.getElementById('file-input').addEventListener('change', (e) => {
+            this.handleFileSelection(e.target.files);
+        });
+        
+        // Drag and drop
+        const dropzone = document.getElementById('dropzone');
+        dropzone.addEventListener('click', () => {
+            document.getElementById('file-input').click();
+        });
+        
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('drag-over');
+        });
+        
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('drag-over');
+        });
+        
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('drag-over');
+            this.handleFileSelection(e.dataTransfer.files);
+        });
+        
+        // Queue actions
+        document.getElementById('upload-all-btn').addEventListener('click', () => this.startUploadProcess());
+        document.getElementById('clear-queue-btn').addEventListener('click', () => this.clearQueue());
+        
+        // Modal events
+        document.getElementById('person-search-input').addEventListener('input', () => this.searchPeople());
+        document.getElementById('confirm-person-btn').addEventListener('click', () => this.confirmPersonSelection());
+        
+        // Close modal on outside click
+        document.getElementById('person-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'person-modal') {
+                this.closePersonModal();
+            }
+        });
+    }
+    
+    checkAuthentication() {
+        const stored = localStorage.getItem('photoUploadAuth');
+        if (stored === 'authenticated') {
+            this.showUploadInterface();
+        }
+    }
+    
+    authenticate() {
+        const password = document.getElementById('password-input').value;
+        const correctPassword = window.UPLOAD_CONFIG?.auth?.password || 'familia2025';
+        
+        if (password === correctPassword) {
+            this.isAuthenticated = true;
+            localStorage.setItem('photoUploadAuth', 'authenticated');
+            this.showUploadInterface();
+        } else {
+            this.showError('Senha incorreta. Tente novamente.');
+        }
+    }
+    
+    showError(message) {
+        const errorDiv = document.getElementById('auth-error');
+        errorDiv.textContent = message;
+        errorDiv.classList.add('show');
+        setTimeout(() => errorDiv.classList.remove('show'), 5000);
+    }
+    
+    showUploadInterface() {
+        document.getElementById('auth-section').style.display = 'none';
+        document.getElementById('upload-section').style.display = 'block';
+    }
+    
+    async loadFamilyData() {
+        try {
+            const response = await fetch('../genealogy.json');
+            const data = await response.json();
+            this.familyMembers = data.familyMembers;
+            
+            // Also load existing photo manifest
+            try {
+                const manifestResponse = await fetch('../images/arvore/photo-manifest.json');
+                this.photoManifest = await manifestResponse.json();
+            } catch (e) {
+                console.warn('No photo manifest found, will create new one');
+                this.photoManifest = { photos: [] };
+            }
+            
+            console.log(`Loaded ${this.familyMembers.length} family members`);
+        } catch (error) {
+            console.error('Failed to load family data:', error);
+            this.showError('Erro ao carregar dados da família');
+        }
+    }
+    
+    handleFileSelection(files) {
+        const validFiles = [];
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        
+        Array.from(files).forEach(file => {
+            if (!validTypes.includes(file.type)) {
+                this.addLog(`❌ ${file.name}: Tipo de arquivo não suportado`, 'error');
+                return;
+            }
+            
+            if (file.size > maxSize) {
+                this.addLog(`❌ ${file.name}: Arquivo muito grande (máximo 5MB)`, 'error');
+                return;
+            }
+            
+            validFiles.push(file);
+        });
+        
+        validFiles.forEach(file => {
+            this.addToQueue(file);
+        });
+        
+        if (validFiles.length > 0) {
+            document.getElementById('file-queue').style.display = 'block';
+        }
+    }
+    
+    addToQueue(file) {
+        const queueItem = {
+            id: Date.now() + Math.random(),
+            file: file,
+            person: null,
+            status: 'pending', // pending, ready, uploading, uploaded, error
+            preview: null
+        };
+        
+        // Generate preview
+        this.generatePreview(file).then(preview => {
+            queueItem.preview = preview;
+            this.updateQueueDisplay();
+        });
+        
+        this.fileQueue.push(queueItem);
+        this.updateQueueDisplay();
+        this.updateUploadButton();
+    }
+    
+    async generatePreview(file) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    updateQueueDisplay() {
+        const queueList = document.getElementById('queue-list');
+        queueList.innerHTML = '';
+        
+        this.fileQueue.forEach(item => {
+            const queueElement = this.createQueueElement(item);
+            queueList.appendChild(queueElement);
+        });
+        
+        this.updateUploadButton();
+    }
+    
+    createQueueElement(item) {
+        const div = document.createElement('div');
+        div.className = `queue-item ${item.status}`;
+        div.dataset.id = item.id;
+        
+        const statusIcon = {
+            pending: '⏳',
+            ready: '✅',
+            uploading: '⬆️',
+            uploaded: '✅',
+            error: '❌'
+        }[item.status];
+        
+        const personInfo = item.person 
+            ? `<strong>Pessoa:</strong> ${item.person.name}`
+            : '<em>Pessoa não selecionada</em>';
+        
+        div.innerHTML = `
+            ${item.preview ? `<img src="${item.preview}" class="queue-photo" alt="Preview">` : '<div class="queue-photo"></div>'}
+            <div class="queue-info">
+                <h4>${statusIcon} ${item.file.name}</h4>
+                <p>${this.formatFileSize(item.file.size)} - ${personInfo}</p>
+            </div>
+            <div class="queue-actions-item">
+                ${item.status === 'pending' ? `
+                    <button class="btn-small btn-edit" onclick="photoUploader.selectPersonForFile('${item.id}')">
+                        Escolher Pessoa
+                    </button>
+                ` : ''}
+                <button class="btn-small btn-remove" onclick="photoUploader.removeFromQueue('${item.id}')">
+                    Remover
+                </button>
+            </div>
+        `;
+        
+        return div;
+    }
+    
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+    }
+    
+    selectPersonForFile(fileId) {
+        const item = this.fileQueue.find(f => f.id == fileId);
+        if (!item) return;
+        
+        this.currentFile = item;
+        this.showPersonModal(item);
+    }
+    
+    showPersonModal(item) {
+        const modal = document.getElementById('person-modal');
+        const photoImg = document.getElementById('modal-photo');
+        const filename = document.getElementById('photo-filename');
+        const filesize = document.getElementById('photo-size');
+        
+        photoImg.src = item.preview || '';
+        filename.textContent = item.file.name;
+        filesize.textContent = this.formatFileSize(item.file.size);
+        
+        // Suggest names based on filename
+        this.suggestNamesFromFilename(item.file.name);
+        
+        modal.style.display = 'block';
+        document.getElementById('person-search-input').focus();
+    }
+    
+    suggestNamesFromFilename(filename) {
+        const suggestions = [];
+        const cleanName = filename.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '')
+            .replace(/[_-]/g, ' ')
+            .toUpperCase();
+        
+        // Look for potential names in the filename
+        this.familyMembers.forEach(member => {
+            const memberNames = [member.name];
+            if (member.legalName) memberNames.push(member.legalName);
+            
+            memberNames.forEach(name => {
+                const words = name.split(' ');
+                words.forEach(word => {
+                    if (word.length > 2 && cleanName.includes(word)) {
+                        if (!suggestions.find(s => s.name === name)) {
+                            suggestions.push({ name, member });
+                        }
+                    }
+                });
+            });
+        });
+        
+        const suggestedDiv = document.getElementById('suggested-names');
+        const suggestionsContainer = document.getElementById('filename-suggestions');
+        
+        if (suggestions.length > 0) {
+            suggestedDiv.style.display = 'block';
+            suggestionsContainer.innerHTML = suggestions.map(s => 
+                `<span class="suggestion-tag" onclick="photoUploader.selectSuggestion('${s.member.id}')">${s.name}</span>`
+            ).join('');
+        } else {
+            suggestedDiv.style.display = 'none';
+        }
+    }
+    
+    selectSuggestion(memberId) {
+        const member = this.familyMembers.find(m => m.id === memberId);
+        if (member) {
+            document.getElementById('person-search-input').value = member.name;
+            this.searchPeople();
+            this.selectSearchResult(member);
+        }
+    }
+    
+    searchPeople() {
+        const query = document.getElementById('person-search-input').value.toLowerCase().trim();
+        const results = document.getElementById('search-results');
+        
+        if (query.length < 2) {
+            results.innerHTML = '';
+            return;
+        }
+        
+        const matches = [];
+        
+        // Search in family members
+        this.familyMembers.forEach(member => {
+            const searchIn = [member.name, member.legalName].filter(Boolean).join(' ').toLowerCase();
+            if (searchIn.includes(query)) {
+                matches.push({
+                    type: 'member',
+                    data: member,
+                    displayName: member.legalName || member.name,
+                    subtext: `ID: ${member.id} - Geração ${member.generation}`
+                });
+            }
+        });
+        
+        // Search in spouses/partners
+        this.familyMembers.forEach(member => {
+            if (member.unions) {
+                member.unions.forEach(union => {
+                    if (union.partner && union.partner.name) {
+                        const partnerName = (union.partner.legalName || union.partner.name).toLowerCase();
+                        if (partnerName.includes(query)) {
+                            matches.push({
+                                type: 'partner',
+                                data: union.partner,
+                                displayName: union.partner.legalName || union.partner.name,
+                                subtext: `Cônjuge de ${member.legalName || member.name}`
+                            });
+                        }
+                    }
+                });
+            }
+        });
+        
+        // Sort by relevance
+        matches.sort((a, b) => {
+            const aName = a.displayName.toLowerCase();
+            const bName = b.displayName.toLowerCase();
+            const aExact = aName.startsWith(query);
+            const bExact = bName.startsWith(query);
+            
+            if (aExact && !bExact) return -1;
+            if (!aExact && bExact) return 1;
+            return aName.localeCompare(bName);
+        });
+        
+        results.innerHTML = matches.slice(0, 10).map((match, index) => `
+            <div class="search-result" data-index="${index}" onclick="photoUploader.selectSearchResult(${JSON.stringify(match).replace(/"/g, '&quot;')})">
+                <h5>${match.displayName}</h5>
+                <p>${match.subtext}</p>
+            </div>
+        `).join('');
+        
+        document.getElementById('confirm-person-btn').disabled = true;
+        this.selectedPerson = null;
+    }
+    
+    selectSearchResult(match) {
+        if (typeof match === 'string') {
+            // If called from suggestion, find the member
+            const member = this.familyMembers.find(m => m.id === match);
+            if (member) {
+                match = {
+                    type: 'member',
+                    data: member,
+                    displayName: member.legalName || member.name
+                };
+            }
+        }
+        
+        // Clear previous selection
+        document.querySelectorAll('.search-result').forEach(el => el.classList.remove('selected'));
+        
+        // Select the clicked item
+        event.target.closest('.search-result').classList.add('selected');
+        
+        this.selectedPerson = match;
+        document.getElementById('confirm-person-btn').disabled = false;
+    }
+    
+    confirmPersonSelection() {
+        if (!this.selectedPerson || !this.currentFile) return;
+        
+        this.currentFile.person = this.selectedPerson;
+        this.currentFile.status = 'ready';
+        
+        this.closePersonModal();
+        this.updateQueueDisplay();
+    }
+    
+    closePersonModal() {
+        document.getElementById('person-modal').style.display = 'none';
+        document.getElementById('person-search-input').value = '';
+        document.getElementById('search-results').innerHTML = '';
+        document.getElementById('suggested-names').style.display = 'none';
+        this.selectedPerson = null;
+        this.currentFile = null;
+    }
+    
+    removeFromQueue(fileId) {
+        this.fileQueue = this.fileQueue.filter(item => item.id != fileId);
+        this.updateQueueDisplay();
+        
+        if (this.fileQueue.length === 0) {
+            document.getElementById('file-queue').style.display = 'none';
+        }
+    }
+    
+    clearQueue() {
+        this.fileQueue = [];
+        document.getElementById('file-queue').style.display = 'none';
+    }
+    
+    updateUploadButton() {
+        const readyCount = this.fileQueue.filter(item => item.status === 'ready').length;
+        const uploadBtn = document.getElementById('upload-all-btn');
+        
+        uploadBtn.disabled = readyCount === 0;
+        uploadBtn.textContent = `Upload ${readyCount} Foto${readyCount !== 1 ? 's' : ''}`;
+    }
+    
+    async startUploadProcess() {
+        if (!this.github.token || !this.github.owner) {
+            this.addLog('❌ Configuração do GitHub não encontrada. Contate o administrador.', 'error');
+            return;
+        }
+        
+        const readyFiles = this.fileQueue.filter(item => item.status === 'ready');
+        if (readyFiles.length === 0) return;
+        
+        document.getElementById('upload-progress').style.display = 'block';
+        document.getElementById('upload-all-btn').disabled = true;
+        
+        this.currentFileIndex = 0;
+        
+        for (const item of readyFiles) {
+            await this.uploadSingleFile(item);
+            this.currentFileIndex++;
+            this.updateProgress(this.currentFileIndex, readyFiles.length);
+        }
+        
+        await this.updatePhotoManifest();
+        this.addLog('✅ Processo de upload concluído!', 'success');
+        
+        // Auto-refresh after 30 seconds to show new photos
+        setTimeout(() => {
+            this.addLog('🔄 Recarregando página em 10 segundos para mostrar novas fotos...', 'info');
+            setTimeout(() => {
+                window.location.reload();
+            }, 10000);
+        }, 30000);
+    }
+    
+    async uploadSingleFile(item) {
+        item.status = 'uploading';
+        this.updateQueueDisplay();
+        
+        try {
+            // Generate filename
+            const filename = this.generateFilename(item.person, item.file);
+            
+            // Convert file to base64
+            const base64Content = await this.fileToBase64(item.file);
+            
+            // Upload to GitHub
+            await this.uploadToGitHub(filename, base64Content, item.person);
+            
+            item.status = 'uploaded';
+            this.addLog(`✅ ${item.file.name} → ${filename}`, 'success');
+            
+        } catch (error) {
+            item.status = 'error';
+            this.addLog(`❌ Erro ao fazer upload de ${item.file.name}: ${error.message}`, 'error');
+            console.error('Upload error:', error);
+        }
+        
+        this.updateQueueDisplay();
+    }
+    
+    generateFilename(person, file) {
+        const ext = file.name.split('.').pop().toLowerCase();
+        let baseName;
+        
+        if (person.type === 'member') {
+            // For family members, use their name
+            baseName = (person.data.legalName || person.data.name)
+                .replace(/[^a-zA-Z0-9\s]/g, '')
+                .replace(/\s+/g, '_')
+                .toLowerCase();
+        } else {
+            // For partners, use their name
+            baseName = (person.data.legalName || person.data.name)
+                .replace(/[^a-zA-Z0-9\s]/g, '')
+                .replace(/\s+/g, '_')
+                .toLowerCase();
+        }
+        
+        return `${baseName}.${ext}`;
+    }
+    
+    async fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64 = reader.result.split(',')[1];
+                resolve(base64);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    async uploadToGitHub(filename, base64Content, person) {
+        const path = `images/arvore/${filename}`;
+        const url = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/contents/${path}`;
+        
+        const commitMessage = `Add photo for ${person.displayName} - uploaded via web interface`;
+        
+        const payload = {
+            message: commitMessage,
+            content: base64Content,
+            branch: this.github.branch
+        };
+        
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${this.github.token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Failed to upload to GitHub');
+        }
+        
+        return response.json();
+    }
+    
+    async updatePhotoManifest() {
+        // This would update the photo-manifest.json file
+        // For now, just log that it should be updated
+        this.addLog('📝 Photo manifest should be updated manually or via separate process', 'info');
+    }
+    
+    updateProgress(current, total) {
+        const percentage = Math.round((current / total) * 100);
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        
+        progressFill.style.width = percentage + '%';
+        progressText.textContent = `${percentage}% - ${current}/${total} arquivos processados`;
+    }
+    
+    addLog(message, type = 'info') {
+        const logContainer = document.getElementById('upload-log');
+        const logEntry = document.createElement('div');
+        logEntry.className = `log-entry ${type}`;
+        logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        
+        logContainer.appendChild(logEntry);
+        logContainer.scrollTop = logContainer.scrollHeight;
+    }
+}
+
+// Initialize the photo upload system
+const photoUploader = new PhotoUploadManager();
+
+// Global functions for onclick handlers
+window.photoUploader = photoUploader;
