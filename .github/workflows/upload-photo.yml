@@ -145,9 +145,7 @@ jobs:
           echo "6. Creating new commit..."
           # Create commit message that includes manifest update if applicable
           if [ -n "$MANIFEST_BLOB_SHA" ]; then
-            commit_message="$commit_message
-
-📸 Update photo manifest - add $final_filename"
+            commit_message="$commit_message"$'\n\n'"📸 Update photo manifest - add $final_filename"
           fi
           
           NEW_COMMIT_SHA=$(curl -s -X POST \
