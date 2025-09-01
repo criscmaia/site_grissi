@@ -89,11 +89,22 @@ jobs:
           echo "   - Base tree: $BASE_TREE_SHA"
 
           echo "4. Creating new tree..."
-          NEW_TREE_SHA=$(gh api "repos/$OWNER/$REPO/git/trees" \
-            --method POST \
-            --field base_tree="$BASE_TREE_SHA" \
-            --raw-field tree="[{\"path\":\"$file_path\",\"mode\":\"100644\",\"type\":\"blob\",\"sha\":\"$BLOB_SHA\"}]" \
-            --jq '.sha')
+          # Create tree using curl instead of gh cli for better control
+          NEW_TREE_SHA=$(curl -s -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$OWNER/$REPO/git/trees" \
+            -d "{
+              \"base_tree\": \"$BASE_TREE_SHA\",
+              \"tree\": [
+                {
+                  \"path\": \"$file_path\",
+                  \"mode\": \"100644\",
+                  \"type\": \"blob\",
+                  \"sha\": \"$BLOB_SHA\"
+                }
+              ]
+            }" | jq -r '.sha')
           echo "   - New tree: $NEW_TREE_SHA"
 
           echo "5. Creating new commit..."
