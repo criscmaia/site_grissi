@@ -567,7 +567,7 @@ class FinalFamilyRenderer {
         const counter = document.querySelector('.results-counter span');
         if (counter) {
             const totalMembers = this.familyData.familyMembers.length;
-            const generations = this.familyData.metadata.generations;
+            const generations = Math.max(...this.familyData.familyMembers.map(m => m.generation || 0));
             counter.textContent = `${totalMembers} membros da família encontrados (${generations} gerações)`;
         }
     }
