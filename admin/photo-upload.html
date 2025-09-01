@@ -28,7 +28,7 @@
                 <h2>Acesso Restrito</h2>
                 <p>Digite a senha para acessar o sistema de upload:</p>
                 <input type="password" id="password-input" placeholder="Senha">
-                <button id="login-btn" onclick="authenticate()">Entrar</button>
+                <button id="login-btn">Entrar</button>
                 <div id="auth-error" class="error-message"></div>
             </div>
         </div>
@@ -81,7 +81,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Selecionar Pessoa</h3>
-                <span class="close-btn" onclick="closePersonModal()">&times;</span>
+                <span class="close-btn" id="close-modal-btn">&times;</span>
             </div>
             <div class="modal-body">
                 <div class="photo-preview">
@@ -93,7 +93,7 @@
                 </div>
                 <div class="person-search">
                     <label for="person-search-input">Buscar pessoa na família:</label>
-                    <input type="text" id="person-search-input" placeholder="Digite o nome..." oninput="searchPeople()">
+                    <input type="text" id="person-search-input" placeholder="Digite o nome...">
                     <div id="search-results" class="search-results"></div>
                 </div>
                 <div class="suggested-names" id="suggested-names" style="display: none;">
@@ -102,14 +102,14 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="confirm-person-btn" class="btn-primary" disabled onclick="confirmPersonSelection()">Confirmar</button>
-                <button class="btn-secondary" onclick="closePersonModal()">Cancelar</button>
+                <button id="confirm-person-btn" class="btn-primary" disabled>Confirmar</button>
+                <button id="cancel-modal-btn" class="btn-secondary">Cancelar</button>
             </div>
         </div>
     </div>
 
     <!-- Configuration file (not committed to git) -->
-    <script src="config.js"></script>
+    <script src="config.js" onerror="console.warn('Config file not found - will prompt for credentials')"></script>
     <script src="photo-upload.js"></script>
 </body>
 </html>

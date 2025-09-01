@@ -17,9 +17,12 @@ class PhotoUploadManager {
         this.github = window.UPLOAD_CONFIG?.github || {
             token: '',
             repo: 'SiteGrissi',
-            owner: '',
-            branch: 'main'
+            owner: 'criscmaia',
+            branch: 'master' // Default to master, will auto-detect if needed
         };
+        
+        // Check if config is missing and setup fallback
+        this.configMissing = !window.UPLOAD_CONFIG;
         
         this.init();
     }
@@ -68,12 +71,17 @@ class PhotoUploadManager {
         });
         
         // Queue actions
-        document.getElementById('upload-all-btn').addEventListener('click', () => this.startUploadProcess());
+        document.getElementById('upload-all-btn').addEventListener('click', () => {
+            console.log('Upload button clicked');
+            this.startUploadProcess();
+        });
         document.getElementById('clear-queue-btn').addEventListener('click', () => this.clearQueue());
         
-        // Modal events
+        // Modal events - Remove inline handlers, use addEventListener instead
         document.getElementById('person-search-input').addEventListener('input', () => this.searchPeople());
         document.getElementById('confirm-person-btn').addEventListener('click', () => this.confirmPersonSelection());
+        document.getElementById('close-modal-btn').addEventListener('click', () => this.closePersonModal());
+        document.getElementById('cancel-modal-btn').addEventListener('click', () => this.closePersonModal());
         
         // Close modal on outside click
         document.getElementById('person-modal').addEventListener('click', (e) => {
@@ -92,7 +100,13 @@ class PhotoUploadManager {
     
     authenticate() {
         const password = document.getElementById('password-input').value;
-        const correctPassword = window.UPLOAD_CONFIG?.auth?.password || 'familia2025';
+        let correctPassword = window.UPLOAD_CONFIG?.auth?.password || 'familia2025';
+        
+        // If config is missing, prompt for credentials
+        if (this.configMissing) {
+            this.promptForCredentials();
+            return;
+        }
         
         if (password === correctPassword) {
             this.isAuthenticated = true;
@@ -101,6 +115,39 @@ class PhotoUploadManager {
         } else {
             this.showError('Senha incorreta. Tente novamente.');
         }
+    }
+    
+    promptForCredentials() {
+        const githubToken = prompt(`⚠️ Arquivo de configuração não encontrado!\n\nPara usar o sistema de upload, você precisa fornecer:\n1. GitHub Personal Access Token\n2. Senha de upload\n\nDigite seu GitHub Token:`);
+        
+        if (!githubToken) {
+            this.showError('Token GitHub é necessário para continuar');
+            return;
+        }
+        
+        const uploadPassword = prompt('Digite a senha para upload:');
+        if (!uploadPassword) {
+            this.showError('Senha é necessária para continuar');
+            return;
+        }
+        
+        // Validate provided password
+        const inputPassword = document.getElementById('password-input').value;
+        if (inputPassword !== uploadPassword) {
+            this.showError('Senha fornecida não confere com a digitada');
+            return;
+        }
+        
+        // Set the credentials
+        this.github.token = githubToken;
+        this.configMissing = false;
+        
+        // Continue with authentication
+        this.isAuthenticated = true;
+        localStorage.setItem('photoUploadAuth', 'authenticated');
+        this.showUploadInterface();
+        
+        alert('✅ Credenciais configuradas! Sistema pronto para uso.\n\nNOTA: Para uso futuro, crie um arquivo config.js local para evitar digitar as credenciais novamente.');
     }
     
     showError(message) {
@@ -219,7 +266,7 @@ class PhotoUploadManager {
         }[item.status];
         
         const personInfo = item.person 
-            ? `<strong>Pessoa:</strong> ${item.person.name}`
+            ? `<strong>Pessoa:</strong> ${item.person.displayName}`
             : '<em>Pessoa não selecionada</em>';
         
         div.innerHTML = `
@@ -230,15 +277,26 @@ class PhotoUploadManager {
             </div>
             <div class="queue-actions-item">
                 ${item.status === 'pending' ? `
-                    <button class="btn-small btn-edit" onclick="photoUploader.selectPersonForFile('${item.id}')">
+                    <button class="btn-small btn-edit" data-action="select-person" data-file-id="${item.id}">
                         Escolher Pessoa
                     </button>
                 ` : ''}
-                <button class="btn-small btn-remove" onclick="photoUploader.removeFromQueue('${item.id}')">
+                <button class="btn-small btn-remove" data-action="remove-file" data-file-id="${item.id}">
                     Remover
                 </button>
             </div>
         `;
+        
+        // Add event listeners to the buttons
+        const selectBtn = div.querySelector('[data-action="select-person"]');
+        if (selectBtn) {
+            selectBtn.addEventListener('click', () => this.selectPersonForFile(item.id));
+        }
+        
+        const removeBtn = div.querySelector('[data-action="remove-file"]');
+        if (removeBtn) {
+            removeBtn.addEventListener('click', () => this.removeFromQueue(item.id));
+        }
         
         return div;
     }
@@ -305,8 +363,15 @@ class PhotoUploadManager {
         if (suggestions.length > 0) {
             suggestedDiv.style.display = 'block';
             suggestionsContainer.innerHTML = suggestions.map(s => 
-                `<span class="suggestion-tag" onclick="photoUploader.selectSuggestion('${s.member.id}')">${s.name}</span>`
+                `<span class="suggestion-tag" data-member-id="${s.member.id}">${s.name}</span>`
             ).join('');
+            
+            // Add click listeners to suggestion tags
+            suggestionsContainer.querySelectorAll('.suggestion-tag').forEach(tag => {
+                tag.addEventListener('click', () => {
+                    this.selectSuggestion(tag.dataset.memberId);
+                });
+            });
         } else {
             suggestedDiv.style.display = 'none';
         }
@@ -377,17 +442,24 @@ class PhotoUploadManager {
         });
         
         results.innerHTML = matches.slice(0, 10).map((match, index) => `
-            <div class="search-result" data-index="${index}" onclick="photoUploader.selectSearchResult(${JSON.stringify(match).replace(/"/g, '&quot;')})">
+            <div class="search-result" data-index="${index}">
                 <h5>${match.displayName}</h5>
                 <p>${match.subtext}</p>
             </div>
         `).join('');
         
+        // Add click listeners to search results
+        results.querySelectorAll('.search-result').forEach((result, index) => {
+            result.addEventListener('click', () => {
+                this.selectSearchResult(matches[index], result);
+            });
+        });
+        
         document.getElementById('confirm-person-btn').disabled = true;
         this.selectedPerson = null;
     }
     
-    selectSearchResult(match) {
+    selectSearchResult(match, clickedElement = null) {
         if (typeof match === 'string') {
             // If called from suggestion, find the member
             const member = this.familyMembers.find(m => m.id === match);
@@ -403,8 +475,18 @@ class PhotoUploadManager {
         // Clear previous selection
         document.querySelectorAll('.search-result').forEach(el => el.classList.remove('selected'));
         
-        // Select the clicked item
-        event.target.closest('.search-result').classList.add('selected');
+        // Select the clicked item - find it if not provided
+        if (!clickedElement) {
+            // Try to find the element by match data
+            const results = document.querySelectorAll('.search-result');
+            results.forEach(el => {
+                if (el.querySelector('h5').textContent === match.displayName) {
+                    el.classList.add('selected');
+                }
+            });
+        } else {
+            clickedElement.classList.add('selected');
+        }
         
         this.selectedPerson = match;
         document.getElementById('confirm-person-btn').disabled = false;
@@ -452,13 +534,21 @@ class PhotoUploadManager {
     }
     
     async startUploadProcess() {
+        console.log('Upload process started');
+        console.log('GitHub config:', { token: this.github.token ? 'SET' : 'NOT SET', owner: this.github.owner });
+        
         if (!this.github.token || !this.github.owner) {
             this.addLog('❌ Configuração do GitHub não encontrada. Contate o administrador.', 'error');
+            console.error('GitHub configuration missing:', this.github);
             return;
         }
         
         const readyFiles = this.fileQueue.filter(item => item.status === 'ready');
-        if (readyFiles.length === 0) return;
+        console.log('Ready files:', readyFiles.length);
+        if (readyFiles.length === 0) {
+            this.addLog('❌ Nenhuma foto pronta para upload. Selecione pessoas para as fotos primeiro.', 'error');
+            return;
+        }
         
         document.getElementById('upload-progress').style.display = 'block';
         document.getElementById('upload-all-btn').disabled = true;
@@ -548,13 +638,14 @@ class PhotoUploadManager {
         
         const commitMessage = `Add photo for ${person.displayName} - uploaded via web interface`;
         
-        const payload = {
+        // Try with configured branch first
+        let payload = {
             message: commitMessage,
             content: base64Content,
             branch: this.github.branch
         };
         
-        const response = await fetch(url, {
+        let response = await fetch(url, {
             method: 'PUT',
             headers: {
                 'Authorization': `token ${this.github.token}`,
@@ -562,6 +653,32 @@ class PhotoUploadManager {
             },
             body: JSON.stringify(payload)
         });
+        
+        // If branch not found, try alternate branch
+        if (!response.ok) {
+            const error = await response.json();
+            if (error.message && error.message.includes('Branch') && error.message.includes('not found')) {
+                const alternateBranch = this.github.branch === 'main' ? 'master' : 'main';
+                console.log(`Branch ${this.github.branch} not found, trying ${alternateBranch}`);
+                this.addLog(`⚠️ Branch ${this.github.branch} não encontrada, tentando ${alternateBranch}`, 'info');
+                
+                payload.branch = alternateBranch;
+                response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${this.github.token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (response.ok) {
+                    // Update our config for future uploads
+                    this.github.branch = alternateBranch;
+                    this.addLog(`✅ Usando branch ${alternateBranch}`, 'success');
+                }
+            }
+        }
         
         if (!response.ok) {
             const error = await response.json();

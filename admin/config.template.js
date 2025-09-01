@@ -13,7 +13,7 @@ window.UPLOAD_CONFIG = {
         token: 'ghp_YOUR_ACTUAL_GITHUB_TOKEN_HERE', // Get from GitHub Settings → Developer settings → PAT
         repo: 'SiteGrissi',
         owner: 'criscmaia',
-        branch: 'main'
+        branch: 'master' // Change to 'main' if your repo uses main branch
     },
     auth: {
         password: 'your_secure_password_here' // Choose a secure password
