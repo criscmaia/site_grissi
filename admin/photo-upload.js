@@ -15,10 +15,10 @@ class PhotoUploadManager {
         
         // GitHub Configuration loaded from external config file
         this.github = window.UPLOAD_CONFIG?.github || {
-            token: '',
-            repo: 'SiteGrissi',
+            repo: 'site_grissi',
             owner: 'criscmaia',
-            branch: 'master' // Default to master, will auto-detect if needed
+            branch: 'master',
+            triggerToken: ''
         };
         
         // Check if config is missing and setup fallback
@@ -100,7 +100,9 @@ class PhotoUploadManager {
     
     authenticate() {
         const password = document.getElementById('password-input').value;
-        let correctPassword = window.UPLOAD_CONFIG?.auth?.password || 'familia2025';
+        
+        // Store the password for use in workflow dispatch
+        this.uploadPassword = password;
         
         // If config is missing, prompt for credentials
         if (this.configMissing) {
@@ -108,38 +110,27 @@ class PhotoUploadManager {
             return;
         }
         
-        if (password === correctPassword) {
+        // For workflow dispatch, we don't validate password client-side
+        // The GitHub Actions workflow will handle password validation
+        if (password.trim()) {
             this.isAuthenticated = true;
             localStorage.setItem('photoUploadAuth', 'authenticated');
             this.showUploadInterface();
         } else {
-            this.showError('Senha incorreta. Tente novamente.');
+            this.showError('Digite uma senha para continuar.');
         }
     }
     
     promptForCredentials() {
-        const githubToken = prompt(`⚠️ Arquivo de configuração não encontrado!\n\nPara usar o sistema de upload, você precisa fornecer:\n1. GitHub Personal Access Token\n2. Senha de upload\n\nDigite seu GitHub Token:`);
+        const triggerToken = prompt(`⚠️ Arquivo de configuração não encontrado!\n\nPara usar o sistema de upload, você precisa fornecer:\nGitHub Workflow Trigger Token (com escopo 'workflow' apenas)\n\nDigite seu GitHub Token:`);
         
-        if (!githubToken) {
+        if (!triggerToken) {
             this.showError('Token GitHub é necessário para continuar');
             return;
         }
         
-        const uploadPassword = prompt('Digite a senha para upload:');
-        if (!uploadPassword) {
-            this.showError('Senha é necessária para continuar');
-            return;
-        }
-        
-        // Validate provided password
-        const inputPassword = document.getElementById('password-input').value;
-        if (inputPassword !== uploadPassword) {
-            this.showError('Senha fornecida não confere com a digitada');
-            return;
-        }
-        
         // Set the credentials
-        this.github.token = githubToken;
+        this.github.triggerToken = triggerToken;
         this.configMissing = false;
         
         // Continue with authentication
@@ -152,15 +143,15 @@ class PhotoUploadManager {
     
     async promptForUploadCredentials() {
         return new Promise((resolve) => {
-            const githubToken = prompt(`🔐 GitHub Token necessário para upload!\n\nDigite seu GitHub Personal Access Token:`);
+            const triggerToken = prompt(`🔐 GitHub Workflow Token necessário para upload!\n\nDigite seu GitHub Workflow Trigger Token (escopo 'workflow'):`);
             
-            if (!githubToken) {
+            if (!triggerToken) {
                 resolve(false);
                 return;
             }
             
             // Set the credentials
-            this.github.token = githubToken;
+            this.github.triggerToken = triggerToken;
             this.configMissing = false;
             
             this.addLog('✅ Credenciais configuradas para upload', 'success');
@@ -553,20 +544,20 @@ class PhotoUploadManager {
     
     async startUploadProcess() {
         console.log('Upload process started');
-        console.log('GitHub config:', { token: this.github.token ? 'SET' : 'NOT SET', owner: this.github.owner });
+        console.log('GitHub config:', { triggerToken: this.github.triggerToken ? 'SET' : 'NOT SET', owner: this.github.owner });
         console.log('Config missing flag:', this.configMissing);
         
-        // If config is missing and no token is set, prompt for credentials now
-        if ((!this.github.token || !this.github.owner) && this.configMissing) {
+        // If config is missing and no trigger token is set, prompt for credentials now
+        if ((!this.github.triggerToken || !this.github.owner) && this.configMissing) {
             this.addLog('⚠️ Credenciais necessárias para upload', 'info');
             await this.promptForUploadCredentials();
             
             // Check again after prompting
-            if (!this.github.token) {
+            if (!this.github.triggerToken) {
                 this.addLog('❌ Upload cancelado - credenciais não fornecidas.', 'error');
                 return;
             }
-        } else if (!this.github.token || !this.github.owner) {
+        } else if (!this.github.triggerToken || !this.github.owner) {
             this.addLog('❌ Configuração do GitHub não encontrada. Contate o administrador.', 'error');
             console.error('GitHub configuration missing:', this.github);
             return;
@@ -590,16 +581,15 @@ class PhotoUploadManager {
             this.updateProgress(this.currentFileIndex, readyFiles.length);
         }
         
-        await this.updatePhotoManifest();
         this.addLog('✅ Processo de upload concluído!', 'success');
         
-        // Auto-refresh after 30 seconds to show new photos
+        // Auto-refresh after 2 minutes to show new photos (GitHub Pages needs time to rebuild)
         setTimeout(() => {
-            this.addLog('🔄 Recarregando página em 10 segundos para mostrar novas fotos...', 'info');
+            this.addLog('🔄 Recarregando página em 30 segundos para mostrar novas fotos...', 'info');
             setTimeout(() => {
                 window.location.reload();
-            }, 10000);
-        }, 30000);
+            }, 30000);
+        }, 90000);
     }
     
     async uploadSingleFile(item) {
@@ -613,11 +603,11 @@ class PhotoUploadManager {
             // Convert file to base64
             const base64Content = await this.fileToBase64(item.file);
             
-            // Upload to GitHub
-            await this.uploadToGitHub(filename, base64Content, item.person);
+            // Upload via workflow dispatch
+            await this.uploadViaWorkflow(filename, base64Content, item.person);
             
             item.status = 'uploaded';
-            this.addLog(`✅ ${item.file.name} → ${filename}`, 'success');
+            this.addLog(`✅ ${item.file.name} → ${filename} (workflow iniciado)`, 'success');
             
         } catch (error) {
             item.status = 'error';
@@ -661,131 +651,54 @@ class PhotoUploadManager {
         });
     }
     
-    async uploadToGitHub(filename, base64Content, person) {
-        const path = `images/arvore/${filename}`;
-        const url = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/contents/${path}`;
+    async uploadViaWorkflow(filename, base64Content, person) {
+        const workflowFile = 'upload-photo.yml';
+        const url = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/actions/workflows/${workflowFile}/dispatches`;
         
-        const commitMessage = `Add photo for ${person.displayName} - uploaded via web interface`;
-        
-        // Try with configured branch first
-        let payload = {
-            message: commitMessage,
-            content: base64Content,
-            branch: this.github.branch
+        const payload = {
+            ref: this.github.branch,
+            inputs: {
+                password: this.uploadPassword,
+                filename: filename,
+                file_content_base64: base64Content,
+                person_id: person.type === 'member' ? person.data.id : null,
+                person_name: person.displayName
+            }
         };
         
-        let response = await fetch(url, {
-            method: 'PUT',
+        const response = await fetch(url, {
+            method: 'POST',
             headers: {
-                'Authorization': `token ${this.github.token}`,
-                'Content-Type': 'application/json',
+                'Accept': 'application/vnd.github.v3+json',
+                'Authorization': `Bearer ${this.github.triggerToken}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(payload)
         });
         
-        // Handle different error scenarios
-        if (!response.ok) {
-            let error;
+        if (response.status === 204) {
+            // Success - workflow was triggered
+            this.addLog(`🚀 Workflow iniciado para ${filename}`, 'info');
+            return { success: true };
+        } else {
+            let errorData;
             try {
-                error = await response.json();
+                errorData = await response.json();
             } catch (e) {
-                error = { message: `HTTP ${response.status}: ${response.statusText}` };
+                errorData = { message: `HTTP ${response.status}: ${response.statusText}` };
             }
             
-            // Handle branch not found (try alternate branch)
-            if (error.message && error.message.includes('Branch') && error.message.includes('not found')) {
-                const alternateBranch = this.github.branch === 'main' ? 'master' : 'main';
-                console.log(`Branch ${this.github.branch} not found, trying ${alternateBranch}`);
-                this.addLog(`⚠️ Branch ${this.github.branch} não encontrada, tentando ${alternateBranch}`, 'info');
-                
-                payload.branch = alternateBranch;
-                response = await fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${this.github.token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
-                
-                if (response.ok) {
-                    // Update our config for future uploads
-                    this.github.branch = alternateBranch;
-                    this.addLog(`✅ Usando branch ${alternateBranch}`, 'success');
-                } else {
-                    // Get error from second attempt
-                    try {
-                        error = await response.json();
-                    } catch (e) {
-                        error = { message: `HTTP ${response.status}: ${response.statusText}` };
-                    }
-                }
+            // Handle specific error cases
+            if (response.status === 401) {
+                throw new Error('Token de acesso inválido ou sem permissão. Verifique se o token tem escopo "workflow".');
+            } else if (response.status === 404) {
+                throw new Error('Repositório ou workflow não encontrado. Verifique a configuração.');
+            } else {
+                throw new Error(errorData.message || `Erro ${response.status}: Falha ao iniciar workflow`);
             }
-            
-            // Handle file already exists (422 error)
-            if (response.status === 422) {
-                // Try to get existing file's SHA and update it
-                const existingFile = await this.getExistingFile(path);
-                if (existingFile) {
-                    this.addLog(`⚠️ Arquivo já existe, atualizando...`, 'info');
-                    payload.sha = existingFile.sha;
-                    
-                    const updateResponse = await fetch(url, {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${this.github.token}`,
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(payload)
-                    });
-                    
-                    if (updateResponse.ok) {
-                        return updateResponse.json();
-                    } else {
-                        const updateError = await updateResponse.json();
-                        throw new Error(`Erro ao atualizar arquivo: ${updateError.message}`);
-                    }
-                } else {
-                    throw new Error(`Arquivo já existe mas não foi possível atualizar: ${error.message}`);
-                }
-            }
-            
-            // For other errors, throw with detailed message
-            if (!response.ok) {
-                throw new Error(error.message || `HTTP ${response.status}: Failed to upload to GitHub`);
-            }
-        }
-        
-        return response.json();
-    }
-    
-    async getExistingFile(path) {
-        const url = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/contents/${path}?ref=${this.github.branch}`;
-        
-        try {
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `token ${this.github.token}`,
-                    'Content-Type': 'application/json',
-                }
-            });
-            
-            if (response.ok) {
-                return await response.json();
-            }
-            return null;
-        } catch (error) {
-            console.warn('Failed to get existing file info:', error);
-            return null;
         }
     }
     
-    async updatePhotoManifest() {
-        // This would update the photo-manifest.json file
-        // For now, just log that it should be updated
-        this.addLog('📝 Photo manifest should be updated manually or via separate process', 'info');
-    }
     
     updateProgress(current, total) {
         const percentage = Math.round((current / total) * 100);

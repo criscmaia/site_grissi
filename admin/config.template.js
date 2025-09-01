@@ -7,15 +7,18 @@
  * 3. Do NOT commit config.js to git (it's in .gitignore)
  */
 
-// GitHub Configuration - Automatically injected by GitHub Actions
+// GitHub Configuration - Manual setup required
 window.UPLOAD_CONFIG = {
     github: {
-        token: 'ghp_YOUR_ACTUAL_GITHUB_TOKEN_HERE', // Injected from GitHub Secrets
-        repo: 'SiteGrissi',
+        repo: 'site_grissi',
         owner: 'criscmaia',
-        branch: 'master'
+        branch: 'master',
+        // Workflow trigger token - create with ONLY 'workflow' scope
+        // This will be visible in client code, so use minimal permissions
+        triggerToken: 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE'
     },
     auth: {
-        password: 'your_secure_password_here' // Injected from GitHub Secrets
+        // This is handled server-side now, no password needed in client
+        // Password validation happens in GitHub Actions workflow
     }
 };
