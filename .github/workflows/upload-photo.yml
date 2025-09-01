@@ -120,8 +120,46 @@ jobs:
             }" | jq -r '.sha')
           echo "   - New commit: $NEW_COMMIT_SHA"
 
-          echo "6. Updating branch reference..."
+          echo "6. Updating photo manifest..."
+          # Get current photo-manifest.json
+          MANIFEST_PATH="images/arvore/photo-manifest.json"
+          MANIFEST_CONTENT=$(curl -s \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$OWNER/$REPO/contents/$MANIFEST_PATH" | jq -r '.content' | base64 -d)
+          
+          # Add new photo to manifest if not already present
+          if echo "$MANIFEST_CONTENT" | grep -q "\"$final_filename\""; then
+            echo "   - Photo already in manifest: $final_filename"
+          else
+            echo "   - Adding photo to manifest: $final_filename"
+            
+            # Parse JSON, add new photo, and re-encode
+            NEW_MANIFEST=$(echo "$MANIFEST_CONTENT" | jq ". + [\"$final_filename\"] | sort")
+            NEW_MANIFEST_B64=$(echo -n "$NEW_MANIFEST" | base64 -w 0)
+            
+            # Get current manifest file SHA for update
+            MANIFEST_SHA=$(curl -s \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/$OWNER/$REPO/contents/$MANIFEST_PATH" | jq -r '.sha')
+            
+            # Update photo-manifest.json
+            curl -s -X PUT \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/$OWNER/$REPO/contents/$MANIFEST_PATH" \
+              -d "{
+                \"message\": \"📸 Update photo manifest - add $final_filename\",
+                \"content\": \"$NEW_MANIFEST_B64\",
+                \"sha\": \"$MANIFEST_SHA\"
+              }" > /dev/null
+            
+            echo "   - Manifest updated successfully"
+          fi
+
+          echo "7. Updating branch reference..."
           gh api "repos/$OWNER/$REPO/git/refs/heads/$BRANCH" -X PATCH \
             -f sha="$NEW_COMMIT_SHA"
             
-          echo "✅ Successfully committed $final_filename"
+          echo "✅ Successfully committed $final_filename and updated manifest"

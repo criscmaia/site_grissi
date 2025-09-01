@@ -215,6 +215,7 @@ class FinalFamilyRenderer {
         });
     }
 
+
     /**
      * Create a member card
      */

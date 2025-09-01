@@ -627,15 +627,17 @@ class PhotoUploadManager {
         if (person.type === 'member') {
             // For family members, use their name
             baseName = (person.data.legalName || person.data.name)
-                .replace(/[^a-zA-Z0-9\s]/g, '')
-                .replace(/\s+/g, '_')
-                .toLowerCase();
+                .replace(/[^a-zA-Z0-9\s]/g, '')  // Remove special chars but keep spaces
+                .replace(/\s+/g, ' ')             // Normalize multiple spaces to single space
+                .trim()                           // Remove leading/trailing spaces
+                .toUpperCase();                   // Convert to uppercase to match manifest format
         } else {
-            // For partners, use their name
+            // For partners, use their name  
             baseName = (person.data.legalName || person.data.name)
-                .replace(/[^a-zA-Z0-9\s]/g, '')
-                .replace(/\s+/g, '_')
-                .toLowerCase();
+                .replace(/[^a-zA-Z0-9\s]/g, '')  // Remove special chars but keep spaces
+                .replace(/\s+/g, ' ')             // Normalize multiple spaces to single space
+                .trim()                           // Remove leading/trailing spaces
+                .toUpperCase();                   // Convert to uppercase to match manifest format
         }
         
         return `${baseName}.${ext}`;
