@@ -109,6 +109,10 @@ class PhotoUploadManager {
         window.location.href = 'login.html';
     }
     
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
     
     showError(message) {
         // Use console.error for now since we don't have a dedicated error display area
