@@ -3,9 +3,6 @@ name: Upload Photo from Website
 on:
   workflow_dispatch:
     inputs:
-      password:
-        description: 'Admin password for upload'
-        required: true
       filename:
         description: 'The name of the file to upload'
         required: true
@@ -24,16 +21,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: '🔒 Check Password'
-        env:
-          INPUT_PASSWORD: ${{ github.event.inputs.password }}
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      - name: '✅ Token authenticated! Processing upload'
         run: |
-          if [ "$INPUT_PASSWORD" != "$ADMIN_PASSWORD" ]; then
-            echo "❌ Incorrect password."
-            exit 1
-          fi
-          echo "✅ Password verified"
+          echo "✅ Authentication verified via token permissions"
+          echo "Processing photo upload..."
 
       - name: '✅ Password OK! Create commit via API'
         env:

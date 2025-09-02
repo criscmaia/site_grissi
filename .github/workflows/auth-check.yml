@@ -1,25 +1,17 @@
-name: Check Admin Password
+name: Token Authentication Test
 
 on:
   workflow_dispatch:
     inputs:
       password:
-        description: 'The password to validate'
-        required: true
+        description: 'Test parameter (not used for validation)'
+        required: false
 
 jobs:
-  validate-password:
+  validate-token:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Validate Password'
-        env:
-          INPUT_PASSWORD: ${{ github.event.inputs.password }}
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      - name: 'Token Validation Test'
         run: |
-          if [ "$INPUT_PASSWORD" = "$ADMIN_PASSWORD" ]; then
-            echo "✅ Password is correct."
-            exit 0
-          else
-            echo "❌ Incorrect password."
-            exit 1
-          fi
+          echo "✅ Token is valid - workflow triggered successfully"
+          echo "Authentication happens via token permissions, not password validation"

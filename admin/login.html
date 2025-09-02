@@ -110,12 +110,18 @@
     <div class="container">
         <div class="login-container">
             <h1>🔒 Acesso Administrativo</h1>
-            <p>Entre com a senha para acessar o sistema de upload de fotos da família.</p>
+            <p>Entre com seu GitHub Workflow Token para acessar o sistema de upload de fotos da família.</p>
             
             <form id="login-form" class="login-form">
-                <label for="password">Senha:</label>
-                <input type="password" id="password" required placeholder="Digite a senha administrativa">
-                <button type="submit" id="login-btn" class="login-btn">Entrar</button>
+                <label for="github-token">GitHub Workflow Token:</label>
+                <input type="password" id="github-token" name="github-token" required 
+                       placeholder="ghp_..." 
+                       autocomplete="current-password"
+                       title="Token do GitHub com escopo 'workflow'">
+                <button type="submit" id="login-btn" class="login-btn">Validar Token</button>
+                <small style="color: #7f8c8d; margin-top: 8px; display: block;">
+                    Token com escopo "workflow" apenas. O navegador pode salvar este token.
+                </small>
             </form>
             
             <div id="status" class="status" style="display: none;"></div>
@@ -127,14 +133,13 @@
     <script>
         const loginForm = document.getElementById('login-form');
         const statusDiv = document.getElementById('status');
-        const passwordInput = document.getElementById('password');
+        const tokenInput = document.getElementById('github-token');
         const loginBtn = document.getElementById('login-btn');
 
         // --- Configuration ---
         const owner = 'criscmaia';
         const repo = 'site_grissi';
         const workflowFile = 'auth-check.yml';
-        const triggerToken = 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE'; // The low-permission PAT
 
         function showStatus(message, type = 'loading') {
             statusDiv.textContent = message;
@@ -148,90 +153,55 @@
 
         loginForm.addEventListener('submit', async (event) => {
             event.preventDefault();
-            const password = passwordInput.value;
+            const token = tokenInput.value.trim();
             
-            // Check if token is configured
-            if (triggerToken === 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE') {
-                showStatus('⚠️ Sistema não configurado. Contate o administrador.', 'error');
+            // Validate token format
+            if (!token || !token.startsWith('ghp_')) {
+                showStatus('⚠️ Digite um token GitHub válido (deve começar com ghp_)', 'error');
                 return;
             }
             
             loginBtn.disabled = true;
-            showStatus('Verificando senha...', 'loading');
+            showStatus('Validando token...', 'loading');
 
             try {
-                // 1. Trigger the workflow
+                // Test the token by triggering a simple workflow
+                // Since we're using the token as auth, we just need to verify it works
                 const triggerResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowFile}/dispatches`, {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${triggerToken}`,
+                        'Authorization': `Bearer ${token}`,
                         'Accept': 'application/vnd.github.v3+json'
                     },
                     body: JSON.stringify({
                         ref: 'master',
-                        inputs: { password: password }
+                        inputs: { 
+                            password: 'token-auth-test' // Just a test value, actual auth is the token itself
+                        }
                     })
                 });
 
-                if (triggerResponse.status !== 204) {
-                    throw new Error('Falha ao iniciar verificação de senha.');
+                if (triggerResponse.status === 204) {
+                    // Token is valid! Store and redirect
+                    showStatus('✅ Token válido! Redirecionando...', 'success');
+                    sessionStorage.setItem('isAdminAuthenticated', 'true');
+                    sessionStorage.setItem('githubToken', token);
+                    
+                    setTimeout(() => {
+                        window.location.href = 'photo-upload.html';
+                    }, 1500);
+                } else if (triggerResponse.status === 401) {
+                    showStatus('❌ Token inválido ou sem permissões necessárias.', 'error');
+                    loginBtn.disabled = false;
+                } else {
+                    throw new Error(`Erro HTTP ${triggerResponse.status}: Falha na validação do token.`);
                 }
-                
-                // 2. Poll for the result
-                // We wait a few seconds before the first check to allow the run to start
-                setTimeout(() => pollWorkflowStatus(password), 3000);
 
             } catch (error) {
                 showStatus(`Erro: ${error.message}`, 'error');
                 loginBtn.disabled = false;
             }
         });
-
-        async function pollWorkflowStatus(password) {
-            showStatus('Aguardando resultado...', 'loading');
-            try {
-                // Get the most recent run of our specific workflow
-                const runsResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowFile}/runs`, {
-                    headers: {
-                        'Authorization': `Bearer ${triggerToken}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-                
-                if (!runsResponse.ok) {
-                    throw new Error('Erro ao verificar status da autenticação.');
-                }
-                
-                const runsData = await runsResponse.json();
-                const latestRun = runsData.workflow_runs[0];
-
-                if (latestRun && (latestRun.status === 'queued' || latestRun.status === 'in_progress')) {
-                    // Still running, check again in a few seconds
-                    setTimeout(() => pollWorkflowStatus(password), 3000);
-                } else if (latestRun && latestRun.status === 'completed') {
-                    if (latestRun.conclusion === 'success') {
-                        // SUCCESS! Store credentials and redirect
-                        showStatus('✅ Login realizado com sucesso! Redirecionando...', 'success');
-                        sessionStorage.setItem('isAdminAuthenticated', 'true');
-                        sessionStorage.setItem('adminPassword', password);
-                        
-                        setTimeout(() => {
-                            window.location.href = 'photo-upload.html';
-                        }, 1500);
-                    } else {
-                        // FAILURE!
-                        showStatus('❌ Senha incorreta. Tente novamente.', 'error');
-                        loginBtn.disabled = false;
-                    }
-                } else {
-                    showStatus('Não foi possível determinar o status. Tente novamente.', 'error');
-                    loginBtn.disabled = false;
-                }
-            } catch (error) {
-                showStatus(`Erro ao verificar status: ${error.message}`, 'error');
-                loginBtn.disabled = false;
-            }
-        }
     </script>
 </body>
 </html>

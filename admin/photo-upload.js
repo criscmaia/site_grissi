@@ -86,10 +86,10 @@ class PhotoUploadManager {
     }
     
     checkAuthentication() {
-        // Get password from sessionStorage (set by login page)
-        const password = sessionStorage.getItem('adminPassword');
-        if (password) {
-            this.uploadPassword = password;
+        // Get token from sessionStorage (set by login page)
+        const token = sessionStorage.getItem('githubToken');
+        if (token) {
+            this.github.triggerToken = token;
             this.isAuthenticated = true;
             this.showUploadInterface();
         } else {
@@ -104,7 +104,7 @@ class PhotoUploadManager {
     logout() {
         // Clear session storage
         sessionStorage.removeItem('isAdminAuthenticated');
-        sessionStorage.removeItem('adminPassword');
+        sessionStorage.removeItem('githubToken');
         
         // Redirect to login page
         window.location.href = 'login.html';
@@ -136,7 +136,7 @@ class PhotoUploadManager {
     }
     
     showUploadInterface() {
-        document.getElementById('auth-section').style.display = 'none';
+        // Upload interface is always visible now, just ensure it's shown
         document.getElementById('upload-section').style.display = 'block';
     }
     
@@ -516,15 +516,15 @@ class PhotoUploadManager {
         console.log('GitHub config:', { triggerToken: this.github.triggerToken ? 'SET' : 'NOT SET', owner: this.github.owner });
         console.log('Config missing flag:', this.configMissing);
         
-        // Check if we have a password
-        if (!this.uploadPassword) {
-            this.addLog('❌ Senha não encontrada. Faça logout e entre novamente.', 'error');
+        // Check if we have the token
+        if (!this.github.triggerToken) {
+            this.addLog('❌ Token não encontrado. Faça logout e entre novamente.', 'error');
             this.addLogoutLink();
             return;
         }
         
-        // If config is missing and no trigger token is set, show error
-        if (this.configMissing || !this.github.triggerToken || !this.github.owner) {
+        // Double-check repository config
+        if (!this.github.owner) {
             this.addLog('❌ Configuração do sistema não encontrada. Contate o administrador.', 'error');
             console.error('GitHub configuration missing:', this.github);
             return;
@@ -694,7 +694,6 @@ class PhotoUploadManager {
         const workflowPayload = {
             ref: this.github.branch,
             inputs: {
-                password: this.uploadPassword,
                 filename: filename,
                 blob_sha: blobSha,
                 person_id: person.type === 'member' ? person.data.id : null,
@@ -771,7 +770,7 @@ class PhotoUploadManager {
         
         // Reset state
         this.isAuthenticated = false;
-        this.uploadPassword = null;
+        this.github.triggerToken = '';
         
         // Hide upload interface and show auth section
         document.getElementById('upload-section').style.display = 'none';
