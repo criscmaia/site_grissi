@@ -95,13 +95,22 @@ class PhotoUploadManager {
     
     checkAuthentication() {
         const stored = localStorage.getItem('photoUploadAuth');
-        if (stored === 'authenticated') {
+        const storedPassword = localStorage.getItem('photoUploadPassword');
+        if (stored === 'authenticated' && storedPassword) {
+            this.uploadPassword = storedPassword;
+            this.isAuthenticated = true;
             this.showUploadInterface();
         }
     }
     
     authenticate() {
         const password = document.getElementById('password-input').value;
+        
+        // Validate password is provided
+        if (!password.trim()) {
+            this.showError('Digite uma senha para continuar.');
+            return;
+        }
         
         // Store the password for use in workflow dispatch
         this.uploadPassword = password;
@@ -112,15 +121,11 @@ class PhotoUploadManager {
             return;
         }
         
-        // For workflow dispatch, we don't validate password client-side
-        // The GitHub Actions workflow will handle password validation
-        if (password.trim()) {
-            this.isAuthenticated = true;
-            localStorage.setItem('photoUploadAuth', 'authenticated');
-            this.showUploadInterface();
-        } else {
-            this.showError('Digite uma senha para continuar.');
-        }
+        // Set authenticated state
+        this.isAuthenticated = true;
+        localStorage.setItem('photoUploadAuth', 'authenticated');
+        localStorage.setItem('photoUploadPassword', password); // Store for later use
+        this.showUploadInterface();
     }
     
     promptForCredentials() {
@@ -549,18 +554,16 @@ class PhotoUploadManager {
         console.log('GitHub config:', { triggerToken: this.github.triggerToken ? 'SET' : 'NOT SET', owner: this.github.owner });
         console.log('Config missing flag:', this.configMissing);
         
-        // If config is missing and no trigger token is set, prompt for credentials now
-        if (this.configMissing) {
-            this.addLog('⚠️ Credenciais necessárias para upload', 'info');
-            await this.promptForUploadCredentials();
-            
-            // Check again after prompting
-            if (!this.github.triggerToken) {
-                this.addLog('❌ Upload cancelado - credenciais não fornecidas.', 'error');
-                return;
-            }
-        } else if (!this.github.triggerToken || !this.github.owner) {
-            this.addLog('❌ Configuração do GitHub não encontrada. Contate o administrador.', 'error');
+        // Check if we have a password
+        if (!this.uploadPassword) {
+            this.addLog('❌ Senha não encontrada. Faça logout e entre novamente.', 'error');
+            this.addLogoutLink();
+            return;
+        }
+        
+        // If config is missing and no trigger token is set, show error
+        if (this.configMissing || !this.github.triggerToken || !this.github.owner) {
+            this.addLog('❌ Configuração do sistema não encontrada. Contate o administrador.', 'error');
             console.error('GitHub configuration missing:', this.github);
             return;
         }
@@ -787,6 +790,38 @@ class PhotoUploadManager {
         
         logContainer.appendChild(logEntry);
         logContainer.scrollTop = logContainer.scrollHeight;
+    }
+    
+    addLogoutLink() {
+        const logContainer = document.getElementById('upload-log');
+        const logEntry = document.createElement('div');
+        logEntry.className = 'log-entry info';
+        logEntry.innerHTML = `[${new Date().toLocaleTimeString()}] <button onclick="photoUploader.logout()" style="background: #007bff; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Fazer Logout</button>`;
+        
+        logContainer.appendChild(logEntry);
+        logContainer.scrollTop = logContainer.scrollHeight;
+    }
+    
+    logout() {
+        // Clear stored authentication
+        localStorage.removeItem('photoUploadAuth');
+        localStorage.removeItem('photoUploadPassword');
+        
+        // Reset state
+        this.isAuthenticated = false;
+        this.uploadPassword = null;
+        
+        // Hide upload interface and show auth section
+        document.getElementById('upload-section').style.display = 'none';
+        document.getElementById('auth-section').style.display = 'block';
+        
+        // Clear password input
+        document.getElementById('password-input').value = '';
+        
+        // Clear any error messages
+        document.getElementById('auth-error').classList.remove('show');
+        
+        console.log('User logged out');
     }
 }
 
