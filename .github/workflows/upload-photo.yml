@@ -53,18 +53,44 @@ jobs:
           final_filename="$FILENAME"
           file_path="images/arvore/$final_filename"
           
-          echo "1. Checking if file already exists..."
-          # Check if file exists - if so, we'll rename the existing one and use clean name for new photo
+          echo "1. Checking for existing photos with same person name..."
+          # Check for ANY existing photo with same base name (any extension)
           EXISTING_FILE_SHA=""
-          if EXISTING_RESPONSE=$(gh api "repos/$OWNER/$REPO/contents/$file_path" 2>/dev/null); then
-            echo "   - Existing photo found, will rename old one to preserve history"
-            EXISTING_FILE_SHA=$(echo "$EXISTING_RESPONSE" | jq -r '.sha')
-            timestamp=$(date +"%Y%m%d_%H%M%S")
-            old_filename="${base_name}_${timestamp}.${extension}"
-            old_file_path="images/arvore/$old_filename"
-            echo "   - Will rename existing photo to: $old_filename"
+          EXISTING_FILE_NAME=""
+          
+          # Get current photo manifest to find existing photos
+          MANIFEST_RESPONSE=$(curl -s \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$OWNER/$REPO/contents/images/arvore/photo-manifest.json")
+          
+          MANIFEST_CONTENT=$(echo "$MANIFEST_RESPONSE" | jq -r '.content' | base64 -d)
+          
+          # Look for existing photo with same base name but any extension
+          EXISTING_PHOTO=$(echo "$MANIFEST_CONTENT" | jq -r --arg basename "$base_name" '
+            .[] | select(test("^" + $basename + "\\.(jpg|jpeg|png|gif|webp)$"; "i"))
+          ' | head -1)
+          
+          if [ -n "$EXISTING_PHOTO" ] && [ "$EXISTING_PHOTO" != "null" ]; then
+            echo "   - Found existing photo: $EXISTING_PHOTO"
+            
+            # Get the SHA of the existing photo
+            existing_path="images/arvore/$EXISTING_PHOTO"
+            if EXISTING_RESPONSE=$(gh api "repos/$OWNER/$REPO/contents/$existing_path" 2>/dev/null); then
+              EXISTING_FILE_SHA=$(echo "$EXISTING_RESPONSE" | jq -r '.sha')
+              EXISTING_FILE_NAME="$EXISTING_PHOTO"
+              
+              # Create timestamp suffix for old photo (keep its original extension)
+              timestamp=$(date +"%Y%m%d_%H%M%S")
+              existing_extension="${EXISTING_PHOTO##*.}"
+              old_filename="${base_name}_${timestamp}.${existing_extension}"
+              old_file_path="images/arvore/$old_filename"
+              echo "   - Will rename $EXISTING_PHOTO to: $old_filename"
+            else
+              echo "   - Could not get SHA for existing photo: $EXISTING_PHOTO"
+            fi
           else
-            echo "   - No existing photo, using clean filename: $final_filename"
+            echo "   - No existing photo found for person: $base_name"
           fi
 
           # Create commit message with person info if provided
