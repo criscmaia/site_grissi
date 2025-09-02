@@ -132,15 +132,24 @@ jobs:
           MANIFEST_CONTENT=$(echo "$MANIFEST_RESPONSE" | jq -r '.content' | base64 -d)
           MANIFEST_SHA=$(echo "$MANIFEST_RESPONSE" | jq -r '.sha')
           
-          # Check if photo needs to be added to manifest
+          # Update manifest: remove old entry (if exists) and add new entry
           if echo "$MANIFEST_CONTENT" | grep -q "\"$final_filename\""; then
             echo "   - Photo already in manifest: $final_filename"
             MANIFEST_BLOB_SHA=""
           else
             echo "   - Photo will be added to manifest: $final_filename"
             
-            # Parse JSON, add new photo, and re-encode
-            NEW_MANIFEST=$(echo "$MANIFEST_CONTENT" | jq ". + [\"$final_filename\"] | sort")
+            # Start with current manifest
+            UPDATED_MANIFEST="$MANIFEST_CONTENT"
+            
+            # If we found an existing photo to archive, remove its manifest entry
+            if [ -n "$EXISTING_FILE_NAME" ] && [ "$EXISTING_FILE_NAME" != "null" ]; then
+              echo "   - Removing old manifest entry: $EXISTING_FILE_NAME"
+              UPDATED_MANIFEST=$(echo "$UPDATED_MANIFEST" | jq --arg old_photo "$EXISTING_FILE_NAME" 'map(select(. != $old_photo))')
+            fi
+            
+            # Add the new photo to manifest
+            NEW_MANIFEST=$(echo "$UPDATED_MANIFEST" | jq ". + [\"$final_filename\"] | sort")
             NEW_MANIFEST_B64=$(echo -n "$NEW_MANIFEST" | base64 -w 0)
             
             # Create blob for updated manifest
