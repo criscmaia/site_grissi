@@ -53,6 +53,9 @@ class PhotoMatcher {
             
             const photos = await response.json();
             
+            // Store original array for position-based comparisons
+            this.originalPhotos = photos.filter(photo => !/_\d{8}_\d{6}\./.test(photo));
+            
             // Create a Map for O(1) lookups with normalized keys
             // Handle multiple formats by preferring the MOST RECENT (last in manifest)
             this.photoManifest = new Map();
@@ -147,15 +150,34 @@ class PhotoMatcher {
         
         const results = [];
         for (const member of familyMembers) {
-            // Try main name first, then legal name if different
-            let photoFile = await this.findPhotoForPerson(member.name);
+            let photoFile = null;
+            let foundViaLegalName = false;
             
-            // If no photo found and legal name exists and is different, try legal name
-            if (!photoFile && member.legalName && member.legalName !== member.name) {
-                photoFile = await this.findPhotoForPerson(member.legalName);
-                if (photoFile) {
-                    console.log(`✅ PhotoMatcher: Found photo using legal name for "${getDisplayName(member)}" -> "${photoFile}"`);
+            // Try both name and legalName, prefer the most recent (later in manifest)
+            const namePhoto = await this.findPhotoForPerson(member.name);
+            const legalNamePhoto = (member.legalName && member.legalName !== member.name) 
+                ? await this.findPhotoForPerson(member.legalName) 
+                : null;
+            
+            if (namePhoto && legalNamePhoto) {
+                // Both found - choose based on manifest position (later = more recent)
+                const nameIndex = this.originalPhotos.indexOf(namePhoto);
+                const legalIndex = this.originalPhotos.indexOf(legalNamePhoto);
+                
+                if (legalIndex > nameIndex) {
+                    photoFile = legalNamePhoto;
+                    foundViaLegalName = true;
+                    console.log(`✅ PhotoMatcher: Using more recent legal name photo for "${getDisplayName(member)}" -> "${photoFile}"`);
+                } else {
+                    photoFile = namePhoto;
+                    console.log(`✅ PhotoMatcher: Using more recent name photo for "${getDisplayName(member)}" -> "${photoFile}"`);
                 }
+            } else if (legalNamePhoto) {
+                photoFile = legalNamePhoto;
+                foundViaLegalName = true;
+                console.log(`✅ PhotoMatcher: Found photo using legal name for "${getDisplayName(member)}" -> "${photoFile}"`);
+            } else if (namePhoto) {
+                photoFile = namePhoto;
             }
             
             results.push({
