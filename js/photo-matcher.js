@@ -45,7 +45,8 @@ class PhotoMatcher {
     async loadPhotoManifest() {
         try {
             console.log('📸 PhotoMatcher: Loading photo manifest...');
-            const response = await fetch('./images/arvore/photo-manifest.json');
+            const timestamp = Date.now();
+            const response = await fetch(`./images/arvore/photo-manifest.json?v=${timestamp}`);
             if (!response.ok) {
                 throw new Error(`Failed to load photo manifest: ${response.status}`);
             }
@@ -115,10 +116,11 @@ class PhotoMatcher {
     }
 
     /**
-     * Get the photo URL for a person
+     * Get the photo URL for a person with cache-busting
      */
     getPhotoUrl(photoFileName) {
-        return `./images/arvore/${encodeURIComponent(photoFileName)}`;
+        const timestamp = Date.now();
+        return `./images/arvore/${encodeURIComponent(photoFileName)}?v=${timestamp}`;
     }
 
     /**

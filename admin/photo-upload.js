@@ -129,7 +129,8 @@ class PhotoUploadManager {
             
             // Also load existing photo manifest
             try {
-                const manifestResponse = await fetch('../images/arvore/photo-manifest.json');
+                const timestamp = Date.now();
+                const manifestResponse = await fetch(`../images/arvore/photo-manifest.json?v=${timestamp}`);
                 this.photoManifest = await manifestResponse.json();
             } catch (e) {
                 console.warn('No photo manifest found, will create new one');
