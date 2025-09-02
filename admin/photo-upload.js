@@ -145,7 +145,7 @@ class PhotoUploadManager {
     
     handleFileSelection(files) {
         const validFiles = [];
-        const maxSize = 2 * 1024 * 1024; // Reduced to 2MB for Base64 compression
+        const maxSize = 10 * 1024 * 1024; // 10MB limit for blob-based uploads
         const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         
         Array.from(files).forEach(file => {
@@ -155,7 +155,9 @@ class PhotoUploadManager {
             }
             
             if (file.size > maxSize) {
-                this.addLog(`❌ ${file.name}: Arquivo muito grande (máximo 2MB para upload via workflow)`, 'error');
+                const fileSize = this.formatFileSize(file.size);
+                const maxSizeFormatted = this.formatFileSize(maxSize);
+                this.addLog(`❌ ${file.name}: Arquivo muito grande (${fileSize}). O limite é ${maxSizeFormatted}.`, 'error');
                 return;
             }
             
