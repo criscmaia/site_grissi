@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photo Debug Test</title>
+</head>
+<body>
+    <h1>Photo Matcher Debug</h1>
+    <div id="results"></div>
+    
+    <script src="js/photo-matcher.js"></script>
+    <script>
+        async function debugPhotoMatching() {
+            const results = document.getElementById('results');
+            const photoMatcher = new PhotoMatcher();
+            
+            results.innerHTML += '<h2>Initializing PhotoMatcher...</h2>';
+            await photoMatcher.init();
+            
+            results.innerHTML += '<h2>Testing GABRIELLA NÓBREGA GRISSI CARDOSO:</h2>';
+            const gabriellaPhoto = await photoMatcher.findPhotoForPerson('GABRIELLA NÓBREGA GRISSI CARDOSO');
+            results.innerHTML += `<p>Found photo: ${gabriellaPhoto}</p>`;
+            if (gabriellaPhoto) {
+                const url = photoMatcher.getPhotoUrl(gabriellaPhoto);
+                results.innerHTML += `<p>Photo URL: ${url}</p>`;
+                results.innerHTML += `<img src="${url}" style="max-width:200px;" onerror="this.style.border='3px solid red'; this.alt='ERROR LOADING'">`;
+            }
+            
+            results.innerHTML += '<h2>Testing MARIA DE FATIMA GRISSI PIMENTA (legalName):</h2>';
+            const mariaLegalPhoto = await photoMatcher.findPhotoForPerson('MARIA DE FATIMA GRISSI PIMENTA');
+            results.innerHTML += `<p>Found photo: ${mariaLegalPhoto}</p>`;
+            if (mariaLegalPhoto) {
+                const url = photoMatcher.getPhotoUrl(mariaLegalPhoto);
+                results.innerHTML += `<p>Photo URL: ${url}</p>`;
+                results.innerHTML += `<img src="${url}" style="max-width:200px;" onerror="this.style.border='3px solid red'; this.alt='ERROR LOADING'">`;
+            }
+            
+            results.innerHTML += '<h2>Testing MARIA DE FÁTIMA MOREIRA GRISSI (name):</h2>';
+            const mariaNamePhoto = await photoMatcher.findPhotoForPerson('MARIA DE FÁTIMA MOREIRA GRISSI');
+            results.innerHTML += `<p>Found photo: ${mariaNamePhoto}</p>`;
+            if (mariaNamePhoto) {
+                const url = photoMatcher.getPhotoUrl(mariaNamePhoto);
+                results.innerHTML += `<p>Photo URL: ${url}</p>`;
+                results.innerHTML += `<img src="${url}" style="max-width:200px;" onerror="this.style.border='3px solid red'; this.alt='ERROR LOADING'">`;
+            }
+            
+            results.innerHTML += '<h2>All loaded photos in manifest:</h2>';
+            const allPhotos = await photoMatcher.getAllPhotoFiles();
+            results.innerHTML += `<p>Total photos loaded: ${allPhotos.length}</p>`;
+            allPhotos.slice(0, 10).forEach(photo => {
+                results.innerHTML += `<p>• ${photo}</p>`;
+            });
+        }
+        
+        debugPhotoMatching().catch(console.error);
+    </script>
+</body>
+</html>

@@ -573,14 +573,14 @@ class PhotoUploadManager {
         if (person.type === 'member') {
             // For family members, use their name
             baseName = (person.data.legalName || person.data.name)
-                .replace(/[^a-zA-Z0-9\s]/g, '')  // Remove special chars but keep spaces
+                .replace(/[^\w\s\u00C0-\u017F]/g, '')  // Remove special chars but keep spaces and accented characters
                 .replace(/\s+/g, ' ')             // Normalize multiple spaces to single space
                 .trim()                           // Remove leading/trailing spaces
                 .toUpperCase();                   // Convert to uppercase to match manifest format
         } else {
             // For partners, use their name  
             baseName = (person.data.legalName || person.data.name)
-                .replace(/[^a-zA-Z0-9\s]/g, '')  // Remove special chars but keep spaces
+                .replace(/[^\w\s\u00C0-\u017F]/g, '')  // Remove special chars but keep spaces and accented characters
                 .replace(/\s+/g, ' ')             // Normalize multiple spaces to single space
                 .trim()                           // Remove leading/trailing spaces
                 .toUpperCase();                   // Convert to uppercase to match manifest format
