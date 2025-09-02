@@ -112,7 +112,7 @@ class PhotoUploadManager {
         }
     }
     
-    authenticate() {
+    async authenticate() {
         const password = document.getElementById('password-input').value;
         
         // Validate password is provided
@@ -128,17 +128,134 @@ class PhotoUploadManager {
             return;
         }
         
-        // Store the password for use in workflow dispatch
-        this.uploadPassword = password;
+        // Show loading state
+        const loginBtn = document.getElementById('login-btn');
+        const originalText = loginBtn.textContent;
+        loginBtn.textContent = 'Verificando...';
+        loginBtn.disabled = true;
         
-        // Set authenticated state
-        this.isAuthenticated = true;
-        localStorage.setItem('photoUploadAuth', 'authenticated');
-        localStorage.setItem('photoUploadPassword', password);
-        this.showUploadInterface();
+        try {
+            // Validate password via API call
+            const isValidPassword = await this.validatePasswordViaAPI(password);
+            
+            if (isValidPassword) {
+                // Store the password for use in workflow dispatch
+                this.uploadPassword = password;
+                
+                // Set authenticated state
+                this.isAuthenticated = true;
+                localStorage.setItem('photoUploadAuth', 'authenticated');
+                localStorage.setItem('photoUploadPassword', password);
+                this.showUploadInterface();
+            } else {
+                this.showError('Senha incorreta. Tente novamente.');
+            }
+        } catch (error) {
+            console.error('Authentication error:', error);
+            this.showError('Erro ao verificar senha. Tente novamente.');
+        } finally {
+            // Restore button state
+            loginBtn.textContent = originalText;
+            loginBtn.disabled = false;
+        }
+    }
+    
+    async validatePasswordViaAPI(password) {
+        try {
+            // Generate unique session ID for this validation attempt
+            const sessionId = `auth-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            
+            // Trigger validation workflow
+            const workflowUrl = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/actions/workflows/validate-password.yml/dispatches`;
+            
+            const response = await fetch(workflowUrl, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Authorization': `Bearer ${this.github.triggerToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ref: this.github.branch,
+                    inputs: {
+                        password: password,
+                        session_id: sessionId
+                    }
+                })
+            });
+            
+            if (response.status !== 204) {
+                console.error('Failed to trigger validation workflow:', response.status);
+                return false;
+            }
+            
+            // Wait for workflow to complete and check result
+            return await this.checkValidationResult(sessionId);
+        } catch (error) {
+            console.error('Password validation error:', error);
+            return false;
+        }
+    }
+    
+    async checkValidationResult(sessionId) {
+        // Poll workflow runs to check if validation passed
+        const maxAttempts = 30; // 30 attempts * 2 seconds = 1 minute timeout
+        const pollInterval = 2000; // 2 seconds
         
-        // Note: Password validation will happen server-side in the workflow
-        // If wrong password is used, user will get error during upload
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            await this.sleep(pollInterval);
+            
+            try {
+                // Get recent workflow runs for validation workflow
+                const runsUrl = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/actions/workflows/validate-password.yml/runs?per_page=10`;
+                
+                const response = await fetch(runsUrl, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Authorization': `Bearer ${this.github.triggerToken}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    console.error('Failed to fetch workflow runs:', response.status);
+                    continue;
+                }
+                
+                const data = await response.json();
+                
+                // Look for our session ID in recent runs (most recent first)
+                // Since we can't directly access workflow inputs via API, we'll check the most recent run
+                // that was triggered after our validation attempt
+                const matchingRun = data.workflow_runs.find(run => {
+                    // Check recent runs (created in last few minutes)
+                    const runCreatedAt = new Date(run.created_at);
+                    const validationTime = new Date(parseInt(sessionId.split('-')[1])); // Extract timestamp from session ID
+                    const timeDiff = runCreatedAt.getTime() - validationTime.getTime();
+                    
+                    // Run should be created within 30 seconds after our validation request
+                    return timeDiff >= 0 && timeDiff <= 30000 && run.status !== 'queued';
+                });
+                
+                if (matchingRun) {
+                    if (matchingRun.status === 'completed') {
+                        // Workflow completed, check if it succeeded (password was correct)
+                        return matchingRun.conclusion === 'success';
+                    }
+                    // Still running, continue polling
+                }
+            } catch (error) {
+                console.error('Error checking validation result:', error);
+                continue;
+            }
+        }
+        
+        // Timeout reached
+        console.error('Password validation timeout');
+        return false;
+    }
+    
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
     
     promptForCredentials() {

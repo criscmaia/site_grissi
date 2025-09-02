@@ -3,7 +3,8 @@
     "allow": [
       "Bash(dir)",
       "Bash(node:*)",
-      "Bash(del test_display_name.js)"
+      "Bash(del test_display_name.js)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

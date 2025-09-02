@@ -108,8 +108,23 @@
         </div>
     </div>
 
-    <!-- Configuration file (not committed to git) -->
-    <script src="config.js" onerror="console.warn('Config file not found - will prompt for credentials')"></script>
+    <!-- Configuration for GitHub Pages deployment -->
+    <script>
+        // GitHub Configuration for production deployment
+        // Token will be set at deployment time via GitHub Actions
+        window.UPLOAD_CONFIG = {
+            github: {
+                repo: 'site_grissi',
+                owner: 'criscmaia', 
+                branch: 'master',
+                // Placeholder - will be replaced during deployment
+                triggerToken: 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE'
+            },
+            auth: {
+                // Password validation happens server-side via GitHub Actions workflow
+            }
+        };
+    </script>
     <script src="photo-upload.js"></script>
 </body>
 </html>
