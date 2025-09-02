@@ -15,26 +15,26 @@
     <link rel="stylesheet" type="text/css" href="photo-upload.css">
 </head>
 <body>
+    <!-- Gatekeeper script - protects this page -->
+    <script>
+        if (sessionStorage.getItem('isAdminAuthenticated') !== 'true') {
+            alert('Você deve estar logado para acessar esta página.');
+            window.location.href = 'login.html';
+        }
+    </script>
+    
     <div class="container">
         <header class="page-header">
             <h1>🔒 Upload de Fotos da Família</h1>
             <p>Interface administrativa para adicionar fotos a arvore genealogica</p>
-            <a href="../arvore-genealogica.html" class="back-link">← Voltar à Árvore Genealógica</a>
+            <div class="header-links">
+                <a href="../arvore-genealogica.html" class="back-link">← Voltar à Árvore Genealógica</a>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
         </header>
 
-        <!-- Authentication Section -->
-        <div id="auth-section" class="auth-section">
-            <div class="auth-card">
-                <h2>Acesso Restrito</h2>
-                <p>Digite a senha para acessar o sistema de upload:</p>
-                <input type="password" id="password-input" placeholder="Senha">
-                <button id="login-btn">Entrar</button>
-                <div id="auth-error" class="error-message"></div>
-            </div>
-        </div>
-
-        <!-- Main Upload Interface (hidden initially) -->
-        <div id="upload-section" class="upload-section" style="display: none;">
+        <!-- Main Upload Interface (always visible now) -->
+        <div id="upload-section" class="upload-section">
             
             <!-- Upload Area -->
             <div class="upload-area">
@@ -108,23 +108,7 @@
         </div>
     </div>
 
-    <!-- Configuration for GitHub Pages deployment -->
-    <script>
-        // GitHub Configuration for production deployment
-        // Token will be set at deployment time via GitHub Actions
-        window.UPLOAD_CONFIG = {
-            github: {
-                repo: 'site_grissi',
-                owner: 'criscmaia', 
-                branch: 'master',
-                // Placeholder - will be replaced during deployment
-                triggerToken: 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE'
-            },
-            auth: {
-                // Password validation happens server-side via GitHub Actions workflow
-            }
-        };
-    </script>
+    <!-- Configuration is now handled by login page -->
     <script src="photo-upload.js"></script>
 </body>
 </html>

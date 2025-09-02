@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login Administrativo - Família Grizzo</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="../index.css">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .login-form {
+            margin-top: 30px;
+        }
+        
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        
+        .login-form input[type="password"]:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: #34495e;
+        }
+        
+        .login-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        
+        .status.loading {
+            background: #e8f4fd;
+            color: #2980b9;
+        }
+        
+        .status.error {
+            background: #fdf2f2;
+            color: #e74c3c;
+        }
+        
+        .status.success {
+            background: #eafaf1;
+            color: #27ae60;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #7f8c8d;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link:hover {
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-container">
+            <h1>🔒 Acesso Administrativo</h1>
+            <p>Entre com a senha para acessar o sistema de upload de fotos da família.</p>
+            
+            <form id="login-form" class="login-form">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" required placeholder="Digite a senha administrativa">
+                <button type="submit" id="login-btn" class="login-btn">Entrar</button>
+            </form>
+            
+            <div id="status" class="status" style="display: none;"></div>
+            
+            <a href="../arvore-genealogica.html" class="back-link">← Voltar à Árvore Genealógica</a>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const statusDiv = document.getElementById('status');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('login-btn');
+
+        // --- Configuration ---
+        const owner = 'criscmaia';
+        const repo = 'site_grissi';
+        const workflowFile = 'auth-check.yml';
+        const triggerToken = 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE'; // The low-permission PAT
+
+        function showStatus(message, type = 'loading') {
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+            statusDiv.style.display = 'block';
+        }
+
+        function hideStatus() {
+            statusDiv.style.display = 'none';
+        }
+
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const password = passwordInput.value;
+            
+            // Check if token is configured
+            if (triggerToken === 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE') {
+                showStatus('⚠️ Sistema não configurado. Contate o administrador.', 'error');
+                return;
+            }
+            
+            loginBtn.disabled = true;
+            showStatus('Verificando senha...', 'loading');
+
+            try {
+                // 1. Trigger the workflow
+                const triggerResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowFile}/dispatches`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${triggerToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify({
+                        ref: 'master',
+                        inputs: { password: password }
+                    })
+                });
+
+                if (triggerResponse.status !== 204) {
+                    throw new Error('Falha ao iniciar verificação de senha.');
+                }
+                
+                // 2. Poll for the result
+                // We wait a few seconds before the first check to allow the run to start
+                setTimeout(() => pollWorkflowStatus(password), 3000);
+
+            } catch (error) {
+                showStatus(`Erro: ${error.message}`, 'error');
+                loginBtn.disabled = false;
+            }
+        });
+
+        async function pollWorkflowStatus(password) {
+            showStatus('Aguardando resultado...', 'loading');
+            try {
+                // Get the most recent run of our specific workflow
+                const runsResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/actions/workflows/${workflowFile}/runs`, {
+                    headers: {
+                        'Authorization': `Bearer ${triggerToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (!runsResponse.ok) {
+                    throw new Error('Erro ao verificar status da autenticação.');
+                }
+                
+                const runsData = await runsResponse.json();
+                const latestRun = runsData.workflow_runs[0];
+
+                if (latestRun && (latestRun.status === 'queued' || latestRun.status === 'in_progress')) {
+                    // Still running, check again in a few seconds
+                    setTimeout(() => pollWorkflowStatus(password), 3000);
+                } else if (latestRun && latestRun.status === 'completed') {
+                    if (latestRun.conclusion === 'success') {
+                        // SUCCESS! Store credentials and redirect
+                        showStatus('✅ Login realizado com sucesso! Redirecionando...', 'success');
+                        sessionStorage.setItem('isAdminAuthenticated', 'true');
+                        sessionStorage.setItem('adminPassword', password);
+                        
+                        setTimeout(() => {
+                            window.location.href = 'photo-upload.html';
+                        }, 1500);
+                    } else {
+                        // FAILURE!
+                        showStatus('❌ Senha incorreta. Tente novamente.', 'error');
+                        loginBtn.disabled = false;
+                    }
+                } else {
+                    showStatus('Não foi possível determinar o status. Tente novamente.', 'error');
+                    loginBtn.disabled = false;
+                }
+            } catch (error) {
+                showStatus(`Erro ao verificar status: ${error.message}`, 'error');
+                loginBtn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+name: Check Admin Password
+
+on:
+  workflow_dispatch:
+    inputs:
+      password:
+        description: 'The password to validate'
+        required: true
+
+jobs:
+  validate-password:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Check if password matches secret'
+        if: ${{ github.event.inputs.password == secrets.ADMIN_PASSWORD }}
+        run: echo "✅ Password is correct."
+      
+      - name: 'Fail if password is wrong'
+        if: ${{ github.event.inputs.password != secrets.ADMIN_PASSWORD }}
+        run: |
+          echo "❌ Incorrect password."
+          exit 1
