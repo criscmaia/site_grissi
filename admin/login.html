@@ -7,10 +7,6 @@
     <title>Login Administrativo - Família Grizzo</title>
     <meta name="robots" content="noindex, nofollow">
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" type="text/css" href="../index.css">
     <style>
         .login-container {
@@ -110,17 +106,16 @@
     <div class="container">
         <div class="login-container">
             <h1>🔒 Acesso Administrativo</h1>
-            <p>Entre com seu GitHub Workflow Token para acessar o sistema de upload de fotos da família.</p>
+            <p>Digite a senha para acessar o sistema de upload de fotos da família.</p>
             
             <form id="login-form" class="login-form">
-                <label for="github-token">GitHub Workflow Token:</label>
-                <input type="password" id="github-token" name="github-token" required 
-                       placeholder="ghp_..." 
-                       autocomplete="current-password"
-                       title="Token do GitHub com escopo 'workflow'">
-                <button type="submit" id="login-btn" class="login-btn">Validar Token</button>
+                <label for="github-token">Senha:</label>
+                <input type="password" id="github-token" name="password" required 
+                       placeholder="Digite sua senha" 
+                       autocomplete="current-password">
+                <button type="submit" id="login-btn" class="login-btn">Entrar</button>
                 <small style="color: #7f8c8d; margin-top: 8px; display: block;">
-                    Token com escopo "workflow" apenas. O navegador pode salvar este token.
+                    O navegador pode salvar esta senha para facilitar o acesso.
                 </small>
             </form>
             
@@ -155,14 +150,14 @@
             event.preventDefault();
             const token = tokenInput.value.trim();
             
-            // Validate token format
+            // Validate password format (still checking for GitHub token format internally)
             if (!token || !token.startsWith('ghp_')) {
-                showStatus('⚠️ Digite um token GitHub válido (deve começar com ghp_)', 'error');
+                showStatus('⚠️ Senha inválida. Verifique se está correta.', 'error');
                 return;
             }
             
             loginBtn.disabled = true;
-            showStatus('Validando token...', 'loading');
+            showStatus('Validando senha...', 'loading');
 
             try {
                 // Test the token by triggering a simple workflow
@@ -182,8 +177,8 @@
                 });
 
                 if (triggerResponse.status === 204) {
-                    // Token is valid! Store and redirect
-                    showStatus('✅ Token válido! Redirecionando...', 'success');
+                    // Password is valid! Store and redirect
+                    showStatus('✅ Senha correta! Redirecionando...', 'success');
                     sessionStorage.setItem('isAdminAuthenticated', 'true');
                     sessionStorage.setItem('githubToken', token);
                     
@@ -191,10 +186,10 @@
                         window.location.href = 'photo-upload.html';
                     }, 1500);
                 } else if (triggerResponse.status === 401) {
-                    showStatus('❌ Token inválido ou sem permissões necessárias.', 'error');
+                    showStatus('❌ Senha incorreta. Tente novamente.', 'error');
                     loginBtn.disabled = false;
                 } else {
-                    throw new Error(`Erro HTTP ${triggerResponse.status}: Falha na validação do token.`);
+                    throw new Error(`Erro HTTP ${triggerResponse.status}: Falha na validação da senha.`);
                 }
 
             } catch (error) {
