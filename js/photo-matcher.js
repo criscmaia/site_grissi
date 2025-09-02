@@ -89,7 +89,9 @@ class PhotoMatcher {
         return photoFileName
             .replace(/\.(jpg|jpeg|png|gif)$/i, '') // Remove extension
             .toLowerCase()
-            .trim();
+            .trim()
+            .normalize('NFD') // Decompose accented characters
+            .replace(/[\u0300-\u036f]/g, ''); // Remove diacritics
     }
 
     /**
@@ -98,7 +100,9 @@ class PhotoMatcher {
     normalizePersonName(personName) {
         return personName
             .toLowerCase()
-            .trim();
+            .trim()
+            .normalize('NFD') // Decompose accented characters
+            .replace(/[\u0300-\u036f]/g, ''); // Remove diacritics
     }
 
     /**

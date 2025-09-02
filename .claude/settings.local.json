@@ -5,7 +5,12 @@
       "Bash(node:*)",
       "Bash(del test_display_name.js)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(grep:*)",
+      "Bash(git fetch:*)",
+      "Bash(git stash:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []
