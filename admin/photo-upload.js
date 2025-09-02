@@ -22,9 +22,18 @@ class PhotoUploadManager {
         };
         
         // Check if config is properly loaded
-        this.configMissing = !window.UPLOAD_CONFIG || !window.UPLOAD_CONFIG.github?.triggerToken || 
+        console.log('Config check:', {
+            hasConfig: !!window.UPLOAD_CONFIG,
+            hasToken: !!window.UPLOAD_CONFIG?.github?.triggerToken,
+            tokenValue: window.UPLOAD_CONFIG?.github?.triggerToken?.substring(0, 8) + '...'
+        });
+        
+        this.configMissing = !window.UPLOAD_CONFIG || 
+                            !window.UPLOAD_CONFIG.github?.triggerToken || 
                             window.UPLOAD_CONFIG.github.triggerToken === 'ghp_YOUR_WORKFLOW_TRIGGER_TOKEN_HERE' ||
-                            !window.UPLOAD_CONFIG.github.triggerToken.startsWith('ghp_');
+                            window.UPLOAD_CONFIG.github.triggerToken === '';
+                            
+        console.log('Config missing:', this.configMissing);
         
         this.init();
     }
@@ -112,40 +121,29 @@ class PhotoUploadManager {
             return;
         }
         
-        // Store the password for use in workflow dispatch
-        this.uploadPassword = password;
-        
-        // If config is missing, prompt for credentials
+        // If config is missing, show admin error
         if (this.configMissing) {
-            this.promptForCredentials();
+            this.showError('⚠️ Sistema não configurado corretamente. Contate o administrador.');
+            console.error('Config missing - triggerToken not found');
             return;
         }
+        
+        // Store the password for use in workflow dispatch
+        this.uploadPassword = password;
         
         // Set authenticated state
         this.isAuthenticated = true;
         localStorage.setItem('photoUploadAuth', 'authenticated');
-        localStorage.setItem('photoUploadPassword', password); // Store for later use
+        localStorage.setItem('photoUploadPassword', password);
         this.showUploadInterface();
+        
+        // Note: Password validation will happen server-side in the workflow
+        // If wrong password is used, user will get error during upload
     }
     
     promptForCredentials() {
-        const triggerToken = prompt(`⚠️ Arquivo de configuração não encontrado!\n\nPara usar o sistema de upload, você precisa fornecer:\nGitHub Workflow Trigger Token (com escopo 'workflow' apenas)\n\nDigite seu GitHub Token:`);
-        
-        if (!triggerToken) {
-            this.showError('Token GitHub é necessário para continuar');
-            return;
-        }
-        
-        // Set the credentials
-        this.github.triggerToken = triggerToken;
-        this.configMissing = false;
-        
-        // Continue with authentication
-        this.isAuthenticated = true;
-        localStorage.setItem('photoUploadAuth', 'authenticated');
-        this.showUploadInterface();
-        
-        alert('✅ Credenciais configuradas! Sistema pronto para uso.\n\nNOTA: Para uso futuro, crie um arquivo config.js local para evitar digitar as credenciais novamente.');
+        this.showError('⚠️ Sistema não configurado corretamente. Contate o administrador.');
+        console.error('Config missing - triggerToken not found');
     }
     
     async promptForUploadCredentials() {
