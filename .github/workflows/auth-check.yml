@@ -11,12 +11,15 @@ jobs:
   validate-password:
     runs-on: ubuntu-latest
     steps:
-      - name: 'Check if password matches secret'
-        if: ${{ github.event.inputs.password == secrets.ADMIN_PASSWORD }}
-        run: echo "✅ Password is correct."
-      
-      - name: 'Fail if password is wrong'
-        if: ${{ github.event.inputs.password != secrets.ADMIN_PASSWORD }}
+      - name: 'Validate Password'
+        env:
+          INPUT_PASSWORD: ${{ github.event.inputs.password }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
         run: |
-          echo "❌ Incorrect password."
-          exit 1
+          if [ "$INPUT_PASSWORD" = "$ADMIN_PASSWORD" ]; then
+            echo "✅ Password is correct."
+            exit 0
+          else
+            echo "❌ Incorrect password."
+            exit 1
+          fi
