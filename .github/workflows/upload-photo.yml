@@ -47,28 +47,39 @@ jobs:
           echo "✅ Blob SHA is valid"
           # --- END OF DEBUGGING STEP ---
 
-          # Handle duplicate filenames by adding timestamp suffix if needed
+          # Handle existing photos by renaming old one with timestamp
           base_name="${FILENAME%.*}"
           extension="${FILENAME##*.}"
           final_filename="$FILENAME"
           file_path="images/arvore/$final_filename"
-
+          
           echo "1. Checking if file already exists..."
-          # Try to get the existing file - if it exists, we'll rename our new file
-          if gh api "repos/$OWNER/$REPO/contents/$file_path" >/dev/null 2>&1; then
+          # Check if file exists - if so, we'll rename the existing one and use clean name for new photo
+          EXISTING_FILE_SHA=""
+          if EXISTING_RESPONSE=$(gh api "repos/$OWNER/$REPO/contents/$file_path" 2>/dev/null); then
+            echo "   - Existing photo found, will rename old one to preserve history"
+            EXISTING_FILE_SHA=$(echo "$EXISTING_RESPONSE" | jq -r '.sha')
             timestamp=$(date +"%Y%m%d_%H%M%S")
-            final_filename="${base_name}_${timestamp}.${extension}"
-            file_path="images/arvore/$final_filename"
-            echo "   - File exists, renaming to: $final_filename"
+            old_filename="${base_name}_${timestamp}.${extension}"
+            old_file_path="images/arvore/$old_filename"
+            echo "   - Will rename existing photo to: $old_filename"
           else
-            echo "   - Filename available: $final_filename"
+            echo "   - No existing photo, using clean filename: $final_filename"
           fi
 
           # Create commit message with person info if provided
           if [ -n "$PERSON_NAME" ]; then
-            commit_message="🖼️ Add photo for $PERSON_NAME: $final_filename"
+            if [ -n "$EXISTING_FILE_SHA" ]; then
+              commit_message="🔄 Update photo for $PERSON_NAME: $final_filename (archived previous version)"
+            else
+              commit_message="🖼️ Add photo for $PERSON_NAME: $final_filename"
+            fi
           else
-            commit_message="🖼️ Add new image: $final_filename"
+            if [ -n "$EXISTING_FILE_SHA" ]; then
+              commit_message="🔄 Update image: $final_filename (archived previous version)"
+            else
+              commit_message="🖼️ Add new image: $final_filename"
+            fi
           fi
 
           echo "2. Getting latest commit SHA..."
@@ -111,20 +122,28 @@ jobs:
             echo "   - Manifest blob created: $MANIFEST_BLOB_SHA"
           fi
 
-          echo "5. Creating new tree with both files..."
-          # Build tree array
-          if [ -n "$MANIFEST_BLOB_SHA" ]; then
-            # Include both image and updated manifest
-            TREE_JSON="[
-              {\"path\": \"$file_path\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$BLOB_SHA\"},
-              {\"path\": \"$MANIFEST_PATH\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$MANIFEST_BLOB_SHA\"}
-            ]"
-            echo "   - Including both image and manifest update"
-          else
-            # Include only image
-            TREE_JSON="[{\"path\": \"$file_path\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$BLOB_SHA\"}]"
-            echo "   - Including only image file"
+          echo "5. Creating new tree..."
+          # Build tree array based on what needs to be included
+          TREE_ITEMS=()
+          
+          # Always include the new photo
+          TREE_ITEMS+=("{\"path\": \"$file_path\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$BLOB_SHA\"}")
+          
+          # If there was an existing photo, rename it (archive old version)
+          if [ -n "$EXISTING_FILE_SHA" ]; then
+            TREE_ITEMS+=("{\"path\": \"$old_file_path\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$EXISTING_FILE_SHA\"}")
+            echo "   - Including old photo rename: $old_filename"
           fi
+          
+          # Include manifest update if needed
+          if [ -n "$MANIFEST_BLOB_SHA" ]; then
+            TREE_ITEMS+=("{\"path\": \"$MANIFEST_PATH\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$MANIFEST_BLOB_SHA\"}")
+            echo "   - Including manifest update"
+          fi
+          
+          # Join array elements with commas
+          TREE_JSON="[$(IFS=','; echo "${TREE_ITEMS[*]}")]"
+          echo "   - Tree will include ${#TREE_ITEMS[@]} file(s)"
           
           NEW_TREE_SHA=$(curl -s -X POST \
             -H "Authorization: Bearer $GH_TOKEN" \
@@ -134,9 +153,17 @@ jobs:
           echo "   - New tree: $NEW_TREE_SHA"
 
           echo "6. Creating new commit..."
-          # Create commit message that includes manifest update if applicable
+          # Create detailed commit message
+          commit_details=""
+          if [ -n "$EXISTING_FILE_SHA" ]; then
+            commit_details="${commit_details}📦 Archived previous photo as: $old_filename"$'\n'
+          fi
           if [ -n "$MANIFEST_BLOB_SHA" ]; then
-            commit_message="$commit_message"$'\n\n'"📸 Update photo manifest - add $final_filename"
+            commit_details="${commit_details}📸 Updated photo manifest"
+          fi
+          
+          if [ -n "$commit_details" ]; then
+            commit_message="$commit_message"$'\n\n'"$commit_details"
           fi
           
           # Escape commit message for JSON

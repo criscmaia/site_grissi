@@ -53,14 +53,13 @@ class PhotoMatcher {
             const photos = await response.json();
             
             // Create a Map for O(1) lookups with normalized keys
-            // Store arrays to handle multiple photos per person
             this.photoManifest = new Map();
             photos.forEach(photo => {
                 const normalizedName = this.normalizePhotoName(photo);
-                if (!this.photoManifest.has(normalizedName)) {
-                    this.photoManifest.set(normalizedName, []);
+                // Only store photos WITHOUT timestamp (active photos)
+                if (!/_\d{8}_\d{6}\./.test(photo)) {
+                    this.photoManifest.set(normalizedName, photo);
                 }
-                this.photoManifest.get(normalizedName).push(photo);
             });
             
             console.log(`📸 PhotoMatcher: Loaded ${this.photoManifest.size} photos`);
@@ -104,55 +103,15 @@ class PhotoMatcher {
 
         const normalizedName = this.normalizePersonName(personName);
         
-        // Exact match only
+        // Exact match only (active photos without timestamp)
         if (this.photoManifest.has(normalizedName)) {
-            const photos = this.photoManifest.get(normalizedName);
-            
-            // If multiple photos exist, prefer the most recent (with timestamp)
-            const bestPhoto = this.selectBestPhoto(photos);
-            console.log(`✅ PhotoMatcher: Found ${photos.length} photo(s) for "${personName}" -> selected "${bestPhoto}"`);
-            return bestPhoto;
+            const photoFile = this.photoManifest.get(normalizedName);
+            console.log(`✅ PhotoMatcher: Found exact match for "${personName}" -> "${photoFile}"`);
+            return photoFile;
         }
 
         console.log(`❌ PhotoMatcher: No exact photo match found for "${personName}"`);
         return null;
-    }
-
-    /**
-     * Select the best photo when multiple photos exist for the same person
-     * Prioritizes: 1) Most recent timestamp, 2) Original without timestamp
-     */
-    selectBestPhoto(photos) {
-        if (photos.length === 1) {
-            return photos[0];
-        }
-
-        // Separate photos with and without timestamps
-        const timestampedPhotos = [];
-        const originalPhotos = [];
-
-        photos.forEach(photo => {
-            // Check if photo has timestamp pattern: _YYYYMMDD_HHMMSS
-            if (/_\d{8}_\d{6}\./.test(photo)) {
-                timestampedPhotos.push(photo);
-            } else {
-                originalPhotos.push(photo);
-            }
-        });
-
-        // If we have timestamped photos, return the most recent one
-        if (timestampedPhotos.length > 0) {
-            // Sort by timestamp (most recent first)
-            timestampedPhotos.sort((a, b) => {
-                const timestampA = a.match(/_(\d{8}_\d{6})\./)?.[1] || '';
-                const timestampB = b.match(/_(\d{8}_\d{6})\./)?.[1] || '';
-                return timestampB.localeCompare(timestampA);
-            });
-            return timestampedPhotos[0];
-        }
-
-        // Otherwise return the original photo
-        return originalPhotos[0] || photos[0];
     }
 
     /**
