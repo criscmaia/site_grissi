@@ -54,11 +54,21 @@ class PhotoMatcher {
             const photos = await response.json();
             
             // Create a Map for O(1) lookups with normalized keys
+            // Handle multiple formats by preferring the MOST RECENT (last in manifest)
             this.photoManifest = new Map();
+            
             photos.forEach(photo => {
                 const normalizedName = this.normalizePhotoName(photo);
                 // Only store photos WITHOUT timestamp (active photos)
                 if (!/_\d{8}_\d{6}\./.test(photo)) {
+                    const currentPhoto = this.photoManifest.get(normalizedName);
+                    
+                    if (currentPhoto) {
+                        // Photo already exists - the newer one (later in manifest) wins
+                        console.log(`📸 PhotoMatcher: Replacing ${currentPhoto} with more recent ${photo}`);
+                    }
+                    
+                    // Always set the photo - later entries overwrite earlier ones (most recent wins)
                     this.photoManifest.set(normalizedName, photo);
                 }
             });
