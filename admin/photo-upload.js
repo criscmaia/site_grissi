@@ -66,7 +66,6 @@ class PhotoUploadManager {
         
         // Queue actions
         document.getElementById('upload-all-btn').addEventListener('click', () => {
-            console.log('Upload button clicked');
             this.startUploadProcess();
         });
         document.getElementById('clear-queue-btn').addEventListener('click', () => this.clearQueue());
@@ -110,29 +109,11 @@ class PhotoUploadManager {
         window.location.href = 'login.html';
     }
     
-    async promptForUploadCredentials() {
-        return new Promise((resolve) => {
-            const triggerToken = prompt(`🔐 GitHub Workflow Token necessário para upload!\n\nDigite seu GitHub Workflow Trigger Token (escopo 'workflow'):`);
-            
-            if (!triggerToken) {
-                resolve(false);
-                return;
-            }
-            
-            // Set the credentials
-            this.github.triggerToken = triggerToken;
-            this.configMissing = false;
-            
-            this.addLog('✅ Credenciais configuradas para upload', 'success');
-            resolve(true);
-        });
-    }
     
     showError(message) {
-        const errorDiv = document.getElementById('auth-error');
-        errorDiv.textContent = message;
-        errorDiv.classList.add('show');
-        setTimeout(() => errorDiv.classList.remove('show'), 5000);
+        // Use console.error for now since we don't have a dedicated error display area
+        console.error('Photo Upload Error:', message);
+        // Could be enhanced later with toast notifications if needed
     }
     
     showUploadInterface() {
@@ -512,9 +493,7 @@ class PhotoUploadManager {
     }
     
     async startUploadProcess() {
-        console.log('Upload process started');
-        console.log('GitHub config:', { triggerToken: this.github.triggerToken ? 'SET' : 'NOT SET', owner: this.github.owner });
-        console.log('Config missing flag:', this.configMissing);
+        // Upload process started
         
         // Check if we have the token
         if (!this.github.triggerToken) {
@@ -531,7 +510,6 @@ class PhotoUploadManager {
         }
         
         const readyFiles = this.fileQueue.filter(item => item.status === 'ready');
-        console.log('Ready files:', readyFiles.length);
         if (readyFiles.length === 0) {
             this.addLog('❌ Nenhuma foto pronta para upload. Selecione pessoas para as fotos primeiro.', 'error');
             return;
@@ -763,27 +741,6 @@ class PhotoUploadManager {
         logContainer.scrollTop = logContainer.scrollHeight;
     }
     
-    logout() {
-        // Clear stored authentication
-        localStorage.removeItem('photoUploadAuth');
-        localStorage.removeItem('photoUploadPassword');
-        
-        // Reset state
-        this.isAuthenticated = false;
-        this.github.triggerToken = '';
-        
-        // Hide upload interface and show auth section
-        document.getElementById('upload-section').style.display = 'none';
-        document.getElementById('auth-section').style.display = 'block';
-        
-        // Clear password input
-        document.getElementById('password-input').value = '';
-        
-        // Clear any error messages
-        document.getElementById('auth-error').classList.remove('show');
-        
-        console.log('User logged out');
-    }
 }
 
 // Initialize the photo upload system
