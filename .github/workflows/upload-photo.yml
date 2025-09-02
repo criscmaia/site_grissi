@@ -1,5 +1,10 @@
 name: Upload Photo from Website
 
+# Concurrency lock - ensures only one upload workflow runs at a time
+concurrency:
+  group: photo-uploads
+  cancel-in-progress: false  # Queue uploads instead of canceling them
+
 on:
   workflow_dispatch:
     inputs:
@@ -216,54 +221,7 @@ jobs:
           fi
 
           echo "7. Updating branch reference..."
-          
-          # Retry mechanism for git conflicts
-          MAX_RETRIES=3
-          RETRY_COUNT=0
-          
-          while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            echo "   - Attempt $((RETRY_COUNT + 1)) of $MAX_RETRIES"
-            
-            if gh api "repos/$OWNER/$REPO/git/refs/heads/$BRANCH" -X PATCH \
-              -f sha="$NEW_COMMIT_SHA" >/dev/null 2>&1; then
-              echo "   - ✅ Branch reference updated successfully"
-              break
-            else
-              RETRY_COUNT=$((RETRY_COUNT + 1))
-              if [ $RETRY_COUNT -lt $MAX_RETRIES ]; then
-                echo "   - ⚠️ Git conflict detected, retrying in 5 seconds..."
-                sleep 5
-                
-                # Refresh commit SHAs and retry
-                echo "   - Refreshing base commit..."
-                LATEST_COMMIT_SHA=$(gh api "repos/$OWNER/$REPO/git/ref/heads/$BRANCH" --jq '.object.sha')
-                BASE_TREE_SHA=$(gh api "repos/$OWNER/$REPO/git/commits/$LATEST_COMMIT_SHA" --jq '.tree.sha')
-                
-                # Recreate tree with fresh base
-                NEW_TREE_SHA=$(curl -s -X POST \
-                  -H "Authorization: Bearer $GH_TOKEN" \
-                  -H "Accept: application/vnd.github.v3+json" \
-                  "https://api.github.com/repos/$OWNER/$REPO/git/trees" \
-                  -d "{\"base_tree\": \"$BASE_TREE_SHA\", \"tree\": $TREE_JSON}" | jq -r '.sha')
-                
-                # Recreate commit
-                COMMIT_RESPONSE=$(curl -s -X POST \
-                  -H "Authorization: Bearer $GH_TOKEN" \
-                  -H "Accept: application/vnd.github.v3+json" \
-                  "https://api.github.com/repos/$OWNER/$REPO/git/commits" \
-                  -d "{\
-                    \"message\": $commit_message_escaped,\
-                    \"parents\": [\"$LATEST_COMMIT_SHA\"],\
-                    \"tree\": \"$NEW_TREE_SHA\"\
-                  }")
-                
-                NEW_COMMIT_SHA=$(echo "$COMMIT_RESPONSE" | jq -r '.sha')
-                echo "   - New commit for retry: $NEW_COMMIT_SHA"
-              else
-                echo "   - ❌ Failed after $MAX_RETRIES attempts"
-                exit 1
-              fi
-            fi
-          done
+          gh api "repos/$OWNER/$REPO/git/refs/heads/$BRANCH" -X PATCH \
+            -f sha="$NEW_COMMIT_SHA"
             
           echo "✅ Successfully committed $final_filename"

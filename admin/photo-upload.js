@@ -109,10 +109,6 @@ class PhotoUploadManager {
         window.location.href = 'login.html';
     }
     
-    sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-    
     
     showError(message) {
         // Use console.error for now since we don't have a dedicated error display area
@@ -531,12 +527,6 @@ class PhotoUploadManager {
             await this.uploadSingleFile(item);
             this.currentFileIndex++;
             this.updateProgress(this.currentFileIndex, readyFiles.length);
-            
-            // Add delay between uploads to prevent git conflicts
-            if (this.currentFileIndex < readyFiles.length) {
-                this.addLog(`⏳ Aguardando 10 segundos antes do próximo upload...`, 'info');
-                await this.sleep(10000); // Wait 10 seconds between uploads
-            }
         }
         
         this.addLog('✅ Processo de upload concluído!', 'success');
