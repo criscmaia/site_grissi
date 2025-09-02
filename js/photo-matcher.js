@@ -64,12 +64,30 @@ class PhotoMatcher {
                     const currentPhoto = this.photoManifest.get(normalizedName);
                     
                     if (currentPhoto) {
-                        // Photo already exists - the newer one (later in manifest) wins
-                        console.log(`📸 PhotoMatcher: Replacing ${currentPhoto} with more recent ${photo}`);
+                        // Photo already exists - choose based on quality preference: PNG > WEBP > JPG/JPEG > GIF
+                        const getExtensionPriority = (filename) => {
+                            const ext = filename.toLowerCase().split('.').pop();
+                            const priorities = { png: 4, webp: 3, jpg: 2, jpeg: 2, gif: 1 };
+                            return priorities[ext] || 0;
+                        };
+                        
+                        const currentPriority = getExtensionPriority(currentPhoto);
+                        const newPriority = getExtensionPriority(photo);
+                        
+                        if (newPriority > currentPriority) {
+                            console.log(`📸 PhotoMatcher: Replacing ${currentPhoto} with higher quality ${photo}`);
+                            this.photoManifest.set(normalizedName, photo);
+                        } else if (newPriority === currentPriority) {
+                            // Same priority - prefer the later one (most recent)
+                            console.log(`📸 PhotoMatcher: Replacing ${currentPhoto} with more recent ${photo}`);
+                            this.photoManifest.set(normalizedName, photo);
+                        } else {
+                            console.log(`📸 PhotoMatcher: Keeping ${currentPhoto} over lower quality ${photo}`);
+                        }
+                    } else {
+                        // First photo for this person
+                        this.photoManifest.set(normalizedName, photo);
                     }
-                    
-                    // Always set the photo - later entries overwrite earlier ones (most recent wins)
-                    this.photoManifest.set(normalizedName, photo);
                 }
             });
             
