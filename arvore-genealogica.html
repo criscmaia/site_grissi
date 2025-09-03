@@ -167,13 +167,6 @@
                     </svg>
                     Fotos
                 </a>
-                <a class="nav-link" href="./atualizacoes.html">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                    Atualizações
-                </a>
                 <a class="nav-link" href="./contato.html">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect width="20" height="16" x="2" y="4" rx="2"></rect>
@@ -199,7 +192,6 @@
             <a class="mobile-nav-link" href="./historia.html">História</a>
             <a class="mobile-nav-link" href="./lembrancas.html">Lembranças</a>
             <a class="mobile-nav-link" href="./fotos.html">Fotos</a>
-            <a class="mobile-nav-link" href="./atualizacoes.html">Atualizações</a>
             <a class="mobile-nav-link" href="./contato.html">Contato</a>
         </nav>
     </header>
@@ -373,50 +365,12 @@
                 
                 // Ensure advanced filters are hidden by default
                 document.body.classList.remove('show-advanced-filters');
-                // Ensure fresh assets on GitHub Pages by clearing old SW/caches
-                (async function ensureFreshOnGhPages(){
-                    if (location.hostname.endsWith('github.io')) {
-                        try {
-                            if ('serviceWorker' in navigator) {
-                                const regs = await navigator.serviceWorker.getRegistrations();
-                                for (const reg of regs) { try { await reg.unregister(); } catch {}
-                                }
-                            }
-                            if (window.caches) {
-                                const keys = await caches.keys();
-                                await Promise.all(
-                                    keys.filter(k => /sitegrissi|static|dynamic/i.test(k))
-                                        .map(k => caches.delete(k))
-                                );
-                            }
-                        } catch (e) { console.warn('Cache/SW cleanup skipped:', e); }
-                    }
-                })();
                 initializePerformanceMonitoring();
                 initializeApplication();
             });
         } else {
             // Ensure advanced filters are hidden by default
             document.body.classList.remove('show-advanced-filters');
-            // Ensure fresh assets on GitHub Pages by clearing old SW/caches
-            (async function ensureFreshOnGhPages(){
-                if (location.hostname.endsWith('github.io')) {
-                    try {
-                        if ('serviceWorker' in navigator) {
-                            const regs = await navigator.serviceWorker.getRegistrations();
-                            for (const reg of regs) { try { await reg.unregister(); } catch {}
-                            }
-                        }
-                        if (window.caches) {
-                            const keys = await caches.keys();
-                            await Promise.all(
-                                keys.filter(k => /sitegrissi|static|dynamic/i.test(k))
-                                    .map(k => caches.delete(k))
-                            );
-                        }
-                    } catch (e) { console.warn('Cache/SW cleanup skipped:', e); }
-                }
-            })();
             initializePerformanceMonitoring();
             initializeApplication();
         }

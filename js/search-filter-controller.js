@@ -155,13 +155,6 @@ function getDisplayName(person, context = 'default') {
     cards: new Map(), // id -> { el, nameEl }
     generationFilter: null,
     query: '',
-    // Advanced filters removed from UI; keep values inert
-    birthYearFrom: null,
-    birthYearTo: null,
-    deathYearFrom: null,
-    deathYearTo: null,
-    birthLocationFilter: '',
-    deathLocationFilter: '',
     spotlightId: null,
     suggestionsEl: null,
     suggestionIndex: [] // { id, name, generation, type: 'member'|'partner' }
@@ -195,45 +188,18 @@ function getDisplayName(person, context = 'default') {
       if (id) state.cards.set(id, { el: card, nameEl });
     });
 
-    // Populate location dropdowns
-    populateLocationDropdowns();
   }
 
-  // Helper functions for date and location filtering
-  function extractYear(dateString) {
-    if (!dateString) return null;
-    const match = dateString.match(/\b(\d{4})\b/);
-    return match ? parseInt(match[1]) : null;
-  }
 
-  function isInYearRange(year, fromYear, toYear) {
-    // If no year data, only pass if no filters are set
-    if (!year) return !fromYear && !toYear;
-    
-    // Apply year range filters
-    if (fromYear && year < fromYear) return false;
-    if (toYear && year > toYear) return false;
-    return true;
-  }
-
-  function populateLocationDropdowns() {
-    // Advanced filters removed – no dropdown population necessary
-  }
 
   function applyFilters() {
     const q = normalize(state.query);
     const gen = state.generationFilter;
-    const birthFrom = state.birthYearFrom;
-    const birthTo = state.birthYearTo;
-    const deathFrom = state.deathYearFrom;
-    const deathTo = state.deathYearTo;
-    const birthLocation = state.birthLocationFilter;
-    const deathLocation = state.deathLocationFilter;
 
     // Clear dimming
     state.cards.forEach(({ el }) => el.classList.remove('dimmed', 'spotlight'));
 
-    // Apply all filters
+    // Apply generation filter
     state.members.forEach(m => {
       const card = state.cards.get(m.id);
       if (!card) return;
@@ -241,20 +207,8 @@ function getDisplayName(person, context = 'default') {
       // Generation filter
       const genOk = gen == null || String(m.generation) === String(gen);
       
-      // Date filters
-      const birthYear = extractYear(m.birthDate);
-      const deathYear = extractYear(m.deathDate);
-      const birthYearOk = isInYearRange(birthYear, birthFrom, birthTo);
-      const deathYearOk = isInYearRange(deathYear, deathFrom, deathTo);
-      
-      // Location filters
-    // Advanced filters removed; treat as always passing
-    const birthLocationOk = true;
-    const deathLocationOk = true;
-      
-      // Show card only if all filters pass
-      const allFiltersOk = genOk && birthYearOk && deathYearOk && birthLocationOk && deathLocationOk;
-      card.el.style.display = allFiltersOk ? '' : 'none';
+      // Show card only if generation filter passes
+      card.el.style.display = genOk ? '' : 'none';
     });
 
           // No query → just apply generation filter, reset highlights
