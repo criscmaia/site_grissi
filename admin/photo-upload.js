@@ -324,7 +324,7 @@ class PhotoUploadManager {
         
         if (suggestions.length > 0) {
             suggestedDiv.style.display = 'block';
-            suggestionsContainer.innerHTML = suggestions.map(s => 
+            suggestionsContainer.innerHTML = suggestions.slice(0, 5).map(s => 
                 `<span class="suggestion-tag" data-member-id="${s.member.id}">${s.name}</span>`
             ).join('');
             
