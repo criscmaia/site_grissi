@@ -101,6 +101,9 @@ class PhotoMatcher {
      * Normalize a person name for photo matching
      */
     normalizePersonName(personName) {
+        if (!personName || typeof personName !== 'string') {
+            return '';
+        }
         return personName
             .toLowerCase()
             .trim()

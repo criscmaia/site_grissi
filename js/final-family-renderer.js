@@ -86,16 +86,45 @@ class FinalFamilyRenderer {
             this.photoMatcher = new PhotoMatcher();
             await this.photoMatcher.init();
             
-            // Get photo statistics
+            // Get photo statistics for family members
             const stats = await this.photoMatcher.getPhotoStats(this.familyData.familyMembers);
             console.log(`📸 Photo coverage: ${stats.membersWithPhotos}/${stats.totalMembers} (${stats.coveragePercentage}%)`);
             
             // Store photo results for use during rendering
             this.photoResults = stats.photoResults;
+            
+            // Collect all spouses/partners from unions
+            const spouses = [];
+            this.familyData.familyMembers.forEach(member => {
+                if (member.unions && member.unions.length > 0) {
+                    member.unions.forEach(union => {
+                        if (union.partner && union.partner.name) {
+                            // Create a pseudo-member object for the spouse to work with PhotoMatcher
+                            spouses.push({
+                                name: union.partner.name,
+                                legalName: union.partner.legalName,
+                                id: `spouse_${union.partner.name}` // Create unique ID for spouse
+                            });
+                        }
+                    });
+                }
+            });
+            
+            // Get photos for spouses
+            if (spouses.length > 0) {
+                const spouseStats = await this.photoMatcher.getPhotoStats(spouses);
+                console.log(`📸 Spouse photo coverage: ${spouseStats.membersWithPhotos}/${spouseStats.totalMembers} (${spouseStats.coveragePercentage}%)`);
+                
+                // Store spouse photo results separately
+                this.spousePhotoResults = spouseStats.photoResults;
+            } else {
+                this.spousePhotoResults = [];
+            }
         } else {
             console.warn('⚠️ PhotoMatcher not available');
             this.photoMatcher = null;
             this.photoResults = [];
+            this.spousePhotoResults = [];
         }
     }
 
@@ -262,6 +291,27 @@ class FinalFamilyRenderer {
             if (profilePhoto) {
                 window.photoPopup.createHoverHandlers(profilePhoto, photoUrl, this.getDisplayName(member));
             }
+        }
+
+        // Add hover handlers for spouse photos
+        if (window.PhotoPopup && member.unions) {
+            member.unions.forEach((union, unionIndex) => {
+                if (union.partner && union.partner.name) {
+                    const spousePhotoResult = this.spousePhotoResults?.find(r => r.member.name === union.partner.name);
+                    if (spousePhotoResult?.hasPhoto) {
+                        // Find all spouse photos and get the one for this union
+                        const spousePhotos = card.querySelectorAll('.spouse-photo');
+                        const spousePhoto = spousePhotos[unionIndex];
+                        if (spousePhoto) {
+                            window.photoPopup.createHoverHandlers(
+                                spousePhoto, 
+                                spousePhotoResult.photoUrl, 
+                                this.getDisplayName(union.partner)
+                            );
+                        }
+                    }
+                }
+            });
         }
 
         return card;
@@ -452,7 +502,12 @@ class FinalFamilyRenderer {
      * Create spouse details
      */
     createSpouseDetails(spouse) {
-        if (!spouse) return '';
+        if (!spouse || !spouse.name) return '';
+
+        // Check if spouse has a photo
+        const spousePhotoResult = this.spousePhotoResults?.find(r => r.member.name === spouse.name);
+        const hasPhoto = spousePhotoResult?.hasPhoto;
+        const photoUrl = spousePhotoResult?.photoUrl;
 
         const details = [];
         
@@ -483,7 +538,15 @@ class FinalFamilyRenderer {
 
         return `
             <div class="spouse-info">
-                <div class="spouse-name">${details[0] || 'Cônjuge'}</div>
+                <div class="spouse-header">
+                    ${hasPhoto ? 
+                        `<div class="spouse-photo-container">
+                            <img src="${photoUrl}" alt="${this.getDisplayName(spouse)}" class="spouse-photo" loading="lazy" decoding="async" />
+                        </div>` : 
+                        ''
+                    }
+                    <div class="spouse-name">${details[0] || 'Cônjuge'}</div>
+                </div>
                 ${details.length > 1 ? `<div class="spouse-details">${details.slice(1).join(' | ')}</div>` : ''}
             </div>
         `;

@@ -13,7 +13,8 @@
       "Bash(git pull:*)",
       "Bash(git rm:*)",
       "WebFetch(domain:criscmaia.github.io)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(start \"C:/AI/SiteGrissi/arvore-genealogica.html\")"
     ],
     "deny": [],
     "ask": []
