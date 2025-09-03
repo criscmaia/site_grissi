@@ -651,7 +651,7 @@ body.no-scroll { overflow: hidden; }
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
+  /* margin-bottom: 0.75rem; */
   font-weight: 600;
   color: hsl(var(--card-foreground));
   font-size: 0.875rem;

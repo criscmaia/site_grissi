@@ -124,11 +124,11 @@ class PhotoMatcher {
         // Exact match only (active photos without timestamp)
         if (this.photoManifest.has(normalizedName)) {
             const photoFile = this.photoManifest.get(normalizedName);
-            console.log(`✅ PhotoMatcher: Found exact match for "${personName}" -> "${photoFile}"`);
+            // console.log(`✅ PhotoMatcher: Found exact match for "${personName}" -> "${photoFile}"`);
             return photoFile;
         }
 
-        console.log(`❌ PhotoMatcher: No exact photo match found for "${personName}"`);
+        // console.log(`❌ PhotoMatcher: No exact photo match found for "${personName}"`);
         return null;
     }
 
@@ -167,15 +167,15 @@ class PhotoMatcher {
                 if (legalIndex > nameIndex) {
                     photoFile = legalNamePhoto;
                     foundViaLegalName = true;
-                    console.log(`✅ PhotoMatcher: Using more recent legal name photo for "${getDisplayName(member)}" -> "${photoFile}"`);
+                    // console.log(`✅ PhotoMatcher: Using more recent legal name photo for "${getDisplayName(member)}" -> "${photoFile}"`);
                 } else {
                     photoFile = namePhoto;
-                    console.log(`✅ PhotoMatcher: Using more recent name photo for "${getDisplayName(member)}" -> "${photoFile}"`);
+                    // console.log(`✅ PhotoMatcher: Using more recent name photo for "${getDisplayName(member)}" -> "${photoFile}"`);
                 }
             } else if (legalNamePhoto) {
                 photoFile = legalNamePhoto;
                 foundViaLegalName = true;
-                console.log(`✅ PhotoMatcher: Found photo using legal name for "${getDisplayName(member)}" -> "${photoFile}"`);
+                // console.log(`✅ PhotoMatcher: Found photo using legal name for "${getDisplayName(member)}" -> "${photoFile}"`);
             } else if (namePhoto) {
                 photoFile = namePhoto;
             }
@@ -189,7 +189,7 @@ class PhotoMatcher {
         }
         
         const photoCount = results.filter(r => r.hasPhoto).length;
-        console.log(`📷 PhotoMatcher: Found ${photoCount} photos out of ${familyMembers.length} members`);
+        // console.log(`📷 PhotoMatcher: Found ${photoCount} photos out of ${familyMembers.length} members`);
         
         return results;
     }
