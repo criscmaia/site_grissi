@@ -278,11 +278,30 @@ function getDisplayName(person, context = 'default') {
     const exactMatches = state.suggestionIndex.filter(e => normalize(e.name) === q);
     if (exactMatches.length === 1) {
       const target = exactMatches[0];
+      const member = state.members.find(mm => mm.id === target.id) || { id: target.id, name: target.name, generation: target.generation };
+      
+      // Check if person is hidden by current generation filter
+      const cardEntry = state.cards.get(member.id);
+      const isHiddenByFilter = cardEntry && cardEntry.el && cardEntry.el.style.display === 'none';
+      
+      // If hidden by generation filter, automatically clear it
+      if (isHiddenByFilter && state.generationFilter !== null) {
+        const buttons = document.querySelectorAll('.filter-buttons .filter-btn');
+        const allGenerationsButton = Array.from(buttons).find(b => 
+          (b.textContent || '').includes('Todas')
+        );
+        if (allGenerationsButton) {
+          allGenerationsButton.click();
+        }
+      }
+      
       state.spotlightId = target.id;
       hideSuggestions();
-      // Find the member object for spotlight context
-      const member = state.members.find(mm => mm.id === target.id) || { id: target.id, name: target.name, generation: target.generation };
-      runSpotlight(member);
+      
+      // Small delay to ensure filter has been applied before spotlight
+      setTimeout(() => {
+        runSpotlight(member);
+      }, 50);
       return;
     }
 
@@ -326,30 +345,8 @@ function getDisplayName(person, context = 'default') {
   }
 
   function runSpotlight(member) {
-    // If target card exists but is hidden by generation filter, offer to auto-adjust
-    const cardEntry = state.cards.get(member.id);
-    if (cardEntry && cardEntry.el && cardEntry.el.style.display === 'none') {
-      try {
-        const previousActive = document.querySelector('.filter-buttons .filter-btn.active');
-        const previousLabel = (previousActive?.textContent || '').trim();
-        const targetGen = (member.generation != null) ? String(member.generation) : null;
-        const buttons = Array.from(document.querySelectorAll('.filter-buttons .filter-btn'));
-        let targetButton = targetGen ? buttons.find(b => (b.textContent || '').trim().startsWith(`${targetGen}ª`)) : null;
-        if (!targetButton) targetButton = buttons.find(b => (b.textContent || '').includes('Todas')) || null;
-
-        if (targetButton) {
-          // Non-intrusive toast with action to switch filters
-          showActionToast('Essa pessoa está oculta pelo filtro.', targetButton.textContent || 'Ver', () => {
-            targetButton.click();
-            // Re-run spotlight after filters apply
-            setTimeout(() => runSpotlight(member), 60);
-          }, previousActive ? () => {
-            previousActive.click();
-          } : null);
-          return; // do not proceed until user acts
-        }
-      } catch {}
-    }
+    // Skip the toast notification logic since we now automatically clear filters
+    // when clicking search results. This provides a smoother user experience.
     // Build relatives set (children by id)
     const relativeIds = new Set();
     try {
@@ -565,12 +562,32 @@ function getDisplayName(person, context = 'default') {
       const entry = items.find(x => x.id === id) || state.suggestionIndex.find(x => x.id === id);
       const m = state.members.find(mm => mm.id === id);
       if (entry && m) {
+        // Check if person is hidden by current generation filter
+        const cardEntry = state.cards.get(m.id);
+        const isHiddenByFilter = cardEntry && cardEntry.el && cardEntry.el.style.display === 'none';
+        
+        // If hidden by generation filter, automatically clear it
+        if (isHiddenByFilter && state.generationFilter !== null) {
+          // Find and click the "Todas as gerações" button to clear filter
+          const buttons = document.querySelectorAll('.filter-buttons .filter-btn');
+          const allGenerationsButton = Array.from(buttons).find(b => 
+            (b.textContent || '').includes('Todas')
+          );
+          if (allGenerationsButton) {
+            allGenerationsButton.click();
+          }
+        }
+        
         state.spotlightId = id;
         const input = document.querySelector('.search-input');
         if (input) input.value = entry.name;
         state.query = entry.name;
         hideSuggestions();
-        runSpotlight(m, state.filterView ? state.generationFilter : null);
+        
+        // Small delay to ensure filter has been applied before spotlight
+        setTimeout(() => {
+          runSpotlight(m);
+        }, 50);
       }
     };
   }

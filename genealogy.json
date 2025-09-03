@@ -7705,15 +7705,15 @@
         "unions":[
            {
               "partner":{
-                 "name":"PAULA GABRIELE",
+                 "name":"PAULA GABRIELE TEIXEIRA ALVES",
                  "legalName":null,
-                 "birthDate":null,
-                 "birthLocation":null,
+                 "birthDate":"19/11/1986",
+                 "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
                  "marriageDate":null,
                  "parents":{
-                    "father":null,
-                    "mother":null
+                    "father":"RONALDO ANTÔNIO ALVES",
+                    "mother":"APARECIDA TEIXEIRA ALVES"
                  }
               },
               "children":[
