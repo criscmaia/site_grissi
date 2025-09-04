@@ -356,9 +356,12 @@ class PhotoUploadManager {
     selectSuggestion(memberId) {
         const member = this.familyMembers.find(m => m.id === memberId);
         if (member) {
-            document.getElementById('person-search-input').value = member.name;
-            this.searchPeople();
-            this.selectSearchResult(member);
+            const match = {
+                type: 'member',
+                data: member,
+                displayName: member.legalName || member.name
+            };
+            this.selectSearchResult(match);
         }
     }
     
@@ -466,6 +469,12 @@ class PhotoUploadManager {
         
         this.selectedPerson = match;
         document.getElementById('confirm-person-btn').disabled = false;
+        
+        // Clear search results dropdown after selection
+        document.getElementById('search-results').innerHTML = '';
+        
+        // Update search input to show selected person
+        document.getElementById('person-search-input').value = match.displayName;
     }
     
     confirmPersonSelection() {
