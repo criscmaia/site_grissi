@@ -13,6 +13,10 @@ class PhotoUploadManager {
         this.selectedPerson = null;
         this.currentFile = null;
         
+        // Detect iOS for compatibility handling
+        this.isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        
         // GitHub Configuration - simplified since login is handled separately
         this.github = {
             repo: 'site_grissi',
@@ -34,20 +38,30 @@ class PhotoUploadManager {
         // Logout functionality
         document.getElementById('logout-btn').addEventListener('click', () => this.logout());
         
-        // File selection
-        document.getElementById('select-files-btn').addEventListener('click', () => {
-            document.getElementById('file-input').click();
-        });
+        // File selection - iOS compatible approach
+        const fileInputBtn = document.getElementById('select-files-btn');
+        if (fileInputBtn) {
+            fileInputBtn.addEventListener('click', () => {
+                document.getElementById('file-input').click();
+            });
+        }
         
         document.getElementById('file-input').addEventListener('change', (e) => {
-            this.handleFileSelection(e.target.files);
+            if (e.target.files && e.target.files.length > 0) {
+                this.handleFileSelection(e.target.files);
+                if (this.isIOS) {
+                    // Reset file input for iOS to allow selecting same file again
+                    setTimeout(() => {
+                        e.target.value = '';
+                    }, 100);
+                }
+            }
         });
         
-        // Drag and drop
+        // Drag and drop - iOS compatible
         const dropzone = document.getElementById('dropzone');
-        dropzone.addEventListener('click', () => {
-            document.getElementById('file-input').click();
-        });
+        
+        // Don't trigger programmatic click on iOS - let the label handle it
         
         dropzone.addEventListener('dragover', (e) => {
             e.preventDefault();

@@ -42,8 +42,10 @@
                         </svg>
                         <h3>Arraste fotos aqui ou clique para selecionar</h3>
                         <p>Aceita JPG, PNG, GIF, WebP - Máximo 10MB por foto (será comprimida automaticamente)</p>
-                        <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
-                        <button id="select-files-btn" class="btn-primary">Selecionar Arquivos</button>
+                        <!-- iOS-compatible file input -->
+                        <input type="file" id="file-input" multiple accept="image/*" class="file-input-ios">
+                        <button id="select-files-btn" class="btn-primary" style="display: none;">Selecionar Arquivos</button>
+                        <label for="file-input" class="file-input-label btn-primary">Selecionar Arquivos</label>
                     </div>
                 </div>
             </div>
