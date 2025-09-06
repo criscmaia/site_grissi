@@ -1,0 +1,209 @@
+name: Upload Batch Photos from Website
+
+# Concurrency lock - ensures only one batch upload workflow runs at a time
+concurrency:
+  group: batch-photo-uploads
+  cancel-in-progress: false  # Queue batch uploads instead of canceling them
+
+on:
+  workflow_dispatch:
+    inputs:
+      photos_json:
+        description: 'JSON array of photos to upload'
+        required: true
+
+jobs:
+  create-batch-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: '✅ Token authenticated! Processing batch upload'
+        run: |
+          echo "✅ Authentication verified via token permissions"
+          echo "Processing batch photo upload..."
+
+      - name: '✅ Password OK! Create batch commit via API'
+        env:
+          GH_TOKEN: ${{ secrets.GRISSI_TOKEN_PAT }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+          BRANCH: 'master'
+          PHOTOS_JSON: ${{ github.event.inputs.photos_json }}
+        run: |
+          set -e # Exit immediately if a command fails
+
+          # Parse photos JSON
+          echo "Processing batch upload..."
+          PHOTOS=$(echo "$PHOTOS_JSON" | jq -c '.')
+          PHOTO_COUNT=$(echo "$PHOTOS" | jq 'length')
+          echo "Uploading $PHOTO_COUNT photos in batch"
+
+          if [ "$PHOTO_COUNT" -eq 0 ]; then
+            echo "::error::No photos to upload!"
+            exit 1
+          fi
+
+          echo "1. Getting latest commit SHA..."
+          LATEST_COMMIT_SHA=$(gh api "repos/$OWNER/$REPO/git/ref/heads/$BRANCH" --jq '.object.sha')
+          echo "   - Latest commit: $LATEST_COMMIT_SHA"
+
+          echo "2. Getting base tree SHA..."
+          BASE_TREE_SHA=$(gh api "repos/$OWNER/$REPO/git/commits/$LATEST_COMMIT_SHA" --jq '.tree.sha')
+          echo "   - Base tree: $BASE_TREE_SHA"
+
+          echo "3. Preparing manifest update..."
+          # Get current photo-manifest.json
+          MANIFEST_PATH="images/arvore/photo-manifest.json"
+          MANIFEST_RESPONSE=$(curl -s \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$OWNER/$REPO/contents/$MANIFEST_PATH")
+          
+          MANIFEST_CONTENT=$(echo "$MANIFEST_RESPONSE" | jq -r '.content' | base64 -d)
+          MANIFEST_SHA=$(echo "$MANIFEST_RESPONSE" | jq -r '.sha')
+
+          # Build arrays for tree creation
+          TREE_ITEMS=()
+          NEW_FILENAMES=()
+          COMMIT_DETAILS=()
+
+          # Process each photo
+          echo "4. Processing photos..."
+          for i in $(seq 0 $((PHOTO_COUNT - 1))); do
+            PHOTO=$(echo "$PHOTOS" | jq -r ".[$i]")
+            FILENAME=$(echo "$PHOTO" | jq -r '.filename')
+            BLOB_SHA=$(echo "$PHOTO" | jq -r '.blob_sha')
+            PERSON_NAME=$(echo "$PHOTO" | jq -r '.person_name')
+            
+            echo "   Processing: $FILENAME for $PERSON_NAME"
+            
+            # Validate blob SHA
+            if [[ -z "$BLOB_SHA" ]] || [[ "$BLOB_SHA" == "null" ]]; then
+              echo "::error::Invalid blob SHA for $FILENAME"
+              exit 1
+            fi
+
+            # Handle existing photos by renaming old ones
+            base_name="${FILENAME%.*}"
+            extension="${FILENAME##*.}"
+            file_path="images/arvore/$FILENAME"
+            
+            # Check for existing photo with same base name
+            EXISTING_PHOTO=$(echo "$MANIFEST_CONTENT" | jq -r --arg basename "$base_name" '
+              .[] | select(test("^" + $basename + "\\.(jpg|jpeg|png|gif|webp)$"; "i"))
+            ' | head -1)
+            
+            if [ -n "$EXISTING_PHOTO" ] && [ "$EXISTING_PHOTO" != "null" ]; then
+              echo "     - Found existing photo: $EXISTING_PHOTO"
+              
+              # Get SHA of existing photo and archive it
+              existing_path="images/arvore/$EXISTING_PHOTO"
+              if EXISTING_RESPONSE=$(gh api "repos/$OWNER/$REPO/contents/$existing_path" 2>/dev/null); then
+                EXISTING_FILE_SHA=$(echo "$EXISTING_RESPONSE" | jq -r '.sha')
+                
+                # Create timestamp suffix for old photo
+                timestamp=$(date +"%Y%m%d_%H%M%S")
+                existing_extension="${EXISTING_PHOTO##*.}"
+                old_filename="${base_name}_${timestamp}.${existing_extension}"
+                old_file_path="images/arvore/$old_filename"
+                
+                # Add old photo to tree (archived version)
+                TREE_ITEMS+=("{\"path\": \"$old_file_path\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$EXISTING_FILE_SHA\"}")
+                COMMIT_DETAILS+=("📦 Archived $EXISTING_PHOTO as $old_filename")
+                echo "     - Will archive as: $old_filename"
+              fi
+            fi
+            
+            # Add new photo to tree
+            TREE_ITEMS+=("{\"path\": \"$file_path\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$BLOB_SHA\"}")
+            NEW_FILENAMES+=("$FILENAME")
+            COMMIT_DETAILS+=("📸 Added $FILENAME for $PERSON_NAME")
+          done
+
+          echo "5. Updating photo manifest..."
+          # Update manifest with all new photos
+          UPDATED_MANIFEST="$MANIFEST_CONTENT"
+          
+          # Remove old entries and add new ones
+          for filename in "${NEW_FILENAMES[@]}"; do
+            base_name="${filename%.*}"
+            # Remove any existing photo with same base name
+            UPDATED_MANIFEST=$(echo "$UPDATED_MANIFEST" | jq --arg basename "$base_name" 'map(select(test("^" + $basename + "\\.(jpg|jpeg|png|gif|webp)$"; "i") | not))')
+            # Add new photo
+            UPDATED_MANIFEST=$(echo "$UPDATED_MANIFEST" | jq ". + [\"$filename\"]")
+          done
+          
+          # Sort manifest
+          NEW_MANIFEST=$(echo "$UPDATED_MANIFEST" | jq 'sort')
+          NEW_MANIFEST_B64=$(echo -n "$NEW_MANIFEST" | base64 -w 0)
+          
+          # Create blob for updated manifest
+          MANIFEST_BLOB_SHA=$(curl -s -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$OWNER/$REPO/git/blobs" \
+            -d "{\"content\": \"$NEW_MANIFEST_B64\", \"encoding\": \"base64\"}" | jq -r '.sha')
+          
+          # Add manifest to tree
+          TREE_ITEMS+=("{\"path\": \"$MANIFEST_PATH\", \"mode\": \"100644\", \"type\": \"blob\", \"sha\": \"$MANIFEST_BLOB_SHA\"}")
+          echo "   - Manifest updated with ${#NEW_FILENAMES[@]} new photos"
+
+          echo "6. Creating new tree..."
+          # Join array elements with commas
+          TREE_JSON="[$(IFS=','; echo "${TREE_ITEMS[*]}")]"
+          echo "   - Tree will include ${#TREE_ITEMS[@]} file(s)"
+          
+          NEW_TREE_SHA=$(curl -s -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$OWNER/$REPO/git/trees" \
+            -d "{\"base_tree\": \"$BASE_TREE_SHA\", \"tree\": $TREE_JSON}" | jq -r '.sha')
+          echo "   - New tree: $NEW_TREE_SHA"
+
+          echo "7. Creating batch commit..."
+          # Create commit message
+          if [ "$PHOTO_COUNT" -eq 1 ]; then
+            commit_title="🖼️ Add photo: ${NEW_FILENAMES[0]}"
+          else
+            commit_title="🖼️ Add $PHOTO_COUNT photos in batch"
+          fi
+          
+          # Add details
+          commit_details=""
+          for detail in "${COMMIT_DETAILS[@]}"; do
+            commit_details="${commit_details}${detail}"$'\n'
+          done
+          
+          commit_message="$commit_title"
+          if [ -n "$commit_details" ]; then
+            commit_message="$commit_message"$'\n\n'"$commit_details"
+          fi
+          
+          # Escape commit message for JSON
+          commit_message_escaped=$(printf '%s' "$commit_message" | jq -R -s .)
+          
+          COMMIT_RESPONSE=$(curl -s -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/$OWNER/$REPO/git/commits" \
+            -d "{
+              \"message\": $commit_message_escaped,
+              \"parents\": [\"$LATEST_COMMIT_SHA\"],
+              \"tree\": \"$NEW_TREE_SHA\"
+            }")
+          
+          NEW_COMMIT_SHA=$(echo "$COMMIT_RESPONSE" | jq -r '.sha')
+          echo "   - New commit: $NEW_COMMIT_SHA"
+          
+          # Check if commit creation failed
+          if [ "$NEW_COMMIT_SHA" = "null" ] || [ -z "$NEW_COMMIT_SHA" ]; then
+            echo "❌ Batch commit creation failed. Response:"
+            echo "$COMMIT_RESPONSE" | jq '.'
+            exit 1
+          fi
+
+          echo "8. Updating branch reference..."
+          gh api "repos/$OWNER/$REPO/git/refs/heads/$BRANCH" -X PATCH \
+            -f sha="$NEW_COMMIT_SHA"
+            
+          echo "✅ Successfully committed $PHOTO_COUNT photos in batch"

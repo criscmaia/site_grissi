@@ -14,7 +14,10 @@
       "Bash(git rm:*)",
       "WebFetch(domain:criscmaia.github.io)",
       "Bash(rm:*)",
-      "Bash(start \"C:/AI/SiteGrissi/arvore-genealogica.html\")"
+      "Bash(start \"C:/AI/SiteGrissi/arvore-genealogica.html\")",
+      "WebFetch(domain:familiagrissi.com.br)",
+      "Bash(start \"C:/AI/SiteGrissi/historia.html\")",
+      "Bash(start \"C:/AI/SiteGrissi/admin/photo-upload.html\")"
     ],
     "deny": [],
     "ask": []

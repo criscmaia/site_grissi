@@ -544,12 +544,14 @@ class PhotoUploadManager {
         document.getElementById('upload-progress').style.display = 'block';
         document.getElementById('upload-all-btn').disabled = true;
         
-        this.currentFileIndex = 0;
-        
-        for (const item of readyFiles) {
-            await this.uploadSingleFile(item);
+        // Use batch upload for multiple photos or single upload for one photo
+        if (readyFiles.length === 1) {
+            this.currentFileIndex = 0;
+            await this.uploadSingleFile(readyFiles[0]);
             this.currentFileIndex++;
-            this.updateProgress(this.currentFileIndex, readyFiles.length);
+            this.updateProgress(this.currentFileIndex, 1);
+        } else {
+            await this.uploadBatchFiles(readyFiles);
         }
         
         this.addLog('✅ Processo de upload concluído!', 'success');
@@ -563,6 +565,92 @@ class PhotoUploadManager {
         }, 90000);
     }
     
+    async uploadBatchFiles(readyFiles) {
+        this.addLog(`🔄 Iniciando upload em lote de ${readyFiles.length} fotos...`, 'info');
+        
+        // Mark all files as uploading
+        readyFiles.forEach(item => {
+            item.status = 'uploading';
+        });
+        this.updateQueueDisplay();
+        
+        try {
+            // Process all files and create blobs
+            const photosData = [];
+            for (let i = 0; i < readyFiles.length; i++) {
+                const item = readyFiles[i];
+                this.updateProgress(i + 1, readyFiles.length * 2); // First half for processing
+                
+                this.addLog(`🔼 Processando ${item.file.name}...`, 'info');
+                
+                const filename = this.generateFilename(item.person, item.file);
+                const base64Content = await this.fileToBase64(item.file);
+                
+                // Create blob for this photo
+                const blobSha = await this.createBlob(base64Content);
+                
+                photosData.push({
+                    item,
+                    filename,
+                    blobSha,
+                    person: item.person
+                });
+                
+                this.addLog(`✅ ${item.file.name} → ${filename} processado`, 'success');
+            }
+            
+            // Upload all photos in a single batch workflow
+            this.addLog('⚙️ Iniciando workflow de upload em lote...', 'info');
+            try {
+                await this.uploadViaBatchWorkflow(photosData);
+                
+                // Mark all files as uploaded
+                readyFiles.forEach(item => {
+                    item.status = 'uploaded';
+                });
+                
+                this.updateProgress(readyFiles.length * 2, readyFiles.length * 2); // Complete
+                this.addLog(`✅ Upload em lote concluído: ${readyFiles.length} fotos`, 'success');
+            } catch (batchError) {
+                // Fallback to individual uploads if batch fails
+                if (batchError.message.includes('Workflow de upload em lote não encontrado')) {
+                    this.addLog('⚠️ Workflow em lote não disponível, usando uploads individuais...', 'warning');
+                    
+                    // Use individual uploads as fallback
+                    for (let i = 0; i < photosData.length; i++) {
+                        const photo = photosData[i];
+                        this.updateProgress(readyFiles.length + i + 1, readyFiles.length * 2);
+                        
+                        try {
+                            await this.uploadViaWorkflowWithBlob(photo.filename, photo.blobSha, photo.person);
+                            photo.item.status = 'uploaded';
+                            this.addLog(`✅ ${photo.item.file.name} → ${photo.filename} (individual)`, 'success');
+                        } catch (individualError) {
+                            photo.item.status = 'error';
+                            this.addLog(`❌ Erro individual: ${photo.item.file.name}: ${individualError.message}`, 'error');
+                        }
+                    }
+                    
+                    this.updateProgress(readyFiles.length * 2, readyFiles.length * 2);
+                    this.addLog(`✅ Upload individual concluído como fallback`, 'success');
+                } else {
+                    throw batchError; // Re-throw if not a "workflow not found" error
+                }
+            }
+            
+        } catch (error) {
+            this.addLog(`❌ Erro no upload em lote: ${error.message}`, 'error');
+            console.error('Batch upload error:', error);
+            
+            // Mark all files as error
+            readyFiles.forEach(item => {
+                item.status = 'error';
+            });
+        }
+        
+        this.updateQueueDisplay();
+    }
+
     async uploadSingleFile(item) {
         item.status = 'uploading';
         this.updateQueueDisplay();
@@ -659,10 +747,7 @@ class PhotoUploadManager {
         });
     }
     
-    async uploadViaWorkflow(filename, base64Content, person) {
-        // STEP 1: Create blob (upload file content to GitHub)
-        this.addLog(`🔼 Passo 1/2: Enviando conteúdo do arquivo...`, 'info');
-        
+    async createBlob(base64Content) {
         const blobUrl = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/git/blobs`;
         const blobResponse = await fetch(blobUrl, {
             method: 'POST',
@@ -688,12 +773,56 @@ class PhotoUploadManager {
         }
 
         const blobData = await blobResponse.json();
-        const blobSha = blobData.sha;
-        this.addLog(`✅ Blob criado: ${blobSha.substring(0, 8)}...`, 'success');
+        return blobData.sha;
+    }
 
-        // STEP 2: Trigger workflow with blob SHA
-        this.addLog(`⚙️ Passo 2/2: Iniciando workflow de commit...`, 'info');
-        
+    async uploadViaBatchWorkflow(photosData) {
+        const workflowUrl = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/actions/workflows/upload-batch-photos.yml/dispatches`;
+        const workflowPayload = {
+            ref: this.github.branch,
+            inputs: {
+                photos_json: JSON.stringify(photosData.map(photo => ({
+                    filename: photo.filename,
+                    blob_sha: photo.blobSha,
+                    person_id: photo.person.type === 'member' ? photo.person.data.id : null,
+                    person_name: photo.person.displayName
+                })))
+            }
+        };
+
+        const workflowResponse = await fetch(workflowUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/vnd.github.v3+json',
+                'Authorization': `Bearer ${this.github.triggerToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(workflowPayload)
+        });
+
+        if (workflowResponse.status === 204) {
+            this.addLog(`🚀 Workflow em lote iniciado para ${photosData.length} fotos`, 'success');
+            return { success: true };
+        } else {
+            let errorData;
+            try {
+                errorData = await workflowResponse.json();
+            } catch (e) {
+                errorData = { message: `HTTP ${workflowResponse.status}: ${workflowResponse.statusText}` };
+            }
+
+            // Handle specific error cases
+            if (workflowResponse.status === 401) {
+                throw new Error('Token de acesso inválido ou sem permissão. Verifique se o token tem escopo "workflow".');
+            } else if (workflowResponse.status === 404) {
+                throw new Error('Workflow de upload em lote não encontrado. Usando upload individual como fallback.');
+            } else {
+                throw new Error(errorData.message || `Erro ${workflowResponse.status}: Falha ao iniciar workflow em lote`);
+            }
+        }
+    }
+
+    async uploadViaWorkflowWithBlob(filename, blobSha, person) {
         const workflowUrl = `https://api.github.com/repos/${this.github.owner}/${this.github.repo}/actions/workflows/upload-photo.yml/dispatches`;
         const workflowPayload = {
             ref: this.github.branch,
@@ -716,7 +845,6 @@ class PhotoUploadManager {
         });
 
         if (workflowResponse.status === 204) {
-            this.addLog(`🚀 Workflow iniciado para ${filename}`, 'success');
             return { success: true };
         } else {
             let errorData;
@@ -725,16 +853,23 @@ class PhotoUploadManager {
             } catch (e) {
                 errorData = { message: `HTTP ${workflowResponse.status}: ${workflowResponse.statusText}` };
             }
-
-            // Handle specific error cases
-            if (workflowResponse.status === 401) {
-                throw new Error('Token de acesso inválido ou sem permissão. Verifique se o token tem escopo "workflow".');
-            } else if (workflowResponse.status === 404) {
-                throw new Error('Repositório ou workflow não encontrado. Verifique a configuração.');
-            } else {
-                throw new Error(errorData.message || `Erro ${workflowResponse.status}: Falha ao iniciar workflow`);
-            }
+            throw new Error(errorData.message || `Erro ${workflowResponse.status}: Falha ao iniciar workflow`);
         }
+    }
+
+    async uploadViaWorkflow(filename, base64Content, person) {
+        // STEP 1: Create blob (upload file content to GitHub)
+        this.addLog(`🔼 Passo 1/2: Enviando conteúdo do arquivo...`, 'info');
+        
+        const blobSha = await this.createBlob(base64Content);
+        this.addLog(`✅ Blob criado: ${blobSha.substring(0, 8)}...`, 'success');
+
+        // STEP 2: Trigger workflow with blob SHA
+        this.addLog(`⚙️ Passo 2/2: Iniciando workflow de commit...`, 'info');
+        
+        await this.uploadViaWorkflowWithBlob(filename, blobSha, person);
+        this.addLog(`🚀 Workflow iniciado para ${filename}`, 'success');
+        return { success: true };
     }
     
     
