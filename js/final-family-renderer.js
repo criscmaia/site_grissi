@@ -493,7 +493,11 @@ class FinalFamilyRenderer {
     formatUnionDates(family) {
         const dates = [];
         if (family.partner.marriageDate) {
-            dates.push(`Casamento: ${family.partner.marriageDate}`);
+            let marriageInfo = `Casamento: ${family.partner.marriageDate}`;
+            if (family.partner.marriageLocation) {
+                marriageInfo += `, ${family.partner.marriageLocation}`;
+            }
+            dates.push(marriageInfo);
         }
         return dates.join(' | ');
     }

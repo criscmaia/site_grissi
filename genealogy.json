@@ -21,9 +21,10 @@
             "name": "ELISABETTA PUPPI",
             "legalName": null,
             "birthDate": null,
-            "birthLocation": "PORCIA/ITALIA",
+            "birthLocation": "Porcia, Pordenone, Friuli-Venezia Giulia, Itália",
             "deathDate": "08/11/1884",
-            "marriageDate": null,
+            "marriageDate": "27/02/1865",
+            "marriageLocation": "Pordenone na Província de Udine, Itália",
             "parents": {
               "father": null,
               "mother": null
@@ -48,6 +49,7 @@
             "birthLocation": "Palse",
             "deathDate": "23/10/1889",
             "marriageDate": "24/05/1885",
+            "marriageLocation": null,
             "parents": {
               "father": "LUIGI",
               "mother": "FIORINA ROMAN"
@@ -98,6 +100,7 @@
             "birthLocation": null,
             "deathDate": null,
             "marriageDate": "06/10/1884",
+            "marriageLocation": null,
             "parents": {
               "father": "FRANCESCO",
               "mother": "ANGELA MINARO"
@@ -137,7 +140,8 @@
                  "birthDate":"06/11/1874",
                  "birthLocation":"Província de Trevizzo na Itália",
                  "deathDate":"22/09/1962",
-                 "marriageDate":"20/06/1893",
+                 "marriageDate": "20/06/1893",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"SANTO PRESOTTI",
                     "mother":"ANGELA CASA GRANDE"
@@ -249,7 +253,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":"26/01/1941",
-                 "marriageDate":"04/02/1914",
+                 "marriageDate": "04/02/1914",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"GIUSEPPE PICININ",
                     "mother":"THEREZA FABRI"
@@ -306,7 +311,8 @@
                  "birthDate":"15/03/1892",
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":"21/06/1916",
+                 "marriageDate": "21/06/1916",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"OLIVIO SFREDO",
                     "mother":"ANNA SFREDO"
@@ -560,7 +566,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":"30/11/1935",
+                 "marriageDate": "30/11/1935",
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -627,13 +634,14 @@
               "partner":{
                  "name":"GIUSEPPINA TOFFOLO",
                  "legalName":null,
-                 "birthDate":"~1880",
-                 "birthLocation":"Rorai Piccolo, Porcia, Provincia di Udine",
+                 "birthDate":"30/07/1880",
+                 "birthLocation":"Rorai Piccolo, Porcia, Pordenone, Provincia di Udine",
                  "deathDate":"28/09/1955",
-                 "marriageDate":"18/11/1900",
+                 "marriageDate": "18/11/1900",
+                 "marriageLocation": "Barbacena, MG",
                  "parents":{
                     "father":"VINCENZO TOFFOLO",
-                    "mother":"MARIA COPPATO"
+                    "mother":"MARIA COPAT (ou COPPATO)"
                  }
               },
               "children":[
@@ -752,7 +760,8 @@
                  "birthDate":"16/06/1897",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":"19/12/1986",
-                 "marriageDate":"19/02/1927",
+                 "marriageDate": "19/02/1927",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"VALENTINO CANTON",
                     "mother":"THEREZA SALUTTI MARTIN"
@@ -872,7 +881,8 @@
                  "birthDate":"08/01/1932",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":"02/03/2002",
-                 "marriageDate":"23/03/1957",
+                 "marriageDate": "23/03/1957",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOAQUIM ÁVILA CABRAL",
                     "mother":"MARIA DIAS CABRAL"
@@ -937,7 +947,8 @@
                  "birthDate":"13/05/1955",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":"08/09/1997",
-                 "marriageDate":"21/02/1981",
+                 "marriageDate": "21/02/1981",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ARGENTINO FERREIRA VIDAL",
                     "mother":"EFIGÊNIA SANTIAGO VIDAL"
@@ -1043,7 +1054,8 @@
                  "birthDate":"27/06/1954",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"11/01/1985",
+                 "marriageDate": "11/01/1985",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"GERALDO MENDES GUIMARÃES",
                     "mother":"IRACEMA DEOUD GUIMARÃES"
@@ -1149,7 +1161,8 @@
                  "birthDate":"15/05/1965",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"18/11/1989",
+                 "marriageDate": "18/11/1989",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOÃO PEREIRA DA CRUZ",
                     "mother":"MARGARIDA H. M. CRUZ"
@@ -1261,7 +1274,8 @@
                  "birthDate":"09/05/1957",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"27/09/1986",
+                 "marriageDate": "27/09/1986",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTÔNIO FRANCISCO CHRISTIANO",
                     "mother":"LEILA DE SOUZA CHRISTIANO"
@@ -1373,7 +1387,8 @@
                  "birthDate":"14/07/1927",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"15/02/1958",
+                 "marriageDate": "15/02/1958",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"PEDRO OTÁVIO ALVES DE LIMA",
                     "mother":"ANGELINA LUCAS DE JESUS"
@@ -1462,7 +1477,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -1482,7 +1498,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -1611,7 +1628,8 @@
                  "birthDate":"07/01/1938",
                  "birthLocation":"Ibertioga, MG",
                  "deathDate":null,
-                 "marriageDate":"21/01/1961",
+                 "marriageDate": "21/01/1961",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTONIO FAGUNDES DO NASCIMENTO",
                     "mother":"ALBERTINA FAGUNDES"
@@ -1664,7 +1682,8 @@
                  "birthDate":"18/07/1970",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"30/12/1995",
+                 "marriageDate": "30/12/1995",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JAIR COELHO DE CAMPOS",
                     "mother":"LECI DIAS DE CAMPOS"
@@ -1802,7 +1821,8 @@
                  "birthDate":"16/02/1940",
                  "birthLocation":"Barroso, MG",
                  "deathDate":"03/06/2009",
-                 "marriageDate":"11/11/1958",
+                 "marriageDate": "11/11/1958",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"MANOEL GERALDO CAMPOS",
                     "mother":"HELENA DE ALMEIDA CAMPOS"
@@ -1875,7 +1895,8 @@
                  "birthDate":"20/02/1967",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ALTAIR APULCRO BERNINI",
                     "mother":"ABADIA MARIA BERNINI"
@@ -2023,7 +2044,8 @@
                  "birthDate":"28/03/1959",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":"21/12/2009",
-                 "marriageDate":"30/11/1985",
+                 "marriageDate": "30/11/1985",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ADELY GERALDO DE LIMA",
                     "mother":"FARAILDES CAMPOS DE LIMA"
@@ -2165,7 +2187,8 @@
                  "birthDate":"23/05/1971",
                  "birthLocation":"São Paulo, SP",
                  "deathDate":null,
-                 "marriageDate":"29/04/2000",
+                 "marriageDate": "29/04/2000",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"PEDRO FRANCISCO",
                     "mother":"IDALINA PAVAN FRANCISCO"
@@ -2212,7 +2235,8 @@
                  "birthDate":"05/01/1970",
                  "birthLocation":"Rio de Janeiro, RJ",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":"EDSON DE ALMEIDA CARDOSO",
                     "mother":"LUIZA HELENA DA COSTA CARDOSO"
@@ -2289,7 +2313,8 @@
                  "birthDate":"25/12/1965",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":"VICENTE GONÇALVES DUTRA",
                     "mother":"TEREZINHA LIMA GONÇALVES DUTRA"
@@ -2372,7 +2397,8 @@
                  "birthDate":"16/05/1958",
                  "birthLocation":"Conselheiro Lafaiete, MG",
                  "deathDate":null,
-                 "marriageDate":"28/10/1995",
+                 "marriageDate": "28/10/1995",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"CARLOS DE MESQUITA GUIMARÃES",
                     "mother":"CARMEM PEDROSA GUIMARÃES"
@@ -2514,7 +2540,8 @@
                  "birthDate":"07/12/1950",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"30/07/1966",
+                 "marriageDate": "30/07/1966",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ SEBASTIÃO COUTO",
                     "mother":"ANTONIA LUCON COUTO"
@@ -2579,7 +2606,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -2599,7 +2627,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -2619,7 +2648,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -2751,7 +2781,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -2826,7 +2857,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":"06/12/2008",
+                 "marriageDate": "06/12/2008",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"PEDRO PEREIRA DE FARIA",
                     "mother":"IVÂNIA MARIA PEREIRA"
@@ -2933,7 +2965,8 @@
                  "birthDate":"26/05/1939",
                  "birthLocation":"Matipó, MG",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ BATISTA PEREIRA",
                     "mother":"ADIVA FERNANDES DA SILVA"
@@ -3050,7 +3083,8 @@
                  "birthDate":"18/02/1940",
                  "birthLocation":"Senhora dos Remédios, MG",
                  "deathDate":"18/06/2008",
-                 "marriageDate":"18/01/1969",
+                 "marriageDate": "18/01/1969",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTONIO PEREIRA DE SOUZA",
                     "mother":"TEREZA DE SOUZA DAMASCENO"
@@ -3150,7 +3184,8 @@
                  "birthDate":"05/09/1964",
                  "birthLocation":"Virginópolis, MG",
                  "deathDate":null,
-                 "marriageDate":"15/10/1994",
+                 "marriageDate": "15/10/1994",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"PEDRO GONÇALVES PIMENTA",
                     "mother":"EUNICE D'ASSUNÇÃO GONÇALVES"
@@ -3256,7 +3291,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -3276,7 +3312,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -3378,7 +3415,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":"28/09/2013",
+                 "marriageDate": "28/09/2013",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOÃO PAULO LEBOURG",
                     "mother":"MARIA DA GLORIA CASTRO LEBOURG"
@@ -3458,7 +3496,8 @@
                  "birthDate":"03/01/1918",
                  "birthLocation":"Guarapari, ES",
                  "deathDate":"13/09/2013",
-                 "marriageDate":"15/06/1946",
+                 "marriageDate": "15/06/1946",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"PLINIO DAZZI",
                     "mother":"JOSEPHINA CERUTTI"
@@ -3530,7 +3569,8 @@
                  "birthDate":"03/04/1940",
                  "birthLocation":"Tocantins, MG",
                  "deathDate":null,
-                 "marriageDate":"16/07/1971",
+                 "marriageDate": "16/07/1971",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"RAUL MACHADO",
                     "mother":"HERMENGARDA DE AQUINO MACHADO"
@@ -3605,7 +3645,8 @@
                  "birthDate":"18/07/1950",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -3657,7 +3698,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -3730,7 +3772,8 @@
                  "birthDate":"25/02/1978",
                  "birthLocation":"Varginha, MG",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":"FRITZ BELTRÃO GEISSLER",
                     "mother":"BERNADETE WAGNER PIRES"
@@ -3803,7 +3846,8 @@
                  "birthDate":"15/01/1957",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"01/09/1984",
+                 "marriageDate": "01/09/1984",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"EDGAR DANIEL RIZZO",
                     "mother":"TEREZINHA PACHECO RIZZO"
@@ -3909,7 +3953,8 @@
                  "birthDate":"25/01/1958",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"20/09/1985",
+                 "marriageDate": "20/09/1985",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ORLANDO FIÚZA CAMPOS",
                     "mother":"DELBA TEIXEIRA FILGUEIRAS CAMPOS"
@@ -3984,7 +4029,8 @@
                  "birthDate":"12/12/1914",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":"14/05/1999",
-                 "marriageDate":"30/11/1935",
+                 "marriageDate": "30/11/1935",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"LUIZ PICININ",
                     "mother":"AMABILE MARIA GRIS"
@@ -4048,7 +4094,8 @@
                  "birthDate":"15/11/1938",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"25/02/1960",
+                 "marriageDate": "25/02/1960",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"MARGARIDO BORGO DE CARVALHO",
                     "mother":"IRENE ROSSI"
@@ -4158,7 +4205,8 @@
                  "birthDate":"28/12/1931",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":"15/01/2023",
-                 "marriageDate":"05/12/1959",
+                 "marriageDate": "05/12/1959",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"GERMANO IVIDIO PISSOLATI",
                     "mother":"OLIMPIA BIANCHETTI PISSOLATI"
@@ -4208,7 +4256,8 @@
                  "birthDate":"13/02/1962",
                  "birthLocation":"Ponte Nova, MG",
                  "deathDate":null,
-                 "marriageDate":"13/02/1992",
+                 "marriageDate": "13/02/1992",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTÔNIO RODRIGUES DO PRADO",
                     "mother":"MARIA WANILDA MONT'ALVÃO DO PRADO"
@@ -4281,7 +4330,8 @@
                  "birthDate":"28/02/1975",
                  "birthLocation":"São Paulo, SP",
                  "deathDate":null,
-                 "marriageDate":"28/03/2002",
+                 "marriageDate": "28/03/2002",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"EDSON ENOCK DE FARIA",
                     "mother":"MARTILINA PALMA MOMESSO DE FARIA"
@@ -4385,7 +4435,8 @@
                  "birthDate":"15/04/1917",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":"01/04/1989",
-                 "marriageDate":"15/05/1937",
+                 "marriageDate": "15/05/1937",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ LOPES MARTINS",
                     "mother":"PRUDENCIA MARTINS"
@@ -4465,7 +4516,8 @@
                  "birthDate":"19/08/1928",
                  "birthLocation":"Ribeirão Preto, SP",
                  "deathDate":null,
-                 "marriageDate":"21/12/1957",
+                 "marriageDate": "21/12/1957",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"VICENTE PETINELLI",
                     "mother":"ADALGISA FRANÇA PETINELLI"
@@ -4533,7 +4585,8 @@
                  "birthDate":"27/03/1949",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"31/01/1981",
+                 "marriageDate": "31/01/1981",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"MÁRIO MACHADO",
                     "mother":"GENY LEÃO"
@@ -4639,7 +4692,8 @@
                  "birthDate":"16/08/1958",
                  "birthLocation":"Tumiritinga, MG",
                  "deathDate":null,
-                 "marriageDate":"30/12/1989",
+                 "marriageDate": "30/12/1989",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JAIR RODRIGUES DA SILVA",
                     "mother":"LIBERINA GOMES DA SILVA"
@@ -4779,7 +4833,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":"28/01/2006",
+                 "marriageDate": "28/01/2006",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTONIO DOS SANTOS",
                     "mother":"NEUSA DA CONSOLAÇÃO ALVES"
@@ -4854,7 +4909,8 @@
                  "birthDate":"25/11/1974",
                  "birthLocation":"Belo Horizonte",
                  "deathDate":null,
-                 "marriageDate":"14/02/2009",
+                 "marriageDate": "14/02/2009",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ESTANISLAU MANSUR",
                     "mother":"MARILENE SILVA"
@@ -4899,7 +4955,8 @@
                  "birthDate":"06/03/1943",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"15/03/1969",
+                 "marriageDate": "15/03/1969",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"FELIPE BALSA",
                     "mother":"MARGARIDA MARIA BALSA"
@@ -4957,7 +5014,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -5031,7 +5089,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -5051,7 +5110,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -5214,7 +5274,8 @@
                  "birthDate":"21/12/1943",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"12/11/1973",
+                 "marriageDate": "12/11/1973",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTÔNIO TEIXEIRA SOUZA",
                     "mother":"ARGENTINA MARTINS SOUZA"
@@ -5268,7 +5329,8 @@
                  "birthDate":"13/06/1972",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"17/06/2003",
+                 "marriageDate": "17/06/2003",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"GERALDO DE ASSIS BARBOSA",
                     "mother":"MEIRE COIMBRA BARBOSA"
@@ -5372,7 +5434,8 @@
                  "birthDate":"23/12/1979",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"03/02/2007",
+                 "marriageDate": "03/02/2007",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"CELIO DE OLIVEIRA CUNHA",
                     "mother":"MARIA LUCIA CAETANO DA CUNHA"
@@ -5421,7 +5484,8 @@
                  "birthDate":"06/07/1935",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":"19/04/2007",
-                 "marriageDate":"11/02/1965",
+                 "marriageDate": "11/02/1965",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"REMO CEOLIN",
                     "mother":"JUSTINA CANDIAN CEOLIN"
@@ -5479,7 +5543,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -5499,7 +5564,8 @@
                  "birthDate":"01/04/1962",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"16/07/1998",
+                 "marriageDate": "16/07/1998",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"CELTON PEREIRA LANA",
                     "mother":"DIVA LOPES LANA"
@@ -5570,7 +5636,8 @@
                  "birthDate":"03/05/1969",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"11/12/1993",
+                 "marriageDate": "11/12/1993",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"WALTER LOPES",
                     "mother":"MARIA NAZARÉ RAMOS LOPES"
@@ -5709,7 +5776,8 @@
                  "birthDate":"08/05/1943",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":"02/02/2001",
-                 "marriageDate":"01/12/1972",
+                 "marriageDate": "01/12/1972",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"MOACIR SANTOS DRUMOND",
                     "mother":"MARIA GERALDA GONÇALVES DRUMOND"
@@ -5767,7 +5835,8 @@
                  "birthDate":"13/08/1975",
                  "birthLocation":"Vitória, ES",
                  "deathDate":null,
-                 "marriageDate":"27/04/1996",
+                 "marriageDate": "27/04/1996",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOÃO G. VASCONCELLOS",
                     "mother":"ARLETE C. DE OLIVEIRA"
@@ -5872,7 +5941,8 @@
                  "birthDate":"01/09/1966",
                  "birthLocation":"Lavras, MG",
                  "deathDate":null,
-                 "marriageDate":"02/10/2004",
+                 "marriageDate": "02/10/2004",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"LUIZ ERNESTO COELHO",
                     "mother":"MARIA APARECIDA DE OLIVEIRA COELHO"
@@ -5977,7 +6047,8 @@
                  "birthDate":"04/08/1977",
                  "birthLocation":"Ouro Preto, MG",
                  "deathDate":null,
-                 "marriageDate":"15/02/2014",
+                 "marriageDate": "15/02/2014",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"TUDE TERENCIO LIMA LOBATO",
                     "mother":"GERALDA JOSEFINA XAVIER"
@@ -6057,7 +6128,8 @@
                  "birthDate":"01/01/1903",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":"07/08/1990",
-                 "marriageDate":"05/01/1931",
+                 "marriageDate": "05/01/1931",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"VALENTIM CANTON",
                     "mother":"TEREZA SALUTTI MARTIM"
@@ -6173,7 +6245,8 @@
                  "birthDate":"24/07/1930",
                  "birthLocation":"Santos Dumont, MG",
                  "deathDate":"20/10/2013",
-                 "marriageDate":"24/09/1955",
+                 "marriageDate": "24/09/1955",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"BALDUINO DE CASTRO",
                     "mother":"GEORGINA AQUINO DE CASTRO"
@@ -6242,7 +6315,8 @@
                  "birthDate":"18/03/1954",
                  "birthLocation":"Piau, MG",
                  "deathDate":null,
-                 "marriageDate":"13/10/1984",
+                 "marriageDate": "13/10/1984",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"MIGUEL DA SILVA",
                     "mother":"IVONE PEREIRA DA SILVA"
@@ -6352,7 +6426,8 @@
                  "birthDate":"02/06/1950",
                  "birthLocation":"Santos Dumont, MG",
                  "deathDate":null,
-                 "marriageDate":"12/10/1985",
+                 "marriageDate": "12/10/1985",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTÔNIO IBRAIM LOPES",
                     "mother":"OLGA BERGAMINI LOPES"
@@ -6458,7 +6533,8 @@
                  "birthDate":"05/03/1963",
                  "birthLocation":"Santos Dumont, MG",
                  "deathDate":null,
-                 "marriageDate":"02/06/1990",
+                 "marriageDate": "02/06/1990",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ZELY SEBASTIÃO MARQUES",
                     "mother":"ISABEL DUARTE SENRRA MARQUES"
@@ -6533,7 +6609,8 @@
                  "birthDate":"18/12/1935",
                  "birthLocation":"Santa Cruz do Escalvado, Ponte Nova, MG",
                  "deathDate":null,
-                 "marriageDate":"06/07/1972",
+                 "marriageDate": "06/07/1972",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"SYLVIO DE LAZZARI",
                     "mother":"ELVIRA BOSCATTI"
@@ -6588,7 +6665,8 @@
                  "birthDate":"12/03/1975",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"07/06/2002",
+                 "marriageDate": "07/06/2002",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTÔNIO EUSTÁQUIO VIEIRA",
                     "mother":"MARIA DO CARMO VIEIRA"
@@ -6688,7 +6766,8 @@
                  "birthDate":"23/12/1940",
                  "birthLocation":"Itaguari, ES",
                  "deathDate":null,
-                 "marriageDate":"21/12/1963",
+                 "marriageDate": "21/12/1963",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ROLDÃO SIQUEIRA ROCHA",
                     "mother":"MARIA OLINDA LOPES ROCHA"
@@ -6747,7 +6826,8 @@
                  "birthDate":"17/10/1967",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"09/12/1989",
+                 "marriageDate": "09/12/1989",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ MARIA ABURACHID",
                     "mother":"ELVIRA MARIA RIBEIRO ABURACHID"
@@ -6886,7 +6966,8 @@
                  "birthDate":"05/03/1967",
                  "birthLocation":"Muriaé, MG",
                  "deathDate":null,
-                 "marriageDate":"25/05/1996",
+                 "marriageDate": "25/05/1996",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ALCESTE DA SILVA MOREIRA",
                     "mother":"TALITA ALVIM MOREIRA"
@@ -6991,7 +7072,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":"09/11/2002",
+                 "marriageDate": "09/11/2002",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"CLÓVIS VIEIRA",
                     "mother":"HEBE OSÓRIO VIEIRA"
@@ -7035,7 +7117,8 @@
                  "birthDate":"19/03/1940",
                  "birthLocation":"Conselheiro Lafaiete, MG",
                  "deathDate":null,
-                 "marriageDate":"21/10/1971",
+                 "marriageDate": "21/10/1971",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"FRANCISCO CASTANHEIRA FILHO",
                     "mother":"CARMEM BAETA CASTANHEIRA"
@@ -7086,7 +7169,8 @@
                  "birthDate":"07/11/1978",
                  "birthLocation":"Belo Horizonte",
                  "deathDate":null,
-                 "marriageDate":"09/07/2005",
+                 "marriageDate": "09/07/2005",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ MARIO MALAGUTI",
                     "mother":"MARIA HELENA POLICARPO"
@@ -7159,7 +7243,8 @@
                  "birthDate":"27/11/1949",
                  "birthLocation":"São João Del Rey, MG",
                  "deathDate":null,
-                 "marriageDate":"28/07/1972",
+                 "marriageDate": "28/07/1972",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTÔNIO DOS SANTOS",
                     "mother":"EDITE LARA VIVAS DOS SANTOS"
@@ -7237,7 +7322,8 @@
                  "birthDate":"25/12/1952",
                  "birthLocation":"São João Del Rei, MG",
                  "deathDate":null,
-                 "marriageDate":"08/01/1979",
+                 "marriageDate": "08/01/1979",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTÔNIO DOS SANTOS",
                     "mother":"EDITE LARA VIVAS DOS SANTOS"
@@ -7346,7 +7432,8 @@
                  "birthDate":"11/01/1913",
                  "birthLocation":"Entre Rios de Minas, MG",
                  "deathDate":"19/08/1999",
-                 "marriageDate":"18/06/1938",
+                 "marriageDate": "18/06/1938",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"FRANCISCO AUGUSTO MOREIRA",
                     "mother":"MARIA MARZANO MOREIRA"
@@ -7428,7 +7515,8 @@
                  "birthDate":"19/03/1937",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"22/11/1960",
+                 "marriageDate": "22/11/1960",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOÃO ANTÔNIO CARDOSO",
                     "mother":"MARIA ANTONIA FERREIRA CARDOSO"
@@ -7488,7 +7576,8 @@
                  "birthDate":"25/09/1955",
                  "birthLocation":"Itauna, MG",
                  "deathDate":null,
-                 "marriageDate":"18/05/1986",
+                 "marriageDate": "18/05/1986",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"DJALMA RIBEIRO DELGADO",
                     "mother":"NOÊMIA DE LIMA DELGADO"
@@ -7571,7 +7660,8 @@
                  "birthDate":"28/02/1985",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"27/07/2013",
+                 "marriageDate": "27/07/2013",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"LEVI NUNES LAGARES",
                     "mother":"TEREZINHA DUARTE SAPORE LAGARES"
@@ -7710,7 +7800,8 @@
                  "birthDate":"19/11/1986",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":"RONALDO ANTÔNIO ALVES",
                     "mother":"APARECIDA TEIXEIRA ALVES"
@@ -7784,7 +7875,8 @@
                  "birthDate":"04/11/1967",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"04/04/1988",
+                 "marriageDate": "04/04/1988",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"WANDER SOARES MAIA",
                     "mother":"SALETE MIRANDA MAIA"
@@ -7835,7 +7927,8 @@
                  "birthDate":"31/10/1986",
                  "birthLocation":"Mossoró, RN",
                  "deathDate":null,
-                 "marriageDate":"10/10/2015",
+                 "marriageDate": "10/10/2015",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"RAIMUNDO NONATO DA SILVA",
                     "mother":"VALDIRENE TORQUATO DA SILVA"
@@ -7935,7 +8028,8 @@
                  "birthDate":"23/03/1971",
                  "birthLocation":"Montes Claros, MG",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":"MARCELO LUIZ ALMEIDA NÓBREGA",
                     "mother":"GUILHERMINA LUCIA MENDES NÓBREGA"
@@ -7955,7 +8049,8 @@
                  "birthDate":"01/02/1969",
                  "birthLocation":"Recife/PE",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":"PAULO RIBEIRO DA SILVA",
                     "mother":"IONE LARA DA SILVA"
@@ -8056,7 +8151,8 @@
                  "birthDate":"29/07/1941",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"08/07/1967",
+                 "marriageDate": "08/07/1967",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"EDUARDO DOS SANTOS CARDOSO",
                     "mother":"HILDA TEIXEIRA CARDOSO"
@@ -8116,7 +8212,8 @@
                  "birthDate":"05/05/1968",
                  "birthLocation":"Cataguazes, MG",
                  "deathDate":null,
-                 "marriageDate":"15/10/1994",
+                 "marriageDate": "15/10/1994",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"EDGARD CARDOSO BRAGA",
                     "mother":"MARIA APARECIDA BRAGA"
@@ -8190,7 +8287,8 @@
                  "birthDate":"30/07/1967",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"06/02/1999",
+                 "marriageDate": "06/02/1999",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"SEBASTIÃO EDMUNDO DE CARVALHO",
                     "mother":"MARY LÉA SOEIRO DE CARVALHO"
@@ -8295,7 +8393,8 @@
                  "birthDate":"08/11/1969",
                  "birthLocation":"Sete Lagos, MG",
                  "deathDate":null,
-                 "marriageDate":"07/01/2006",
+                 "marriageDate": "07/01/2006",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"FRANCISCO TIMOTEO PEREIRA",
                     "mother":"NILSE CECILIO DE AQUINO"
@@ -8400,7 +8499,8 @@
                  "birthDate":"17/01/1941",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"11/06/1966",
+                 "marriageDate": "11/06/1966",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"REALINO ALBERTO MABILLOT",
                     "mother":"ADA BENEDETTI MABILLOT"
@@ -8498,7 +8598,8 @@
                  "birthDate":"07/10/1968",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"20/06/1998",
+                 "marriageDate": "20/06/1998",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ GERALDO HORTA",
                     "mother":"THEREZINHA ALMEIDA HORTA"
@@ -8544,7 +8645,8 @@
                  "birthDate":"19/03/1972",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"26/10/1996",
+                 "marriageDate": "26/10/1996",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ SERAFIM CARVALHO",
                     "mother":"SÔNIA LÚCIA CARVALHO"
@@ -8597,7 +8699,8 @@
                  "birthDate":"21/03/1991",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"04/08/2019",
+                 "marriageDate": "04/08/2019",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"WEBER PEREIRA TINOCO",
                     "mother":"ROSILENE VIANA LIMA TINOCO"
@@ -8727,7 +8830,8 @@
                  "birthDate":"11/08/1972",
                  "birthLocation":"Caxambu, MG",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":"Samuel Francisco Maciel",
                     "mother":"Ligia Ramos Maciel"
@@ -8836,7 +8940,8 @@
                  "birthDate":"11/12/1953",
                  "birthLocation":"Sabará, MG",
                  "deathDate":null,
-                 "marriageDate":"25/05/1979",
+                 "marriageDate": "25/05/1979",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTÔNIO DE LISBOA PERTENCE",
                     "mother":"ELVIRA DE ASSIS MARTINS PERTENCE"
@@ -8885,7 +8990,8 @@
                  "birthDate":"10/08/1949",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"28/08/1971",
+                 "marriageDate": "28/08/1971",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"EDUARDO DOS SANTOS CARDOSO",
                     "mother":"HILDA TEIXEIRA CARDOSO"
@@ -8905,7 +9011,8 @@
                  "birthDate":"07/04/1969",
                  "birthLocation":"João Monlevade, MG",
                  "deathDate":null,
-                 "marriageDate":"05/12/2004",
+                 "marriageDate": "05/12/2004",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ SEGUNDO SANCHES",
                     "mother":"DJANIRA MARIA TELES SANCHES"
@@ -8954,7 +9061,8 @@
                  "birthDate":"09/10/1978",
                  "birthLocation":"Pará de Minas, MG",
                  "deathDate":null,
-                 "marriageDate":"28/04/2006",
+                 "marriageDate": "28/04/2006",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ERNANE RODRIGUES DA SILVA",
                     "mother":"MARIA APARECIDA RODRIGUES DA SILVA"
@@ -9060,7 +9168,8 @@
                  "birthDate":"13/07/1947",
                  "birthLocation":"Sabinópolis, MG",
                  "deathDate":null,
-                 "marriageDate":"24/01/1977",
+                 "marriageDate": "24/01/1977",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ACIR PIMENTA SOARES",
                     "mother":"ZILDA PINTO SOARES"
@@ -9116,7 +9225,8 @@
                  "birthDate":"22/05/1984",
                  "birthLocation":"Cruzilia, MG",
                  "deathDate":null,
-                 "marriageDate":"02/02/2013",
+                 "marriageDate": "02/02/2013",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"MARCIO EVANDRO DE ARAUJO",
                     "mother":"ANA MARIA FARAGE DE CARVALHO"
@@ -9254,7 +9364,8 @@
                  "birthDate":"14/05/1991",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":"06/10/2023",
+                 "marriageDate": "06/10/2023",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JORGE BENEDITO DE SOUZA SOARES DE GOUVEA",
                     "mother":"VÂNIA ELIZABETH AVELAR DE GOUVEA"
@@ -9297,7 +9408,8 @@
                  "birthDate":"19/05/1919",
                  "birthLocation":"Campestre, MG",
                  "deathDate":"24/11/1989",
-                 "marriageDate":"30/04/1940",
+                 "marriageDate": "30/04/1940",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"EUGÊNIO PIVA",
                     "mother":"CECÍLIA MARIA JESUS"
@@ -9379,7 +9491,8 @@
                  "birthDate":"26/04/1935",
                  "birthLocation":"Dr. Sá Fortes, MG",
                  "deathDate":null,
-                 "marriageDate":"11/05/1963",
+                 "marriageDate": "11/05/1963",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"CARLINHOS CANDIAN",
                     "mother":"MARIA EVIZERO CANDIAN"
@@ -9439,7 +9552,8 @@
                  "birthDate":"29/11/1965",
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":"27/12/1978",
+                 "marriageDate": "27/12/1978",
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -9490,7 +9604,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -9587,7 +9702,8 @@
                  "birthDate":"13/04/1962",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"20/07/1995",
+                 "marriageDate": "20/07/1995",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"LUIS DRUMOND",
                     "mother":"VANDA JOZIFINA CARDOSO DRUMOND"
@@ -9692,7 +9808,8 @@
                  "birthDate":"25/08/1973",
                  "birthLocation":"Dr. Sá Fortes, Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"05/02/1994",
+                 "marriageDate": "05/02/1994",
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -9797,7 +9914,8 @@
                  "birthDate":"29/04/1945",
                  "birthLocation":"Antônio Carlos, MG",
                  "deathDate":null,
-                 "marriageDate":"25/11/1967",
+                 "marriageDate": "25/11/1967",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"MAXIMINO DIAS",
                     "mother":"DARCY MARIA SAVASSI DIAS"
@@ -9865,7 +9983,8 @@
                  "birthDate":"04/04/1970",
                  "birthLocation":"Pompeu, MG",
                  "deathDate":null,
-                 "marriageDate":"11/09/2004",
+                 "marriageDate": "11/09/2004",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"GERALDO RIBEIRO SOBRINHO",
                     "mother":"GISLEIDA DE CAMPOS MACIEL"
@@ -10092,7 +10211,8 @@
                  "birthDate":"18/04/1942",
                  "birthLocation":"Antônio Carlos, MG",
                  "deathDate":null,
-                 "marriageDate":"13/11/1967",
+                 "marriageDate": "13/11/1967",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ANTONIO GUERRA",
                     "mother":"DIGNIRA BOTELLI GUERRA"
@@ -10175,7 +10295,8 @@
                  "birthDate":"24/04/1973",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ DA GLORIA DA MATA",
                     "mother":"VANIA LAURA DA MATA"
@@ -10248,7 +10369,8 @@
                  "birthDate":"27/01/1947",
                  "birthLocation":"Antônio Carlos, MG",
                  "deathDate":null,
-                 "marriageDate":"25/01/1969",
+                 "marriageDate": "25/01/1969",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"CELESTINO FORTUNATO ZONZIN",
                     "mother":"HILDA DE SÁ DOMINGOS ZONZIN"
@@ -10304,7 +10426,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -10377,7 +10500,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -10420,7 +10544,8 @@
                  "birthDate":"15/03/1948",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"31/01/1970",
+                 "marriageDate": "31/01/1970",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ BERGAMINI",
                     "mother":"MARIA LUIZA BERTOLLA BERGAMINI"
@@ -10480,7 +10605,8 @@
                  "birthDate":"24/04/1969",
                  "birthLocation":"Rio de Janeiro, RJ",
                  "deathDate":null,
-                 "marriageDate":"18/07/1998",
+                 "marriageDate": "18/07/1998",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"VALDIR MAURÍCIO ROSA",
                     "mother":"MARIA DO ROSÁRIO DOS REIS"
@@ -10582,7 +10708,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -10626,7 +10753,8 @@
                  "birthDate":"31/05/1945",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"25/09/1971",
+                 "marriageDate": "25/09/1971",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"CELESTINO FORTUNATO ZONZIN",
                     "mother":"HILDA DE SÁ DOMINGOS ZONZIN"
@@ -10714,7 +10842,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -10881,7 +11010,8 @@
                  "birthDate":"25/07/1955",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"29/04/1978",
+                 "marriageDate": "29/04/1978",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ARMANDO MORAIS",
                     "mother":"DORVALINA GAVA MORAIS"
@@ -10969,7 +11099,8 @@
                  "birthDate":"15/10/1978",
                  "birthLocation":"Parelheiros, SP",
                  "deathDate":null,
-                 "marriageDate":"22/10/2005",
+                 "marriageDate": "22/10/2005",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOSÉ LUCAS VIDAL",
                     "mother":"FLORINDA MARIA SILVA LUCAS"
@@ -11071,7 +11202,8 @@
                  "birthDate":"21/09/1949",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"24/04/1976",
+                 "marriageDate": "24/04/1976",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"OSWALDO CANDIAN",
                     "mother":"UMBELINA TERESA ROMAN CANDIAN"
@@ -11123,7 +11255,8 @@
                  "birthDate":"03/01/1978",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":null,
-                 "marriageDate":"13/05/1997",
+                 "marriageDate": "13/05/1997",
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -11137,7 +11270,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":"10/02/2007",
+                 "marriageDate": "10/02/2007",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"JOBSON JOSE CARNEIRO",
                     "mother":"SONIA GILBERTO"
@@ -11210,7 +11344,8 @@
                  "birthDate":"04/04/1915",
                  "birthLocation":"Barbacena, MG",
                  "deathDate":"09/10/1984",
-                 "marriageDate":"01/10/1938",
+                 "marriageDate": "01/10/1938",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"ADÃO BERTOLIN",
                     "mother":"MARIA ROSSETI BERTOLIN"
@@ -11276,7 +11411,8 @@
                  "birthDate":null,
                  "birthLocation":null,
                  "deathDate":null,
-                 "marriageDate":null,
+                 "marriageDate": null,
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":null
@@ -11452,7 +11588,8 @@
                  "birthDate":"03/07/1940",
                  "birthLocation":"Belo Horizonte, MG",
                  "deathDate":"04/01/2010",
-                 "marriageDate":"07/06/1969",
+                 "marriageDate": "07/06/1969",
+                 "marriageLocation": null,
                  "parents":{
                     "father":null,
                     "mother":"MARIA FRANCISCA DE SOUZA"
@@ -11508,7 +11645,8 @@
                  "birthDate":"13/01/1976",
                  "birthLocation":"Rio de Janeiro, RJ",
                  "deathDate":null,
-                 "marriageDate":"13/05/2005",
+                 "marriageDate": "13/05/2005",
+                 "marriageLocation": null,
                  "parents":{
                     "father":"BRAÚLIO VITOR GONÇALVES PINTO",
                     "mother":"MARIA ANTONIA ESTEVES GONÇALVES PINTO"
